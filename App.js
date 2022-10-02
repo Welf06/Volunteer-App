@@ -1,20 +1,75 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {useState} from 'react';
+import { StyleSheet, Text, View, TouchableOpacity,Image } from 'react-native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useFonts } from 'expo-font';
+
+import { VolunteerFeed } from './VolunteerFeed';
+import { OrganizationFeed } from './OrganizationFeed';
+import { Profile } from './Profile';
+import { Login } from './Login';
+
+const Stack = createNativeStackNavigator();
+
+
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
+  });
+  const [isLogged, setIsLogged] = useState(false);
+  const isOrganization = false;
+  const navigationRef = useNavigationContainerRef();
+  if (!isLogged) {
+    return (
+      <Login setIsLogged={setIsLogged}/>
+    );
+  }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{flex:1}}>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator screenOptions={{
+          headerStyle: {
+            backgroundColor: '#1A535C',
+          },
+          title: 'App Name',
+          headerTintColor: '#F7FFF7',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 25,
+            fontFamily: 'Poppins',
+          },
+          headerRight: () => (
+            // Profile pic goes here
+            <TouchableOpacity style={styles.button} onPress={() => navigationRef.navigate('Profile')}>
+              <Image source={require('./assets/images/user.png')} style={styles.profilePic}/>
+            </TouchableOpacity>
+          ),
+          animation:'slide_from_right',
+        
+        }}>
+          {isOrganization ? (
+            <Stack.Screen name="OrganizationFeed" component={OrganizationFeed} />
+          ) : (
+          <Stack.Screen name="Feed" component={VolunteerFeed}/>
+          )}
+          <Stack.Screen name="Profile" component={Profile} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  button: {
+      backgroundColor: "#F7FFF7",
+      width:42,
+      height:42, 
+      borderRadius: 50,
   },
+  profilePic: {
+    width: 42,
+    height: 42,
+    borderRadius: 50,
+  }
 });
