@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const TaskCard = (props) => {
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={styles.container} activeOpacity={0.7}>
         <Image source={require('./assets/images/forest.jpg')} style={styles.image}/>
         <View style={styles.textContainer}>
         {/* Name */}
