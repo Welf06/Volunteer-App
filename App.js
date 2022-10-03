@@ -1,24 +1,24 @@
 import {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity,Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity,Image } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 
 import { VolunteerFeed } from './VolunteerFeed';
-import { OrganizationFeed } from './OrganizationFeed';
+import { OrganizationTabs } from './OrganizationTabs';
 import { Profile } from './Profile';
 import { Login } from './Login';
 
 const Stack = createNativeStackNavigator();
 
-
+const isOrganization = true;
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
   const [isLogged, setIsLogged] = useState(false);
-  const isOrganization = false;
+  
   const navigationRef = useNavigationContainerRef();
   if (!isLogged) {
     return (
@@ -49,7 +49,7 @@ export default function App() {
         
         }}>
           {isOrganization ? (
-            <Stack.Screen name="OrganizationFeed" component={OrganizationFeed} />
+            <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
           ) : (
           <Stack.Screen name="Feed" component={VolunteerFeed}/>
           )}
