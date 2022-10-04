@@ -3,16 +3,15 @@ import { StyleSheet, Text, View,TextInput} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
 
-export const DropdownComponent = ({data, placeholder,withSearch}) => {
+export const DropdownComponent = ({data, placeholder,withSearch,disabled}) => {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
-
     return (
         <View>
             <Dropdown
                 data={data}
-                style={styles.dropdown}
-                placeholderStyle={styles.dropdownPlaceholder}
+                style={!disabled ? styles.dropdown : styles.disabledDropdown}
+                placeholderStyle={!disabled ? styles.dropdownPlaceholder : styles.disabledPlaceholder}
                 selectedTextStyle={styles.dropdownSelectedText}
                 containerStyle={styles.dropdownContainer}
                 itemTextStyle={styles.dropdownItemText}
@@ -27,7 +26,8 @@ export const DropdownComponent = ({data, placeholder,withSearch}) => {
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 search={withSearch}
-
+                disable={disabled}
+                dropdownPosition='bottom'
                 // onChangeText={onChange}
             />
         </View>
@@ -69,6 +69,21 @@ const styles = StyleSheet.create({
     },
     dropdownInputSearch: {
         backgroundColor: "#F7FFF7",
+        fontFamily: 'Poppins',
+    },
+    disabledDropdown: {
+        width: 350,
+        height: 50,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        borderColor: "#c5c9d1",
+        color: "#9da1a8",
+        borderWidth: 1,
+        fontFamily: 'Poppins',
+        backgroundColor: "#c5c9d1",
+    },
+    disabledPlaceholder: {
+        color: "#9da1a8",
         fontFamily: 'Poppins',
     },
 });
