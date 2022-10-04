@@ -8,17 +8,21 @@ import { VolunteerFeed } from './VolunteerFeed';
 import { OrganizationTabs } from './OrganizationTabs';
 import { Profile } from './Profile';
 import { Login } from './Login';
+
+import { TaskDescription } from './TaskDescription';
+import { FeedCard } from './FeedCard';
 import { CreateTaskForm } from './CreateTaskForm';
+
 
 const Stack = createNativeStackNavigator();
 
-const isOrganization = true;
+const isOrganization = false;
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(true);
   
   const navigationRef = useNavigationContainerRef();
   if (!isLogged) {
@@ -65,6 +69,7 @@ export default function App() {
           <Stack.Screen name="Feed" component={VolunteerFeed}/>
           )}
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="TaskDescription" component={TaskDescription} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
