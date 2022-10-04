@@ -8,6 +8,7 @@ import { VolunteerFeed } from './VolunteerFeed';
 import { OrganizationTabs } from './OrganizationTabs';
 import { Profile } from './Profile';
 import { Login } from './Login';
+import { CreateTaskForm } from './CreateTaskForm';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,7 +50,17 @@ export default function App() {
         
         }}>
           {isOrganization ? (
-            <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
+            <Stack.Group>
+              
+              <Stack.Group>
+                <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
+              </Stack.Group>
+
+              <Stack.Group screenOptions={{presentation: 'modal'}}>
+                <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+              </Stack.Group>
+
+            </Stack.Group>
           ) : (
           <Stack.Screen name="Feed" component={VolunteerFeed}/>
           )}
