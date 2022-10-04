@@ -16,7 +16,7 @@ import { CreateTaskForm } from './CreateTaskForm';
 
 const Stack = createNativeStackNavigator();
 
-const isOrganization = false;
+const isOrganization = true;
 
 export default function App() {
   const [fontsLoaded] = useFonts({

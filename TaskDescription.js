@@ -8,7 +8,7 @@ export const TaskDescription = ({ route }) => {
    const imgsrc = {
       "Environmental": require("./assets/images/environment.png"),
       "Community": require("./assets/images/community.png"),
-      "Animal": require("./assets/images/animal.png"),
+      "Animal": require("./assets/images/user.png"),
       "Education": require("./assets/images/education.png"),
    }
    console.log(data);
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
    },
    title: {
       color: "#10383F",
-      fontSize: 20,
+      fontSize: 25,
       fontWeight: "bold",
    },
    tagContainer: {
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
    },
    logoText: {
       color: "#FF6B6B",
-      fontSize: 13,
+      fontSize: 14,
       fontWeight: "500",
       paddingLeft: 2
    },
@@ -112,19 +112,19 @@ const styles = StyleSheet.create({
    },
    subtitle: {
       color: "#10383F",
-      fontSize: 15,
+      fontSize: 20,
       fontWeight: "bold",
       marginBottom: 2,
    },
    description: {
       color: "#1A535C",
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: "400",
    },
    volunteerButton: {
       backgroundColor: "#1A535C",
       width: "100%",
-      height: 40,
+      height: 60,
       justifyContent: "center",
       alignItems: "center",
       marginTop: 10,
