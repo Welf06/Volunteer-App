@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 
 import { VolunteerFeed } from './VolunteerFeed';
 import { OrganizationTabs } from './OrganizationTabs';
@@ -74,6 +75,7 @@ export default function App() {
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
         </Stack.Navigator>
       </NavigationContainer>
+      <StatusBar/>
     </View >
   );
 }
