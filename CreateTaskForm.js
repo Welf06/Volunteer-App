@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View,TextInput, ScrollView} from 'react-native';
+import { StyleSheet, Text, View,TextInput, ScrollView, TouchableOpacity} from 'react-native';
 import CheckBox from 'expo-checkbox';
 import { DropdownComponent } from './DropdownComponent';
 import { StatusBar } from 'expo-status-bar';
+import {TextInputMask} from 'react-native-masked-text';
 
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 
 const data = [
@@ -15,17 +16,29 @@ const data = [
     {label: 'Health', value: 'Health'},
 ]
 
-const countryData = [
-    {label: 'India', value: 'India'},
-    {label: 'USA', value: 'USA'},
-    {label: 'UK', value: 'UK'},
-    {label: 'Australia', value: 'Australia'},
-    {label: 'Canada', value: 'Canada'},
-]
+
+
+
+
 
 export const CreateTaskForm = () => {
-  const [isRemote, setIsRemote] = useState(false);
-
+    const [isRemote, setIsRemote] = useState(false);
+    const [date, setDate] = useState('');
+    const [countries, setCountries] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState('');
+    useEffect(() => {
+        fetch('https://restcountries.com/v3.1/all')
+            .then((response) => response.json())
+            .then((json) => {
+                const array = json.map((country) => {
+                    return {label: country.name.common, value: country.name.common};
+                }
+                );
+                setCountries(array);
+            })
+            .catch((error) => console.error(error))
+    }, []);
+    
   return (
     <View style={styles.container}>
     <ScrollView  style={styles.scroll}>
@@ -41,20 +54,33 @@ export const CreateTaskForm = () => {
             <CheckBox value={isRemote} onValueChange={setIsRemote} style={styles.checkbox} />
         </View>
         <Text style={styles.formLabel}>Country</Text>
-        <DropdownComponent data={countryData} placeholder="Country" withSearch={false} disabled={isRemote}/>
+        <DropdownComponent data={countries} placeholder="Country" withSearch={true} disabled={isRemote} onValueChange={(value) => setSelectedCountry(value)}/>
         <Text style={styles.formLabel}>State</Text>
-        <DropdownComponent data={countryData} placeholder="State" withSearch={false} disabled={isRemote}/>
+        <DropdownComponent data={countries} placeholder="State" withSearch={true} disabled={isRemote} />
         <Text style={styles.formLabel}>City</Text>
-        <DropdownComponent data={countryData} placeholder="City" withSearch={false} disabled={isRemote}/>
+        <DropdownComponent data={countries} placeholder="City" withSearch={true} disabled={isRemote}/>
 
         <Text style={styles.formLabel} >How many volunteers will you require?</Text>
-        <TextInput style={styles.input}/>
+        <TextInput style={styles.input} keyboardType="numeric"/>
 
-        <Text style={styles.formLabel} >When is it happening?</Text>
-        <TextInput style={styles.input}/>
-
+        <Text style={styles.formLabel} >When is it happening? (DD/MM/YYYY)</Text>
+        <TextInputMask
+            type={'datetime'}
+            options={{
+                format: 'DD/MM/YYYY'
+            }}
+            style={styles.input}
+            value={date}
+            onChangeText={text => {
+                setDate(text);
+            }}
+        />
         <Text style={styles.formLabel} >Explain the task in a few words</Text>
         <TextInput style={styles.multilineInput} multiline={true}/>
+
+        <Text style={styles.formLabel} >Attach a google form link. They will be directed to this link when they volunteer.</Text>
+        <TextInput style={styles.input} keyboardType="url"/>
+
       </View>
       <StatusBar style="auto" />
     </ScrollView>
@@ -107,9 +133,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         width: 350,
-        borderColor: "#1A535C",
-        fontFamily: 'Poppins',
-        color: "#1A535C",
     },
     checkboxContainer: {
         flexDirection: "row",
@@ -129,5 +152,13 @@ const styles = StyleSheet.create({
         width: 25,
         height: 25,
 
-    }
+    },
+    datePicker: {
+        width: 350,
+        height: 50,
+        marginVertical: 10,
+        borderWidth: 2,
+
+    },
+
 });
