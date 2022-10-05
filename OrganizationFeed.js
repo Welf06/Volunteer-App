@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import {TaskCard} from './TaskCard';
 
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const tasks = [
@@ -21,7 +22,7 @@ const tasks = [
     },
 ]
 
-export const OrganizationFeed = () => {
+export const OrganizationFeed = ({navigation}) => {
     return (
       <View style={styles.screen}>
         <ScrollView style={styles.container}>
@@ -31,7 +32,7 @@ export const OrganizationFeed = () => {
               )
           })}
         </ScrollView>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateTaskForm')}>
             <Icon name="plus" style={styles.icon}/>
         </TouchableOpacity>
       </View>
