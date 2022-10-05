@@ -22,10 +22,11 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
-  const [isLogged, setIsLogged] = useState(true);
+  const [isLogged, setIsLogged] = useState(false);
+  const [isSigned, setIsSigned] = useState(true);
   
   const navigationRef = useNavigationContainerRef();
-  if (!isLogged) {
+  if (!isLogged & isSigned) {
     return (
       <Login setIsLogged={setIsLogged}/>
     );
