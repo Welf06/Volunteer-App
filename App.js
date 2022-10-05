@@ -9,6 +9,9 @@ import { VolunteerFeed } from './VolunteerFeed';
 import { OrganizationTabs } from './OrganizationTabs';
 import { Profile } from './Profile';
 import { Login } from './Login';
+import { Signup } from './Signup';
+import { SignInEmailOption } from './SignInEmailOption';
+import { VolunteerOption } from './VolunteerOption';
 
 import { TaskDescription } from './TaskDescription';
 import { FeedCard } from './FeedCard';
@@ -17,14 +20,15 @@ import { CreateTaskForm } from './CreateTaskForm';
 
 const Stack = createNativeStackNavigator();
 
-const isOrganization = true;
+
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
+  const [isOrganization, setIsOrganisation] = useState(true);
   const [isLogged, setIsLogged] = useState(false);
-  const [isSigned, setIsSigned] = useState(true);
+  const [isSigned, setIsSigned] = useState(false);
 
   const navigationRef = useNavigationContainerRef();
   return (
@@ -50,27 +54,41 @@ export default function App() {
           animation: 'slide_from_right',
 
         }}>
-          {!isLogged ? (
+          {!isLogged & !isSigned ? (
             <Stack.Group>
-              <Stack.Screen name="Login">
-              {props => (<Login {...props}  setIsLogged={setIsLogged}/>)}
+              <Stack.Screen name="VolunteerOptions">
+                {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation} />}
               </Stack.Screen>
-            </Stack.Group>
-          ) : (isOrganization ? (
-            <Stack.Group >
-
-              <Stack.Group>
-                <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
-              </Stack.Group>
-
-              <Stack.Group screenOptions={{ presentation: 'modal' }}>
-                <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
-              </Stack.Group>
-
+              <Stack.Screen name="SignInEmailOption" component={SignInEmailOption} />
+              <Stack.Screen name="Signup">
+                {props => (<Signup {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
+              </Stack.Screen>
+              <Stack.Screen name="Login">
+                  {props => (<Login {...props} setIsLogged={setIsLogged} />)}
+                </Stack.Screen>
             </Stack.Group>
           ) : (
-            <Stack.Screen name="Feed" component={VolunteerFeed} />
-          ))}
+            !isLogged & isSigned ? (
+              <Stack.Group>
+                <Stack.Screen name="Login">
+                  {props => (<Login {...props} setIsLogged={setIsLogged} />)}
+                </Stack.Screen>
+              </Stack.Group>
+            ) : ( isOrganization ? (
+          <Stack.Group >
+
+            <Stack.Group>
+              <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
+            </Stack.Group>
+
+            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+            </Stack.Group>
+
+          </Stack.Group>
+          ) : (
+          <Stack.Screen name="Feed" component={VolunteerFeed} />
+          )))}
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
         </Stack.Navigator>

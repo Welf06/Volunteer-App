@@ -2,8 +2,6 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import TaskDescription from './TaskDescription.js';
-
 export const FeedCard = (props) => {
     // console.log(props);
     const imgsrc = {

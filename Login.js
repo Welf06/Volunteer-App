@@ -28,7 +28,7 @@ export const Login = ({ setIsLogged }) => {
                     >
                         <Text style={styles.googleText}>Login with Google</Text>
                     </TouchableOpacity>
-
+                    
                 </View>
                 <StatusBar style="auto" />
             </ScrollView>
