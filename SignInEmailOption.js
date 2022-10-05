@@ -1,34 +1,22 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
-export const Login = ({ setIsLogged }) => {
+export const SignInEmailOption = ({ setIsLogged }) => {
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scroll}>
                 <View style={styles.container}>
-                    <Text style={styles.title}>Welcome Back</Text>
-                    <View style={styles.formContainer}>
-                        <View style={styles.inputContainer}>
-                            <Text style={styles.inputTitle}>Email</Text>
-                            <TextInput style={styles.input} />
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Text style={styles.inputTitle}>Password</Text>
-                            <TextInput secureTextEntry={true} style={styles.input} />
-                        </View>
-                    </View>
                     <TouchableOpacity style={styles.button}
                         onPress={() => setIsLogged(true)}
                     >
-                        <Text style={styles.text}>Login</Text>
+                        <Text style={styles.text}>Coninue with Email</Text>
                     </TouchableOpacity>
                     <Text style={styles.or} >OR</Text>
                     <TouchableOpacity style={styles.googleButton}
                         onPress={() => setIsLogged(true)}
                     >
-                        <Text style={styles.googleText}>Login with Google</Text>
+                        <Text style={styles.googleText}>Continue with Google</Text>
                     </TouchableOpacity>
-                    
                 </View>
                 <StatusBar style="auto" />
             </ScrollView>
@@ -120,6 +108,4 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: 'Poppins',
     },
-
-
 }); 

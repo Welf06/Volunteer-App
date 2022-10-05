@@ -8,6 +8,8 @@ import { VolunteerFeed } from './VolunteerFeed';
 import { OrganizationTabs } from './OrganizationTabs';
 import { Profile } from './Profile';
 import { Login } from './Login';
+import { Signup } from './Signup';
+import { SignInEmailOption } from './SignInEmailOption';
 
 import { TaskDescription } from './TaskDescription';
 import { FeedCard } from './FeedCard';
@@ -23,7 +25,7 @@ export default function App() {
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
   const [isLogged, setIsLogged] = useState(false);
-  const [isSigned, setIsSigned] = useState(true);
+  const [isSigned, setIsSigned] = useState(false);
 
   const navigationRef = useNavigationContainerRef();
   return (
@@ -50,11 +52,20 @@ export default function App() {
 
         }}>
           {!isLogged ? (
+            isSigned ? (
             <Stack.Group>
               <Stack.Screen name="Login">
               {props => (<Login {...props}  setIsLogged={setIsLogged}/>)}
               </Stack.Screen>
             </Stack.Group>
+            ) : (
+            <Stack.Group>
+              <Stack.Screen name="SignInEmailOption" component={SignInEmailOption}/>
+              <Stack.Screen name="Signup">
+              {props => (<Signup {...props}  setIsSigned={setIsSigned} setIsLogged={setIsLogged}/>)}
+            </Stack.Screen>
+            </Stack.Group>
+            )
           ) : (isOrganization ? (
             <Stack.Group >
 
@@ -74,7 +85,7 @@ export default function App() {
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
         </Stack.Navigator>
       </NavigationContainer>
-    </View >
+    </View>
   );
 }
 
