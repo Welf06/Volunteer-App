@@ -2,13 +2,15 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+
 export const FeedCard = (props) => {
     // console.log(props);
     const imgsrc = {
         "Environmental": require("./assets/images/environment.png"),
         "Community": require("./assets/images/community.png"),
-        "Animal": require("./assets/images/user.png"),
+        "Animal": require("./assets/images/animal.png"),
         "Education": require("./assets/images/education.png"),
+        "Health": require("./assets/images/health.png"),
     }
 
     const navigation = useNavigation();

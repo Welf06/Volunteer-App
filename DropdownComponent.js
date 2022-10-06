@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,TextInput} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
 
-export const DropdownComponent = ({data, placeholder,withSearch,disabled}) => {
+export const DropdownComponent = ({data, placeholder,withSearch,disabled,onSelect}) => {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
     return (
@@ -21,8 +21,10 @@ export const DropdownComponent = ({data, placeholder,withSearch,disabled}) => {
                 placeholder = {placeholder}
                 labelField="label"
                 valueField="value"
-                value={value}
-                onChange={setValue}
+                onChange={(value) => {
+                    setValue(value);
+                    onSelect(value);
+                }}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 search={withSearch}

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,TextInput, ScrollView, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,TextInput, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import CheckBox from 'expo-checkbox';
 import { DropdownComponent } from './DropdownComponent';
 import { StatusBar } from 'expo-status-bar';
@@ -22,6 +22,17 @@ const data = [
 
 
 export const CreateTaskForm = () => {
+    const [taskData, setTaskData] = useState({
+        name: '',
+        organisation: '',
+        type: '',
+        remote: false,
+        location: {'country': '', 'state': '', 'city': ''},
+        volunteers: 0,
+        description: '',
+        startDate: '',
+        formLink: '',
+    })
     const [isRemote, setIsRemote] = useState(false);
     const [date, setDate] = useState('');
     const [countries, setCountries] = useState([]);
@@ -45,23 +56,27 @@ export const CreateTaskForm = () => {
       <Text style={styles.title}>Create Task</Text>
       <View style={styles.form}>
         <Text style={styles.formLabel} placeholder="test">Task Name</Text>
-        <TextInput style={styles.input}/>
+        <TextInput style={styles.input} onChangeText={(text) => setTaskData({...taskData, name: text})} value={taskData.name}/>
         <Text style={styles.formLabel}>What kind of task is this?</Text>
-        <DropdownComponent data={data} placeholder="Task Type" withSearch={false} disabled={false}/>
+        <DropdownComponent data={data} placeholder="Task Type" withSearch={false} disabled={false} onSelect={(value) => setTaskData({...taskData, type: value["label"]})}/>
         <Text style={styles.formLabel}>Where will this take place?</Text>
         <View style={styles.checkboxContainer}>
             <Text style={styles.checkboxLabel}>Remote</Text>
-            <CheckBox value={isRemote} onValueChange={setIsRemote} style={styles.checkbox} />
+            <CheckBox value={isRemote} onValueChange={
+              (value) => {
+                setIsRemote(value);
+                setTaskData({...taskData, remote: value});
+            }} style={styles.checkbox} />
         </View>
         <Text style={styles.formLabel}>Country</Text>
-        <DropdownComponent data={countries} placeholder="Country" withSearch={true} disabled={isRemote} onValueChange={(value) => setSelectedCountry(value)}/>
+        <DropdownComponent data={countries} placeholder="Country" withSearch={true} disabled={isRemote} onSelect={(value) => setTaskData({...taskData, location: {...taskData.location, country: value["label"]}})}/>
         <Text style={styles.formLabel}>State</Text>
-        <DropdownComponent data={countries} placeholder="State" withSearch={true} disabled={isRemote} />
+        <DropdownComponent data={countries} placeholder="State" withSearch={true} disabled={isRemote} onSelect={(value) => setTaskData({...taskData, location: {...taskData.location, state: value["label"]}})}/>
         <Text style={styles.formLabel}>City</Text>
-        <DropdownComponent data={countries} placeholder="City" withSearch={true} disabled={isRemote}/>
+        <DropdownComponent data={countries} placeholder="City" withSearch={true} disabled={isRemote} onSelect={(value) => setTaskData({...taskData, location: {...taskData.location, city: value["label"]}})}/>
 
         <Text style={styles.formLabel} >How many volunteers will you require?</Text>
-        <TextInput style={styles.input} keyboardType="numeric"/>
+        <TextInput style={styles.input} keyboardType="numeric" onChangeText={(text) => setTaskData({...taskData, volunteers: text})} value={taskData.volunteers}/>
 
         <Text style={styles.formLabel} >When is it happening? (DD/MM/YYYY)</Text>
         <TextInputMask
@@ -73,14 +88,28 @@ export const CreateTaskForm = () => {
             value={date}
             onChangeText={text => {
                 setDate(text);
+                setTaskData({...taskData, startDate: text});
             }}
         />
         <Text style={styles.formLabel} >Explain the task in a few words</Text>
-        <TextInput style={styles.multilineInput} multiline={true}/>
+        <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setTaskData({...taskData, description: text})} value={taskData.description}/>
 
         <Text style={styles.formLabel} >Attach a google form link. They will be directed to this link when they volunteer.</Text>
-        <TextInput style={styles.input} keyboardType="url"/>
+        <TextInput style={styles.input} keyboardType="url" onChangeText={(text) => setTaskData({...taskData, formLink: text})} value={taskData.formLink}/>
+        
+        <TouchableOpacity style={styles.button} onPress={
+            () => {
+                // Check if all fields are filled
+                if(taskData.name && taskData.type && taskData.volunteers && taskData.description && taskData.startDate && taskData.formLink && (taskData.remote || (taskData.location.country && taskData.location.state && taskData.location.city))){{
+                    console.log(taskData);
+                }}else{
+                    Alert.alert("Please fill all the fields");
+                }
 
+            }
+        }>
+            <Text style={styles.buttonText}>Create Task</Text>
+        </TouchableOpacity>
       </View>
       <StatusBar style="auto" />
     </ScrollView>
@@ -160,5 +189,19 @@ const styles = StyleSheet.create({
         borderWidth: 2,
 
     },
+    button: {
+        backgroundColor: "#1A535C",
+        width: 350,
+        height: 50,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 20,
+    },
+    buttonText: {
+        color: "#F7FFF7",
+        fontSize: 18,
+        fontFamily: 'Poppins',
+    }
 
 });

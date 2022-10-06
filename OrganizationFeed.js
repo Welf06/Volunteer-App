@@ -20,6 +20,16 @@ const tasks = [
         type: "Animal",
         location: "New York, NY",
     },
+    {
+        name: "Teach Kids",
+        type: "Education",
+        location: "New York, NY",
+    },
+    {
+        name: "Give Blood",
+        type: "Health",
+        location: "New York, NY",
+    },
 ]
 
 export const OrganizationFeed = ({navigation}) => {

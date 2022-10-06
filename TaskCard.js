@@ -2,10 +2,18 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
+
 export const TaskCard = (props) => {
+    const imgsrc = {
+        "Environmental": require("./assets/images/environment.png"),
+        "Community": require("./assets/images/community.png"),
+        "Animal": require("./assets/images/animal.png"),
+        "Education": require("./assets/images/education.png"),
+        "Health": require("./assets/images/health.png"),
+    }
     return (
       <TouchableOpacity style={styles.container} activeOpacity={0.7}>
-        <Image source={require('./assets/images/environment.png')} style={styles.image}/>
+        <Image source={imgsrc[props.type]} style={styles.image}/>
         <View style={styles.textContainer}>
         {/* Name */}
         <Text style={styles.name}>
