@@ -17,6 +17,14 @@ const data = [
 ]
 
 
+var headers = new Headers();
+headers.append("X-CSCAPI-KEY", "T0JJcVU4YlNJcnhHWXNQdWFYSzdXbFF4M29odkxIQ1ZMdzNkdDUwTQ==");
+
+var requestOptions = {
+    method: 'GET',
+    headers: headers,
+    redirect: 'follow'
+}
 
 
 
@@ -36,20 +44,46 @@ export const CreateTaskForm = () => {
     const [isRemote, setIsRemote] = useState(false);
     const [date, setDate] = useState('');
     const [countries, setCountries] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState('');
+    const [states, setStates] = useState([]);
+    const [cities, setCities] = useState([]);
     useEffect(() => {
-        fetch('https://restcountries.com/v3.1/all')
-            .then((response) => response.json())
-            .then((json) => {
-                const array = json.map((country) => {
-                    return {label: country.name.common, value: country.name.common};
+        fetch("https://api.countrystatecity.in/v1/countries", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            let countries = result.map((country) => {
+                return {label: country.name, value: country.iso2}
+            }
+            )
+            setCountries(countries);
+        })
+        }
+    , [])
+    useEffect(() => {
+        if (taskData.location.country !== '') {
+            fetch(`https://api.countrystatecity.in/v1/countries/${taskData.location.country.value}/states`, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                let states = result.map((state) => {
+                    return {label: state.name, value: state.iso2}
                 }
-                );
-                setCountries(array);
+                )
+                setStates(states);
             })
-            .catch((error) => console.error(error))
-    }, []);
-    
+        }
+    }, [taskData.location.country])
+    useEffect(() => {
+        if (taskData.location.state !== '') {
+            fetch(`https://api.countrystatecity.in/v1/countries/${taskData.location.country.value}/states/${taskData.location.state.value}/cities`, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                let cities = result.map((city) => {
+                    return {label: city.name, value: city.name}
+                }
+                )
+                setCities(cities);
+            })
+        }
+    }, [taskData.location.state])
   return (
     <View style={styles.container}>
     <ScrollView  style={styles.scroll}>
@@ -69,11 +103,11 @@ export const CreateTaskForm = () => {
             }} style={styles.checkbox} />
         </View>
         <Text style={styles.formLabel}>Country</Text>
-        <DropdownComponent data={countries} placeholder="Country" withSearch={true} disabled={isRemote} onSelect={(value) => setTaskData({...taskData, location: {...taskData.location, country: value["label"]}})}/>
+        <DropdownComponent data={countries} placeholder="Country" withSearch={true} disabled={isRemote} onSelect={(value) => setTaskData({...taskData, location: {...taskData.location, country: value}})}/>
         <Text style={styles.formLabel}>State</Text>
-        <DropdownComponent data={countries} placeholder="State" withSearch={true} disabled={isRemote} onSelect={(value) => setTaskData({...taskData, location: {...taskData.location, state: value["label"]}})}/>
+        <DropdownComponent data={states} placeholder="State" withSearch={true} disabled={isRemote} onSelect={(value) => setTaskData({...taskData, location: {...taskData.location, state: value}})}/>
         <Text style={styles.formLabel}>City</Text>
-        <DropdownComponent data={countries} placeholder="City" withSearch={true} disabled={isRemote} onSelect={(value) => setTaskData({...taskData, location: {...taskData.location, city: value["label"]}})}/>
+        <DropdownComponent data={cities} placeholder="City" withSearch={true} disabled={isRemote} onSelect={(value) => setTaskData({...taskData, location: {...taskData.location, city: value}})}/>
 
         <Text style={styles.formLabel} >How many volunteers will you require?</Text>
         <TextInput style={styles.input} keyboardType="numeric" onChangeText={(text) => setTaskData({...taskData, volunteers: text})} value={taskData.volunteers}/>
