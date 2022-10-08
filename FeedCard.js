@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export const FeedCard = (props) => {
     // console.log(props);
     const imgsrc = {
-        "Environmental": require("./assets/images/environment.png"),
+        "Environment": require("./assets/images/environment.png"),
         "Community": require("./assets/images/community.png"),
         "Animal": require("./assets/images/animal.png"),
         "Education": require("./assets/images/education.png"),
@@ -34,7 +34,7 @@ export const FeedCard = (props) => {
             <Text style={styles.text}>
                     {`${props.type} `}
                     
-                    {props.type === "Environmental" && <Icon name="tree" size={13} color="#1A535C"/>}
+                    {props.type === "Environment" && <Icon name="tree" size={13} color="#1A535C"/>}
                     {props.type === "Community" && <Icon name="user" size={13} color="#1A535C"/>}
                     {props.type === "Animal" && <Icon name="paw" size={13} color="#1A535C"/>}
                     {props.type === "Education" && <Icon name="book" size={13} color="#1A535C"/>}

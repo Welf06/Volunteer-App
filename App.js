@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -17,15 +17,15 @@ import { ProfileCreation } from './ProfileCreation';
 import { TaskDescription } from './TaskDescription';
 import { FeedCard } from './FeedCard';
 import { CreateTaskForm } from './CreateTaskForm';
-import { getDocs,collection,doc,setDoc } from "firebase/firestore";
-import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
-import { firebase,db,storage} from "./config.js";
+import { getDocs, collection, doc, setDoc } from "firebase/firestore";
+import { addNewDoc, getPage, sign_out, query_db, new_task_details_html, org_profile_html, user_profile_html, users_collection, organisations_collection, auth, provider, top_level_url, index_html, loading_html, temp_html, new_user_details_html, new_organisation_details_html, environment, isNewUser, userType_html, createFile, uploadFile, downloadFile, tasks_collection, user_feed_html, task_images_storage_path, view_task_html, get_param_value, loadTasks, goToTask, volunteers_collection } from "./methods.js";
+import { firebase, db, storage } from "./config.js";
 
 const Stack = createNativeStackNavigator();
 
 let user_image = "./assets/images/user.png";
-auth.onAuthStateChanged(async function(user) { //If User logged in on startup
-    
+auth.onAuthStateChanged(async function (user) { //If User logged in on startup
+
   if (user) {
     user_image = user.photoURL;
   }
@@ -36,11 +36,32 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
-  const [isOrganization, setIsOrganisation] = useState(true);
+  const [isOrganization, setIsOrganisation] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
 
   const navigationRef = useNavigationContainerRef();
+  const [taskData, setTaskData] = useState([]);
+  const getTasksInfo = async () => {
+
+  }
+
+  const setData = (taskData) => {
+    console.log(taskData);
+  }
+  //     querySnapshot.forEach(async (doc) => {
+  //       // doc.data() is never undefined for query doc snapshots
+  //       task_data.push(doc.data());
+  //     });
+  //     setTaskData(task_data);
+  //     console.log(task_data);
+  //     return task_data;
+
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }
+
   return (
     <View style={{ flex: 1 }}>
       <NavigationContainer ref={navigationRef}>
@@ -61,8 +82,8 @@ export default function App() {
             <TouchableOpacity style={styles.button} onPress={() => navigationRef.navigate('Profile')}>
 
 
-              <Image style={styles.profilePic} source={{uri: user_image}} />
-              
+              <Image style={styles.profilePic} source={{ uri: user_image }} />
+
             </TouchableOpacity>
           ),
           animation: 'slide_from_right',
@@ -70,9 +91,9 @@ export default function App() {
         }}>
           {!isLogged & !isSigned ? (
             <Stack.Group>
-             
+
               <Stack.Screen name="SignInEmailOption" >
-                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation}  />)}
+                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation} />)}
               </Stack.Screen>
               <Stack.Screen name="VolunteerOptions">
                 {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation} />}
@@ -80,20 +101,20 @@ export default function App() {
               <Stack.Screen name="Signup">
                 {props => (<Signup {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} />)}
               </Stack.Screen>
-
-              <Stack.Screen name="OrganizationFeed" component={OrganizationTabs}/>
-                
-              <Stack.Screen name="Feed" component={VolunteerFeed}/>
-              <Stack.Group screenOptions={{ presentation: 'modal' }}>
-              <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
-            </Stack.Group>
-{/*              <Stack.Screen name="ProfileCreation">
-               {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
-             </Stack.Screen>
+              <Stack.Screen name="ProfileCreation">
+                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
+              </Stack.Screen>
               <Stack.Screen name="Login">
-                  {props => (<Login {...props} setIsLogged={setIsLogged} />)}
-                </Stack.Screen> */}
+                {props => (<Login {...props} setIsLogged={setIsLogged} />)}
+              </Stack.Screen>
+              <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
 
+              <Stack.Screen name="Feed">
+                {props => (<VolunteerFeed {...props} taskData={taskData} />)}
+              </Stack.Screen>
+              <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+              </Stack.Group>
             </Stack.Group>
           ) : (
             !isLogged & isSigned ? (
@@ -101,40 +122,40 @@ export default function App() {
                 <Stack.Screen name="Login">
                   {props => (<Login {...props} setIsLogged={setIsLogged} />)}
                 </Stack.Screen>
-                <Stack.Screen name="OrganizationFeed" component={OrganizationTabs}/>
-                
-                <Stack.Screen name="Feed" component={VolunteerFeed}/>
+                <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
+
+                <Stack.Screen name="Feed" component={VolunteerFeed} />
                 <Stack.Group screenOptions={{ presentation: 'modal' }}>
-                <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+                  <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+                </Stack.Group>
               </Stack.Group>
+            ) : (isOrganization ? (
+              <Stack.Group >
+
+                <Stack.Group>
+                  <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
+                </Stack.Group>
+
+                <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                  <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+                </Stack.Group>
+
               </Stack.Group>
-            ) : ( isOrganization ? (
-          <Stack.Group >
-
-            <Stack.Group>
-              <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
-            </Stack.Group>
-
-            <Stack.Group screenOptions={{ presentation: 'modal' }}>
-              <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
-            </Stack.Group>
-
-          </Stack.Group>
-          ) : (
-          <Stack.Screen name="Feed" component={VolunteerFeed} />
-          )))}
+            ) : (
+              <Stack.Screen name="Feed" component={VolunteerFeed} />
+            )))}
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
         </Stack.Navigator>
       </NavigationContainer>
-      <StatusBar/>
+      <StatusBar />
     </View >
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#F7FFF7",
+    // backgroundColor: "#F7FFF7",
     width: 42,
     height: 42,
     borderRadius: 50,
@@ -143,5 +164,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 50,
+    backgroundColor: "#1A535C",
+    
   }
 });

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Linking } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export const TaskDescription = ({ route }) => {
    const data = route.params;
    const imgsrc = {
-      "Environmental": require("./assets/images/environment.png"),
+      "Environment": require("./assets/images/environment.png"),
       "Community": require("./assets/images/community.png"),
       "Animal": require("./assets/images/user.png"),
       "Education": require("./assets/images/education.png"),
@@ -33,10 +33,6 @@ export const TaskDescription = ({ route }) => {
                <Icon name="map-marker" size={17} color="#FF6B6B" />
                <Text style={styles.logoText}>{`${data.data.location} `}</Text>
             </View>
-            <View style={styles.logoContainer}>
-               <Icon name="male" size={17} color="#FF6B6B" />
-               <Text style={styles.logoText}>10 Volunteers</Text>
-            </View>
          </View>
          <View style={styles.descriptionContainer}>
             <Text style={styles.subtitle}>Job Description</Text>
@@ -56,14 +52,27 @@ export const TaskDescription = ({ route }) => {
                <Icon name="envelope" size={15} color="#FF6B6B" />
                <Text style={styles.logoText}>abc@gmail.com</Text>
             </View>
-            <View style={styles.logoContainer}>
+            {/* <View style={styles.logoContainer}>
                <Icon name="search" size={15} color="#FF6B6B" />
                <Text style={styles.logoText}>abc.org</Text>
-            </View>
+            </View> */}
          </View>
-         <View style={styles.volunteerButton}>
-               <Text style={styles.volunteerText}>Volunteer</Text>
+
+         <View style={styles.dataContainer}>
+            <View style={styles.dataTile}>
+               <Icon name="clock-o" size={40} color="#FF6B6B" />
+               <Text style={styles.data}>{`${data.data.startDate}`}</Text>
             </View>
+            <View style={styles.dataTile}>
+               {/* <Icon name="male" size={17} color="#FF6B6B" /> */}
+               <Text style={styles.dataIcon}>{`${data.data.volunteersCount}`}</Text>
+               <Text style={styles.data}>Volunteers</Text>
+             </View>
+         </View>
+
+         <TouchableOpacity style={styles.volunteerButton} onPress={() => {Linking.openURL(data.data.formLink);}}>
+               <Text style={styles.volunteerText}>Volunteer</Text>
+            </TouchableOpacity>
          <StatusBar style="auto" />
       </View>
    )
@@ -97,7 +106,7 @@ const styles = StyleSheet.create({
       color: "#FF6B6B",
       alignContent: "center",
       alignItems: "center",
-      width: "33%",
+      width: "50%",
       justifyContent: "center",
 
    },
@@ -128,15 +137,33 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
       marginTop: 10,
-      position: "absolute",
-      bottom: 0,
    }, 
    volunteerText: {
       color: "#F7FFF7",
       fontSize: 24,
+   },
+   dataContainer: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      padding: 10,
+      marginTop: 10,
+   },
+   dataTile: {
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+
+   },
+   data: {
+      color: "#FF6B6B",
+      fontSize: 14,
+      fontWeight: "500",
+   },
+   dataIcon: {
+      color: "#FF6B6B",
+      fontSize: 30,
+      fontWeight: "700",
    }
-
-
 });
 
 
