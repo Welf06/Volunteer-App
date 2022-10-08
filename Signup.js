@@ -11,10 +11,11 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
    const navigation = useNavigation();
    // const { passwordVisibility, rightIcon, handlePasswordVisibility } =
    //    useTogglePasswordVisibility();
-   const passwordVisibility = true;
-   const rightIcon = 'eye';
+   let passwordVisibility = true;
+   let rightIcon = 'eye';
  
    const handlePasswordVisibility = () => {
+      console.log("entered handlePasswordVisibility");
      if (rightIcon === 'eye') {
         rightIcon = 'eye-off';
         passwordVisibility = !passwordVisibility;
@@ -43,9 +44,9 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                         autoCorrect={false}
                         textContentType="newPassword"
                      />
-                     <Pressable onPress={handlePasswordVisibility}>
+                     {/* <Pressable onPress={handlePasswordVisibility}>
                         <Icon name={rightIcon} size={22} color="#232323" />
-                     </Pressable>
+                     </Pressable> */}
                      </View>
                   </View>
                   <View style={styles.inputContainer}>
