@@ -52,21 +52,20 @@ export const TaskDescription = ({ route }) => {
                <Icon name="envelope" size={15} color="#FF6B6B" />
                <Text style={styles.logoText}>abc@gmail.com</Text>
             </View>
-            <View style={styles.logoContainer}>
+            {/* <View style={styles.logoContainer}>
                <Icon name="search" size={15} color="#FF6B6B" />
                <Text style={styles.logoText}>abc.org</Text>
-            </View>
+            </View> */}
          </View>
 
          <View style={styles.dataContainer}>
             <View style={styles.dataTile}>
-               <Icon name="clock-o" size={15} color="#FF6B6B" />
-               <Text style={styles.data}>Start Date</Text>
+               <Icon name="clock-o" size={40} color="#FF6B6B" />
                <Text style={styles.data}>{`${data.data.startDate}`}</Text>
             </View>
             <View style={styles.dataTile}>
                {/* <Icon name="male" size={17} color="#FF6B6B" /> */}
-               <Text style={styles.data}>{`${data.data.volunteersCount}`}</Text>
+               <Text style={styles.dataIcon}>{`${data.data.volunteersCount}`}</Text>
                <Text style={styles.data}>Volunteers</Text>
              </View>
          </View>
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
       color: "#FF6B6B",
       alignContent: "center",
       alignItems: "center",
-      width: "33%",
+      width: "50%",
       justifyContent: "center",
 
    },
@@ -142,9 +141,29 @@ const styles = StyleSheet.create({
    volunteerText: {
       color: "#F7FFF7",
       fontSize: 24,
+   },
+   dataContainer: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      padding: 10,
+      marginTop: 10,
+   },
+   dataTile: {
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+
+   },
+   data: {
+      color: "#FF6B6B",
+      fontSize: 14,
+      fontWeight: "500",
+   },
+   dataIcon: {
+      color: "#FF6B6B",
+      fontSize: 30,
+      fontWeight: "700",
    }
-
-
 });
 
 
