@@ -75,12 +75,12 @@ export default function App() {
               <Stack.Group screenOptions={{ presentation: 'modal' }}>
               <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
             </Stack.Group>
-//              <Stack.Screen name="ProfileCreation">
-//                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
-//              </Stack.Screen>
-//              <Stack.Screen name="Login">
-//                  {props => (<Login {...props} setIsLogged={setIsLogged} />)}
-//                </Stack.Screen>
+{/*              <Stack.Screen name="ProfileCreation">
+               {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
+             </Stack.Screen>
+              <Stack.Screen name="Login">
+                  {props => (<Login {...props} setIsLogged={setIsLogged} />)}
+                </Stack.Screen> */}
 
             </Stack.Group>
           ) : (
