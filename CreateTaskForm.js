@@ -3,7 +3,9 @@ import CheckBox from 'expo-checkbox';
 import { DropdownComponent } from './DropdownComponent';
 import { StatusBar } from 'expo-status-bar';
 import {TextInputMask} from 'react-native-masked-text';
-
+import { getDocs,collection,doc,setDoc } from "firebase/firestore";
+import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
+import { firebase,db,storage} from "./config.js";
 
 import { useState,useEffect } from 'react';
 
@@ -132,10 +134,49 @@ export const CreateTaskForm = () => {
         <TextInput style={styles.input} keyboardType="url" onChangeText={(text) => setTaskData({...taskData, formLink: text})} value={taskData.formLink}/>
         
         <TouchableOpacity style={styles.button} onPress={
-            () => {
+            async () => {
                 // Check if all fields are filled
                 if(taskData.name && taskData.type && taskData.volunteers && taskData.description && taskData.startDate && taskData.formLink && (taskData.remote || (taskData.location.country && taskData.location.state && taskData.location.city))){{
+                    if(taskData.remote){
+                        taskData.location.country = '';
+                        taskData.location.state = '';
+                        taskData.location.city = '';
+                    }
+
+                    const db_doc = {
+                        "Name": taskData.name,
+                        "Tag": taskData.type,
+                        "Country": taskData.location.country,
+                        "State": taskData.location.state,
+                        "City": taskData.location.city,
+                        "VolunteersReq": taskData.volunteers,
+                        "Job Description" : taskData.description,
+                        "FormLink" : taskData.formLink,
+                        "Start Date" : taskData.startDate,
+                       
+            
+                    
+                    };
+                    const db_collection = tasks_collection;
+                    await addNewDoc(db_collection,db_doc);
+                    /*
+
+                        "Email": email,
+                        "Start Time": start_time,
+                        "End Time": end_time,
+                        "Start Date": start_date,
+                        "End Date": end_date,
+                        "VolunteerHours": hours,
+                        "OrgID": OrgID,
+                        "VolunteersCount":0,
+                        "TaskID":taskID,
+                        "Country":country,
+                    */
                     console.log(taskData);
+                    console.log("Task Added to Database");
+                    console.log("Please add something to tell the user that the task has been added");
+                    //navigation.navigate('OrganisationFeed');
+                    // Send data to backend
                 }}else{
                     Alert.alert("Please fill all the fields");
                 }

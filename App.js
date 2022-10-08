@@ -70,7 +70,9 @@ export default function App() {
               <Stack.Screen name="OrganizationFeed" component={OrganizationTabs}/>
                 
               <Stack.Screen name="Feed" component={VolunteerFeed}/>
-                
+              <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+            </Stack.Group>
             </Stack.Group>
           ) : (
             !isLogged & isSigned ? (
@@ -78,6 +80,12 @@ export default function App() {
                 <Stack.Screen name="Login">
                   {props => (<Login {...props} setIsLogged={setIsLogged} />)}
                 </Stack.Screen>
+                <Stack.Screen name="OrganizationFeed" component={OrganizationTabs}/>
+                
+                <Stack.Screen name="Feed" component={VolunteerFeed}/>
+                <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+              </Stack.Group>
               </Stack.Group>
             ) : ( isOrganization ? (
           <Stack.Group >
