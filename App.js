@@ -12,6 +12,7 @@ import { Login } from './Login';
 import { Signup } from './Signup';
 import { SignInEmailOption } from './SignInEmailOption';
 import { VolunteerOption } from './VolunteerOption';
+import { ProfileCreation } from './ProfileCreation';
 
 import { TaskDescription } from './TaskDescription';
 import { FeedCard } from './FeedCard';
@@ -62,6 +63,9 @@ export default function App() {
               <Stack.Screen name="SignInEmailOption" component={SignInEmailOption} />
               <Stack.Screen name="Signup">
                 {props => (<Signup {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
+              </Stack.Screen>
+              <Stack.Screen name="ProfileCreation">
+                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
               </Stack.Screen>
               <Stack.Screen name="Login">
                   {props => (<Login {...props} setIsLogged={setIsLogged} />)}

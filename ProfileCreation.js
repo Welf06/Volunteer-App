@@ -1,32 +1,34 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
-export const Signup = ({ setIsSigned, setIsLogged }) => {
-
-   const navigation = useNavigation();
-   
+export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
    return (
       <View style={styles.container}>
          <ScrollView style={styles.scroll}>
             <View style={styles.container}>
-               <Text style={styles.title}>Welcome</Text>
+               <Text style={styles.title}>Profile</Text>
                <View style={styles.formContainer}>
                   <View style={styles.inputContainer}>
-                     <Text style={styles.inputTitle}>Email</Text>
+                     <Text style={styles.inputTitle}>Name</Text>
                      <TextInput style={styles.input} />
                   </View>
                   <View style={styles.inputContainer}>
-                     <Text style={styles.inputTitle}>Password</Text>
+                     <Text style={styles.inputTitle}>Contact Number</Text>
+                     <TextInput style={styles.input} />
+                  </View>
+                  <View style={styles.inputContainer}>
+                     <Text style={styles.inputTitle}>Address</Text>
                      <TextInput secureTextEntry={true} style={styles.input} />
                   </View>
                   <View style={styles.inputContainer}>
-                     <Text style={styles.inputTitle}>Confirm Password</Text>
-                     <TextInput secureTextEntry={true} style={styles.input} />
+                     <Text style={styles.inputTitle}>Tell Us About Yourself</Text>
+                     <TextInput style={styles.input} />
                   </View>
                </View>
                <TouchableOpacity style={styles.button}
                   onPress={() => {
-                     navigation.navigate("ProfileCreation")
+                     setIsSigned(true);
+                     setIsLogged(true);
                   }}
                >
                   <Text style={styles.text}>Sign Up</Text>
