@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { getAuth, signInWithPopup,GoogleAuthProvider,signInWithRedirect } from "firebase/auth"
+import { getAuth, signInWithPopup,GoogleAuthProvider,signInWithRedirect,signInWithEmailAndPassword,signUpWithEmailAndPassword,signInWithCredential } from "firebase/auth"
 import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
 import { firebase,db,storage} from "./config.js";
 
@@ -10,11 +10,13 @@ async function signInWithGoogleAsync() {
    try{
       
       
-          
       
+      
+    
       const auth_result   = await signInWithPopup(auth, provider)
-      
-                  
+      //const auth_result = await signInWithCredential(auth, provider.credential);
+      //const auth_result = signUpWithEmailAndPassword(auth,"randomemail.com","12345678")
+      //console.log("auth_result: " + JSON.stringify(auth_result));
       // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(auth_result);
       const token = credential.accessToken;

@@ -53,7 +53,7 @@ async function getTasksInfo(){
 
 export const OrganizationFeed = ({navigation}) => {
 
-
+/*
     const task_data = getTasksInfo();
     tasks = [];
     task_data.then((data) => {
@@ -96,7 +96,7 @@ export const OrganizationFeed = ({navigation}) => {
   
   });
 
-
+*/
 
 //SAME CODE IN ASYNC AWAIT FORMAT
 

@@ -85,7 +85,7 @@ async function getTasksInfo(){
 
 export const VolunteerFeed =  () => {
   
-
+/*
   const task_data = getTasksInfo();
   //tasks = [];
   task_data.then((data) => {
@@ -129,7 +129,7 @@ export const VolunteerFeed =  () => {
   });
 
 
-
+*/
   
 //SAME CODE IN ASYNC AWAIT FORMAT 
   // task_data.forEach(async (task) => {
@@ -156,13 +156,13 @@ export const VolunteerFeed =  () => {
   // });
 
   //tasks = task_data; //tasks will be set to the data from the database
-  console.log(tasks);
+  //console.log(tasks);
 
   return (
     <View style={styles.screen}>
       <ScrollView style={styles.container}>
         
-        {tasks.forEach((task) => {
+        {tasks.map((task, index) => {
           return (
             <FeedCard key={tasks.indexOf(task)} name={task.name} organisation ={task.organisation} type={task.type} location={task.location} picture={task.picture} description={task.description}/>
           )

@@ -17,11 +17,19 @@ import { ProfileCreation } from './ProfileCreation';
 import { TaskDescription } from './TaskDescription';
 import { FeedCard } from './FeedCard';
 import { CreateTaskForm } from './CreateTaskForm';
-
+import { getDocs,collection,doc,setDoc } from "firebase/firestore";
+import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
+import { firebase,db,storage} from "./config.js";
 
 const Stack = createNativeStackNavigator();
 
-
+let user_image = "./assets/images/user.png";
+auth.onAuthStateChanged(async function(user) { //If User logged in on startup
+    
+  if (user) {
+    user_image = user.photoURL;
+  }
+});
 
 export default function App() {
 
@@ -48,9 +56,13 @@ export default function App() {
             fontFamily: 'Poppins',
           },
           headerRight: () => (
+
             // Profile pic goes here
             <TouchableOpacity style={styles.button} onPress={() => navigationRef.navigate('Profile')}>
-              <Image source={require('./assets/images/user.png')} style={styles.profilePic} />
+
+
+              <Image style={styles.profilePic} source={{uri: user_image}} />
+              
             </TouchableOpacity>
           ),
           animation: 'slide_from_right',
