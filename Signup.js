@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Pressable, useState } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
 import { firebase,db,storage} from "./config.js";
@@ -79,6 +79,31 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
       password: 'demo'
    };
    
+// import { useNavigation } from '@react-navigation/native';
+
+// import { useTogglePasswordVisibility } from './useTogglePasswordVisibility';
+
+// import Icon from 'react-native-vector-icons/FontAwesome';
+
+// export const Signup = ({ setIsSigned, setIsLogged }) => {
+
+//   const navigation = useNavigation();
+   // const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+   //    useTogglePasswordVisibility();
+//   let passwordVisibility = true;
+//   let rightIcon = 'eye';
+ 
+//   const handlePasswordVisibility = () => {
+//      console.log("entered handlePasswordVisibility");
+//     if (rightIcon === 'eye') {
+//        rightIcon = 'eye-off';
+//        passwordVisibility = !passwordVisibility;
+//     } else if (rightIcon === 'eye-off') {
+//       rightIcon = 'eye';
+//       passwordVisibility = !passwordVisibility;
+//     }
+//   };
+
    return (
       
       <View style={styles.container}>
@@ -94,7 +119,17 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Password</Text>
-                     <TextInput secureTextEntry={true} style={styles.input} />
+                     <View>
+                     <TextInput style={styles.input}
+                        secureTextEntry={passwordVisibility}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        textContentType="newPassword"
+                     />
+                     {/* <Pressable onPress={handlePasswordVisibility}>
+                        <Icon name={rightIcon} size={22} color="#232323" />
+                     </Pressable> */}
+                     </View>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Confirm Password</Text>
@@ -103,10 +138,14 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                </View>
                <TouchableOpacity style={styles.button}
                   onPress={() => {
+
                      
                      
                      setIsSigned(true);
                      setIsLogged(true);
+
+//                     navigation.navigate("ProfileCreation")
+
                   }}
                >
                   <Text style={styles.text}>Sign Up</Text>
