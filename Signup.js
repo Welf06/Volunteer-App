@@ -4,6 +4,12 @@ import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_h
 import { firebase,db,storage} from "./config.js";
 import { setState } from "react";
 
+import { useNavigation } from '@react-navigation/native';
+
+import { useTogglePasswordVisibility } from './useTogglePasswordVisibility';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 async function addNewUserInfo(email,password,confirmpassword){
 
@@ -78,31 +84,22 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
       mail: 'demo',
       password: 'demo'
    };
-   
-// import { useNavigation } from '@react-navigation/native';
-
-// import { useTogglePasswordVisibility } from './useTogglePasswordVisibility';
-
-// import Icon from 'react-native-vector-icons/FontAwesome';
-
-// export const Signup = ({ setIsSigned, setIsLogged }) => {
-
-//   const navigation = useNavigation();
+  const navigation = useNavigation();
    // const { passwordVisibility, rightIcon, handlePasswordVisibility } =
    //    useTogglePasswordVisibility();
-//   let passwordVisibility = true;
-//   let rightIcon = 'eye';
+  let passwordVisibility = true;
+  let rightIcon = 'eye';
  
-//   const handlePasswordVisibility = () => {
-//      console.log("entered handlePasswordVisibility");
-//     if (rightIcon === 'eye') {
-//        rightIcon = 'eye-off';
-//        passwordVisibility = !passwordVisibility;
-//     } else if (rightIcon === 'eye-off') {
-//       rightIcon = 'eye';
-//       passwordVisibility = !passwordVisibility;
-//     }
-//   };
+  const handlePasswordVisibility = () => {
+     console.log("entered handlePasswordVisibility");
+    if (rightIcon === 'eye') {
+       rightIcon = 'eye-off';
+       passwordVisibility = !passwordVisibility;
+    } else if (rightIcon === 'eye-off') {
+      rightIcon = 'eye';
+      passwordVisibility = !passwordVisibility;
+    }
+  };
 
    return (
       

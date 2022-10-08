@@ -60,6 +60,7 @@ export const CreateTaskForm = () => {
         })
         }
     , [])
+    console.log(countries);
     useEffect(() => {
         if (taskData.location.country !== '') {
             fetch(`https://api.countrystatecity.in/v1/countries/${taskData.location.country.value}/states`, requestOptions)
