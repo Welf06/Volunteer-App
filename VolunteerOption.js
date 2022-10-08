@@ -13,14 +13,14 @@ export const VolunteerOption = ({ setIsOrganisation }) => {
          <TouchableOpacity style={styles.button}
                onPress={() => {
                   setIsOrganisation(false),
-                  navigation.navigate('SignInEmailOption')}}
+                  navigation.navigate('Signup')}}
             >
                <Text style={styles.text}>Volunteer</Text>
             </TouchableOpacity>
             <Text style={styles.or} >OR</Text>
             <TouchableOpacity style={styles.button}
                onPress={() => {setIsOrganisation(true);
-                  navigation.navigate('SignInEmailOption')}}
+                  navigation.navigate('Signup')}}
             >
                <Text style={styles.text}>Organization</Text>
             </TouchableOpacity>

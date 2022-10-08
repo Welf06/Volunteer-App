@@ -1,8 +1,20 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
+import { firebase,db,storage} from "./config.js";
+import { setState } from "react";
+
+
+
 
 export const Signup = ({ setIsSigned, setIsLogged }) => {
+   let state = {
+      mail: 'demo',
+      password: 'demo'
+   };
+   
    return (
+      
       <View style={styles.container}>
          <ScrollView style={styles.scroll}>
             <View style={styles.container}>
@@ -10,7 +22,10 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                <View style={styles.formContainer}>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Email</Text>
-                     <TextInput style={styles.input} />
+                     <TextInput style={styles.input} 
+                     onChangeText={(mail) => setState({mail})}
+                     value={state.mail}
+                     />
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Password</Text>
@@ -23,6 +38,8 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                </View>
                <TouchableOpacity style={styles.button}
                   onPress={() => {
+                     let mail=this.state.mail;
+                     console.log(mail);
                      setIsSigned(true);
                      setIsLogged(true);
                   }}
