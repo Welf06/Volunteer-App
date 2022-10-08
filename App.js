@@ -24,6 +24,7 @@ const Stack = createNativeStackNavigator();
 
 
 export default function App() {
+
   const [fontsLoaded] = useFonts({
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
@@ -57,19 +58,30 @@ export default function App() {
         }}>
           {!isLogged & !isSigned ? (
             <Stack.Group>
+             
+              <Stack.Screen name="SignInEmailOption" >
+                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation}  />)}
+              </Stack.Screen>
               <Stack.Screen name="VolunteerOptions">
                 {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation} />}
               </Stack.Screen>
-              <Stack.Screen name="SignInEmailOption" component={SignInEmailOption} />
               <Stack.Screen name="Signup">
-                {props => (<Signup {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
+                {props => (<Signup {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} />)}
               </Stack.Screen>
-              <Stack.Screen name="ProfileCreation">
-                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
-              </Stack.Screen>
-              <Stack.Screen name="Login">
-                  {props => (<Login {...props} setIsLogged={setIsLogged} />)}
-                </Stack.Screen>
+
+              <Stack.Screen name="OrganizationFeed" component={OrganizationTabs}/>
+                
+              <Stack.Screen name="Feed" component={VolunteerFeed}/>
+              <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+            </Stack.Group>
+//              <Stack.Screen name="ProfileCreation">
+//                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
+//              </Stack.Screen>
+//              <Stack.Screen name="Login">
+//                  {props => (<Login {...props} setIsLogged={setIsLogged} />)}
+//                </Stack.Screen>
+
             </Stack.Group>
           ) : (
             !isLogged & isSigned ? (
@@ -77,6 +89,12 @@ export default function App() {
                 <Stack.Screen name="Login">
                   {props => (<Login {...props} setIsLogged={setIsLogged} />)}
                 </Stack.Screen>
+                <Stack.Screen name="OrganizationFeed" component={OrganizationTabs}/>
+                
+                <Stack.Screen name="Feed" component={VolunteerFeed}/>
+                <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
+              </Stack.Group>
               </Stack.Group>
             ) : ( isOrganization ? (
           <Stack.Group >

@@ -1,31 +1,111 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Pressable, useState } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { useNavigation } from '@react-navigation/native';
+import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
+import { firebase,db,storage} from "./config.js";
+import { setState } from "react";
+
+
+async function addNewUserInfo(email,password,confirmpassword){
+
+   try{
+
+      if(password != confirmpassword){
+         alert("Passwords do not match");
+         return;
+      }
+
+      if(email==null || password==null){
+         alert("Please enter all fields");
+         return;
+      }
+
+      
+
+     
+     const user_query =  await query_db("Email", "==", email,users_collection);
+     const org_query =  await query_db("Email", "==", email,organisations_collection);
+     if (!(user_query.empty && org_query.empty)){
+
+         alert("Email already exists. Please use a different email");
+         return;
+     }
+
+
+     const db_doc = {
+         "Name": name,
+         "Age": age,
+         "UserID" : UserID,
+         "About Me": aboutme,
+         "Profession":profession,
+         "Email": email,
+         "Phone": phone,
+         "Location": {
+             "City": city,
+             "State": state,
+             "Pincode": pincode
+         },
+         "Level":1,
+         "Interests":array,
+         "Completed_Jobs":0,
+         "Ongoing_Jobs":0,
+         "Average_Rating":null,
+
+
+     
+     
+     };
+     const redirectpageHTML = loading_html;    
+     document.body.innerHTML = redirectpageHTML;
+     await addNewDoc(db_collection,db_doc);
+     
+
+     
+     console.log("New User Details Added");
+     const newredirectpageHTML = user_profile_html;
+     window.location = top_level_url + newredirectpageHTML;
+
+ }
+ catch(error){
+     console.log(error);
+     alert("Error Occured. Please try again");
+ 
+ }
+
+}
+
+export const Signup = ({ setIsSigned, setIsLogged }) => {
+   let state = {
+      mail: 'demo',
+      password: 'demo'
+   };
+   
+// import { useNavigation } from '@react-navigation/native';
 
 // import { useTogglePasswordVisibility } from './useTogglePasswordVisibility';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
-export const Signup = ({ setIsSigned, setIsLogged }) => {
+// export const Signup = ({ setIsSigned, setIsLogged }) => {
 
-   const navigation = useNavigation();
+//   const navigation = useNavigation();
    // const { passwordVisibility, rightIcon, handlePasswordVisibility } =
    //    useTogglePasswordVisibility();
-   let passwordVisibility = true;
-   let rightIcon = 'eye';
+//   let passwordVisibility = true;
+//   let rightIcon = 'eye';
  
-   const handlePasswordVisibility = () => {
-      console.log("entered handlePasswordVisibility");
-     if (rightIcon === 'eye') {
-        rightIcon = 'eye-off';
-        passwordVisibility = !passwordVisibility;
-     } else if (rightIcon === 'eye-off') {
-       rightIcon = 'eye';
-       passwordVisibility = !passwordVisibility;
-     }
-   };
+//   const handlePasswordVisibility = () => {
+//      console.log("entered handlePasswordVisibility");
+//     if (rightIcon === 'eye') {
+//        rightIcon = 'eye-off';
+//        passwordVisibility = !passwordVisibility;
+//     } else if (rightIcon === 'eye-off') {
+//       rightIcon = 'eye';
+//       passwordVisibility = !passwordVisibility;
+//     }
+//   };
 
    return (
+      
       <View style={styles.container}>
          <ScrollView style={styles.scroll}>
             <View style={styles.container}>
@@ -33,7 +113,9 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                <View style={styles.formContainer}>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Email</Text>
-                     <TextInput style={styles.input} />
+                     <TextInput style={styles.input} 
+                    
+                     />
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Password</Text>
@@ -56,7 +138,14 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                </View>
                <TouchableOpacity style={styles.button}
                   onPress={() => {
-                     navigation.navigate("ProfileCreation")
+
+                     
+                     
+                     setIsSigned(true);
+                     setIsLogged(true);
+
+//                     navigation.navigate("ProfileCreation")
+
                   }}
                >
                   <Text style={styles.text}>Sign Up</Text>
