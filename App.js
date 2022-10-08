@@ -37,8 +37,8 @@ export default function App() {
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
   const [isOrganization, setIsOrganisation] = useState(false);
-  const [isLogged, setIsLogged] = useState(true);
-  const [isSigned, setIsSigned] = useState(true);
+  const [isLogged, setIsLogged] = useState(false);
+  const [isSigned, setIsSigned] = useState(false);
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
@@ -155,7 +155,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#F7FFF7",
+    // backgroundColor: "#F7FFF7",
     width: 42,
     height: 42,
     borderRadius: 50,
@@ -164,5 +164,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 50,
+    backgroundColor: "#1A535C",
+    
   }
 });
