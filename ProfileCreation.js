@@ -18,7 +18,7 @@ export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Address</Text>
-                     <TextInput secureTextEntry={true} style={styles.input} />
+                     <TextInput style={styles.input} />
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Tell Us About Yourself</Text>
@@ -31,7 +31,7 @@ export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
                      setIsLogged(true);
                   }}
                >
-                  <Text style={styles.text}>Sign Up</Text>
+                  <Text style={styles.text}>Continue</Text>
                </TouchableOpacity>
             </View>
             <StatusBar style="auto" />

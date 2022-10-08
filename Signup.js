@@ -1,10 +1,29 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Pressable, useState } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from '@react-navigation/native';
+
+// import { useTogglePasswordVisibility } from './useTogglePasswordVisibility';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const Signup = ({ setIsSigned, setIsLogged }) => {
 
    const navigation = useNavigation();
-   
+   // const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+   //    useTogglePasswordVisibility();
+   const passwordVisibility = true;
+   const rightIcon = 'eye';
+ 
+   const handlePasswordVisibility = () => {
+     if (rightIcon === 'eye') {
+        rightIcon = 'eye-off';
+        passwordVisibility = !passwordVisibility;
+     } else if (rightIcon === 'eye-off') {
+       rightIcon = 'eye';
+       passwordVisibility = !passwordVisibility;
+     }
+   };
+
    return (
       <View style={styles.container}>
          <ScrollView style={styles.scroll}>
@@ -17,7 +36,17 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Password</Text>
-                     <TextInput secureTextEntry={true} style={styles.input} />
+                     <View>
+                     <TextInput style={styles.input}
+                        secureTextEntry={passwordVisibility}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        textContentType="newPassword"
+                     />
+                     <Pressable onPress={handlePasswordVisibility}>
+                        <Icon name={rightIcon} size={22} color="#232323" />
+                     </Pressable>
+                     </View>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Confirm Password</Text>
