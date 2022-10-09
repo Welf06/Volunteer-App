@@ -8,7 +8,7 @@ import { addNewDoc,query_db,organisations_collection,auth,tasks_collection } fro
 import { firebase,db,storage} from "./config.js";
 
 import { useState,useEffect } from 'react';
-
+import { faker } from '@faker-js/faker';
 
 const data = [
     {label: 'Environmental', value: 'Environmental'},
@@ -195,8 +195,29 @@ export const CreateTaskForm = () => {
                         taskData.location.state = '';
                         taskData.location.city = '';
                     }
+                    let faker_country = faker.address.country();
+                    let faker_state = faker.address.state(faker_country);
+                    let faker_city = faker.address.city(faker_state);
+                    let faker_name = faker.name.jobType();
+                    let faker_date = faker.date.future();
+
 
                     const db_doc = {
+                        //faker fake occupation
+
+                        // "Name": faker_name,
+                        // "Tag": faker.helpers.arrayElement(["Education", "Environment", "Community"]),
+                        // "Country": faker_country,
+                        // "State": faker_state,
+                        // "City": faker_city,
+                        // "VolunteersReq": faker.datatype.number(),
+                        // "Job Description" : faker.lorem.paragraph(),
+                        // "FormLink" : "https://forms.gle/7XaZHe9pm9MUYUdL6",
+                        // "Start Date" : faker_date.toDateString(),
+                        // "OrgID" : org_details.orgid,
+                        // "OrgName" : org_details.orgname,
+                        // "Volunteers Registered" : 0,
+                        // "Task ID": org_details.orgname+"_"+faker_name+"_"+faker_date
                         "Name": taskData.name,
                         "Tag": taskData.type,
                         "Country": taskData.location.country,
