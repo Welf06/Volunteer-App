@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { async } from '@firebase/util';
 
 import { useState, useEffect } from 'react';
-
+/*
 let tasks = [
   {
     name: "Planting Volunteer",
@@ -17,6 +17,9 @@ let tasks = [
     type: "Environmental",
     location: "Onsite - Delhi",
     picture: "./assets/images/environment.jpg",
+    date: "2021-05-01",
+    currVolunteers: 2,
+    taskID: "1",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
   },
   {
@@ -25,6 +28,9 @@ let tasks = [
     type: "Education",
     location: "Remote",
     picture: "./assets/images/education.png",
+    date: "2021-05-01",
+    currVolunteers: 2,
+    taskID: "2",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
   },
   {
@@ -33,6 +39,9 @@ let tasks = [
     type: "Community",
     location: "Onsite - Delhi",
     picture: "./assets/images/community.png",
+    date: "2021-05-01",
+    currVolunteers: 2,
+    taskID: "3",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
   },
   {
@@ -41,6 +50,9 @@ let tasks = [
     type: "Environmental",
     location: "Onsite - Delhi",
     picture: "./assets/images/environmental.png",
+    date: "2021-05-01",
+    currVolunteers: 2,
+    taskID: "4",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
   },
   {
@@ -49,6 +61,10 @@ let tasks = [
     type: "Education",
     location: "Remote",
     picture: "./assets/images/education.png",
+    date: "2021-05-01",
+    currVolunteers: 2,
+
+    taskID: "5",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
   },
   {
@@ -57,10 +73,14 @@ let tasks = [
     type: "Animal",
     location: "Onsite - Delhi",
     picture: "./assets/images/animal.png",
+    date: "2021-05-01",
+    currVolunteers: 2,
+    taskID: "6",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
   }
 ]
-
+*/
+let tasks =[];
 
 export const VolunteerFeed = () => {
   const [taskData, setTaskData] = useState([]);
@@ -158,7 +178,7 @@ export const VolunteerFeed = () => {
         {
           taskData.map((task, index) => {
             return (
-              <FeedCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City.value + ', ' + task.State.value} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task.VolunteersReq}/>
+              <FeedCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City.value + ', ' + task.State.value} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]} />
             )
             })
         }

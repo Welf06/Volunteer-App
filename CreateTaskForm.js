@@ -31,7 +31,39 @@ var requestOptions = {
 
 
 
+
+
 export const CreateTaskForm = () => {
+
+
+    const [org_details, setOrgDetails] = useState([]);
+    auth.onAuthStateChanged(async function(user) {
+        if (user) {
+            // currentUser should be available now
+            const org_query =  await query_db("Email", "==", user.email,organisations_collection);
+            if(org_query.empty){
+                Alert.alert("You are not an organisation. Please login with an org account");
+                //window.location = top_level_url + index_html;
+                
+            }
+            else{
+                org_query.forEach((doc) => {
+                    // "orgid" = doc.data().OrgID;
+                    // orgname = doc.data().Name;
+                    setOrgDetails({
+                        orgid: doc.data().OrgID,
+                        orgname: doc.data().Name
+                    })
+                }
+                )
+            }
+        }
+    
+    });
+
+
+
+
     const [taskData, setTaskData] = useState({
         name: '',
         organisation: '',
@@ -135,6 +167,27 @@ export const CreateTaskForm = () => {
         
         <TouchableOpacity style={styles.button} onPress={
             async () => {
+                // let orgid = "";
+                // let orgname = "";
+                // auth.onAuthStateChanged(async function(user) {
+                //     if (user) {
+                //         // currentUser should be available now
+                //         const org_query =  await query_db("Email", "==", user.email,organisations_collection);
+                //         if(org_query.empty){
+                //             Alert.alert("You are not an organisation. Please login with an org account");
+                //             //window.location = top_level_url + index_html;
+                            
+                //         }
+                //         else{
+                //             org.query.forEach((doc) => {
+                //                 orgid = doc.data().OrgID;
+                //                 orgname = doc.data().Name;
+                //             }
+                //             )
+                //         }
+                //     }
+
+                // });
                 // Check if all fields are filled
                 if(taskData.name && taskData.type && taskData.volunteers && taskData.description && taskData.startDate && taskData.formLink && (taskData.remote || (taskData.location.country && taskData.location.state && taskData.location.city))){{
                     if(taskData.remote){
@@ -153,8 +206,10 @@ export const CreateTaskForm = () => {
                         "Job Description" : taskData.description,
                         "FormLink" : taskData.formLink,
                         "Start Date" : taskData.startDate,
-                       
-            
+                        "OrgID" : org_details.orgid,
+                        "OrgName" : org_details.orgname,
+                        "Volunteers Registered" : 0,
+                        "Task ID": org_details.orgname+"_"+taskData.name+"_"+taskData.startDate
                     
                     };
                     const db_collection = tasks_collection;
