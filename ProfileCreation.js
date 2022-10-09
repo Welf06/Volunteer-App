@@ -71,7 +71,7 @@ export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
                   onPress={async () => {
                     let email = "";
                     let id = "";
-                    auth.onAuthStateChanged(async function (user) { //If User logged in on startup
+                    await auth.onAuthStateChanged(async function (user) { //If User logged in on startup
                         if (user) {
                           email = user.email;
                           id = user.uid;

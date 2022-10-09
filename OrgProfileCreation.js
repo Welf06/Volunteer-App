@@ -49,16 +49,17 @@ export const OrgProfileCreation = ({ setIsSigned, setIsLogged }) => {
                   onPress={async () => {
                     let email = "";
                     let id = "";
-                    auth.onAuthStateChanged(async function (user) { //If User logged in on startup
+                    await auth.onAuthStateChanged(async function (user) { //If User logged in on startup
                         if (user) {
                           email = user.email;
                           id = user.uid;
+                          console.log("email"+email);
                         }
                         else{
                             console.log("No user logged in");
                         }
                       });
-
+                      console.log("email"+email);
                     if(orgData.aboutUs && orgData.address && orgData.name && orgData.phone && orgData.website ){{
                        
     
