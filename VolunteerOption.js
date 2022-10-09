@@ -1,10 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View,Alert } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
 
 export const VolunteerOption = ({ setIsOrganisation }) => {
-
+   
    const navigation = useNavigation();
 
    return (
@@ -13,14 +13,14 @@ export const VolunteerOption = ({ setIsOrganisation }) => {
          <TouchableOpacity style={styles.button}
                onPress={() => {
                   setIsOrganisation(false),
-                  navigation.navigate('Signup')}}
+                  navigation.navigate('ProfileCreation')}}
             >
                <Text style={styles.text}>Volunteer</Text>
             </TouchableOpacity>
             <Text style={styles.or} >OR</Text>
             <TouchableOpacity style={styles.button}
                onPress={() => {setIsOrganisation(true);
-                  navigation.navigate('ProfileCreation')}}
+                  navigation.navigate('OrgProfileCreation')}}
             >
                <Text style={styles.text}>Organization</Text>
             </TouchableOpacity>

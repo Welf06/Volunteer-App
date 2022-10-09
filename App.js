@@ -13,7 +13,7 @@ import { Signup } from './Signup';
 import { SignInEmailOption } from './SignInEmailOption';
 import { VolunteerOption } from './VolunteerOption';
 import { ProfileCreation } from './ProfileCreation';
-
+import { OrgProfileCreation } from './OrgProfileCreation';
 import { TaskDescription } from './TaskDescription';
 //import { FeedCard } from './FeedCard';
 import { CreateTaskForm } from './CreateTaskForm';
@@ -74,16 +74,19 @@ export default function App() {
             <Stack.Group>
 
               <Stack.Screen name="SignInEmailOption" >
-                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation}  setIsLogged={setIsLogged}/>)}
+                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation}  setIsLogged={setIsLogged} setIsSigned={setIsSigned}/>)}
               </Stack.Screen>
               <Stack.Screen name="VolunteerOptions">
-                {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation} />}
+                {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation}/>}
               </Stack.Screen>
               <Stack.Screen name="Signup">
                 {props => (<Signup {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} />)}
               </Stack.Screen>
               <Stack.Screen name="ProfileCreation">
-                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
+                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
+              </Stack.Screen>
+              <Stack.Screen name="OrgProfileCreation">
+                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
               </Stack.Screen>
               <Stack.Screen name="Login">
                 {props => (<Login {...props} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} />)}
@@ -103,6 +106,15 @@ export default function App() {
                 <Stack.Screen name="Login">
                   {props => (<Login {...props} setIsLogged={setIsLogged} />)}
                 </Stack.Screen>
+                <Stack.Screen name="VolunteerOptions">
+                {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation}/>}
+              </Stack.Screen>
+              <Stack.Screen name="ProfileCreation">
+                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
+              </Stack.Screen>
+              <Stack.Screen name="OrgProfileCreation">
+                {props => (<OrgProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
+              </Stack.Screen>
                 <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
 
                 <Stack.Screen name="Feed" component={VolunteerFeed} />
@@ -112,8 +124,11 @@ export default function App() {
               </Stack.Group>
             ) : (isOrganization ? (
               <Stack.Group >
-
+                
                 <Stack.Group>
+                <Stack.Screen name="OrgProfileCreation">
+                  {props => (<OrgProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
+                </Stack.Screen>
                   <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
                 </Stack.Group>
 
@@ -123,7 +138,12 @@ export default function App() {
 
               </Stack.Group>
             ) : (
+              <Stack.Group>
+                 <Stack.Screen name="ProfileCreation">
+                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
+              </Stack.Screen>
               <Stack.Screen name="Feed" component={VolunteerFeed} />
+              </Stack.Group>
             )))}
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="TaskDescription" component={TaskDescription} />

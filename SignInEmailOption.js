@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Image 
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { signInWithPopup,GoogleAuthProvider } from "firebase/auth"
-import { users_collection,organisations_collection,auth,provider,query_db } from "./methods.js";
+import { users_collection,organisations_collection,auth,provider,query_db, isNewUser } from "./methods.js";
 
 
 
@@ -48,9 +48,9 @@ async function signInWithGoogleAsync() {
   }
 }
 
-export const SignInEmailOption = ({ setIsOrganisation,setIsLogged }) => {
+export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
 
-  
+  //[isNewUser, setNewUser] = useState(true);
    const navigation = useNavigation();
    return (
       
@@ -66,12 +66,14 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsLogged }) => {
                   onPress={async ()=>{
 
                      const arr = await signInWithGoogleAsync();
-                     setIsLogged(true);
+                     setIsSigned(true);
+
                      if(arr[0]!="new"){
                         setIsOrganisation(arr[0]);
                         navigation.navigate(arr[1]);
                      }
                      else{
+                        console.log("Yessss");
                         navigation.navigate("VolunteerOptions");
                      }
                      
