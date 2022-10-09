@@ -1,34 +1,21 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { getAuth, signInWithPopup,GoogleAuthProvider,signInWithRedirect,signInWithEmailAndPassword,signUpWithEmailAndPassword,signInWithCredential } from "firebase/auth"
-import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
-import { firebase,db,storage} from "./config.js";
+import { signInWithPopup,GoogleAuthProvider } from "firebase/auth"
+import { users_collection,organisations_collection,auth,provider,query_db, isNewUser } from "./methods.js";
+
 
 
 async function signInWithGoogleAsync() {
    try{
-      
-      
-      
-      
-    
       const auth_result   = await signInWithPopup(auth, provider)
-      //const auth_result = await signInWithCredential(auth, provider.credential);
-      //const auth_result = signUpWithEmailAndPassword(auth,"randomemail.com","12345678")
-      //console.log("auth_result: " + JSON.stringify(auth_result));
-      // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(auth_result);
       const token = credential.accessToken;
-      // The signed-in user info.
       const user = auth_result.user;
       const displayName = user.displayName;
       const email = user.email;
       const photoURL = user.photoURL;
       const emailVerified = user.emailVerified;
-
-     
-
       console.log(email);
       // Create a query against the collection.
       
@@ -43,48 +30,28 @@ async function signInWithGoogleAsync() {
       else{
          isNewUser = false;
       }
-      
-      
       if(isNewUser){
          console.log("new user");
          return ["new","Signup"]//navigation.navigate("Signup");
       }
       else{
          if(!org_query.empty){
-            //navigation.navigate("Feed");
-            return [true,"OrganizationFeed"]//navigation.navigate("Feed");
+            return [true,"OrganizationFeed"]
          }
          else{
-            
-            //console.log(setIsOrganisation);
-            //setIsOrganisation(true);
-            //navigation.navigate("OrganizationFeed");
-            return [false,"Feed"]//navigation.navigate("Feed");
+            return [false,"Feed"]
          }
-      }
-      //const details = await getAdditionalUserInfo(auth_result)
-
-
-      
-          
-  }          
-          
+      }      
+  }             
   catch(error){
       console.error(`Could not complete Authentication: ${error}`);
-      // const returnPageHTMLOnError = index_html;
-      // const returnHTML = await getPage(returnPageHTMLOnError);
-      //     //document.body.innerHTML = data; // Do we need this?
-      // window.location =  top_level_url + returnPageHTMLOnError; //MIGHT NOT WORK IN APP
-      // let logged_in = false;
-
   }
 }
 
-export const SignInEmailOption = ({ setIsOrganisation }) => {
+export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
 
-   console.log(setIsOrganisation);
+  //[isNewUser, setNewUser] = useState(true);
    const navigation = useNavigation();
-
    return (
       
       <View style={styles.container}>
@@ -99,12 +66,14 @@ export const SignInEmailOption = ({ setIsOrganisation }) => {
                   onPress={async ()=>{
 
                      const arr = await signInWithGoogleAsync();
+                     setIsSigned(true);
+
                      if(arr[0]!="new"){
                         setIsOrganisation(arr[0]);
                         navigation.navigate(arr[1]);
                      }
                      else{
-                        //setIsOrganisation(true);
+                        console.log("Yessss");
                         navigation.navigate("VolunteerOptions");
                      }
                      

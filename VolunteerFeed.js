@@ -1,13 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+
 import { ScrollView, TouchableOpacity } from 'react-native';
 import { FeedCard } from './FeedCard';
 import { getDocs, collection, doc, setDoc } from "firebase/firestore";
-import { addNewDoc, getPage, sign_out, query_db, new_task_details_html, org_profile_html, user_profile_html, users_collection, organisations_collection, auth, provider, top_level_url, index_html, loading_html, temp_html, new_user_details_html, new_organisation_details_html, environment, isNewUser, userType_html, createFile, uploadFile, downloadFile, tasks_collection, user_feed_html, task_images_storage_path, view_task_html, get_param_value, loadTasks, goToTask, volunteers_collection } from "./methods.js";
-import { firebase, db, storage } from "./config.js";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { async } from '@firebase/util';
 
+import { db} from "./config.js";
 import { useState, useEffect } from 'react';
 /*
 let tasks = [
@@ -162,7 +159,7 @@ export const VolunteerFeed = () => {
       console.log(error);
     }
   }, []);
-  // console.log(taskData, typeof taskData, taskData.length, taskData[0]);
+  
   if (taskData.length == 0) {
     return(
       <View style={styles.loadingContainer}>

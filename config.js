@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"; //"https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"
- import { getAnalytics } from "firebase/analytics";//https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js";
- import { getAuth, signInWithPopup,GoogleAuthProvider } from "firebase/auth"//'https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js'
+ //import { getAnalytics } from "firebase/analytics";//https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js";
+
 import { getFirestore } from "firebase/firestore";//'https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js'
 import { getStorage } from "firebase/storage";//"https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js"; 
 
