@@ -3,69 +3,47 @@ import { StatusBar } from 'expo-status-bar';
 import { useState,useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { addNewDoc,users_collection,organisations_collection,auth } from "./methods.js";
-export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
-   const navigation = useNavigation();
-    const [userData, setUserData] = useState({
-      name: '',
-      phone: '',
-      age:'',
-      interests:[],
-      city:'',
-      state:'',
-      pincode:'',
-      country:'',
-      profession:'',
-     
-      aboutMe: '',
+export const OrgProfileCreation = ({ setIsSigned, setIsLogged }) => {
+    const navigation = useNavigation();
+    const [orgData, setOrgData] = useState({
+        name: '',
+        phone: '',
+        address: '',
+        website: '',
+        aboutUs: '',
         
     });
 
    return (
-      
+    
       <View style={styles.container}>
          <ScrollView style={styles.scroll}>
             <View style={styles.container}>
                <Text style={styles.title}>Profile</Text>
                <View style={styles.formContainer}>
                   <View style={styles.inputContainer}>
-                     <Text style={styles.inputTitle}>User Name</Text>
+                     <Text style={styles.inputTitle}>Organisation Name</Text>
                      <TextInput style={styles.input} />
-                     <TextInput style={styles.input} onChangeText={(text) => setUserData({...userData, name: text})} value={userData.name}/>
+                     <TextInput style={styles.input} onChangeText={(text) => setOrgData({...orgData, name: text})} value={orgData.name}/>
                   </View>
-                  <View>
-                  <Text style={styles.formLabel} >Age</Text>
-        <TextInput style={styles.input} keyboardType="numeric" onChangeText={(text) => setUserData({...userData, age: text})} value={userData.age}/>
-                  </View>
+                  
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Contact Number</Text>
                      <TextInput style={styles.input} />
-                     <TextInput style={styles.input} keyboardType="phone-pad" onChangeText={(text) => setUserData({...userData, phone: text})} value={userData.phone}/>
+                     <TextInput style={styles.input} keyboardType="phone-pad" onChangeText={(text) => setOrgData({...orgData, phone: text})} value={orgData.phone}/>
                   </View>
                   <View style={styles.inputContainer}>
-                     <Text style={styles.inputTitle}>City</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, city: text})} value={userData.city}/>
-                  </View>
-                  <View style={styles.inputContainer}>
-                     <Text style={styles.inputTitle}>State</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, state: text})} value={userData.state}/>
-                  </View>
-                  <View style={styles.inputContainer}>
-                     <Text style={styles.inputTitle}>Pincode</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, pincode: text})} value={userData.pincode}/>
-                  </View>
-                  <View style={styles.inputContainer}>
-                     <Text style={styles.inputTitle}>Country</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, country: text})} value={userData.country}/>
-                  </View>
-                  <View style={styles.inputContainer}>
-                     <Text style={styles.inputTitle}>Profession</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, profession: text})} value={userData.profession}/>
+                     <Text style={styles.inputTitle}>Address</Text>
+                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setOrgData({...orgData, address: text})} value={orgData.address}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Tell Us About Yourself</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, aboutMe: text})} value={userData.aboutMe}/>
+                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setOrgData({...orgData, aboutUs: text})} value={orgData.aboutUs}/>
                   </View>
-                  
+                  <View style={styles.inputContainer}>
+                     <Text style={styles.inputTitle}>Website</Text>
+                     <TextInput style={styles.input} onChangeText={(text) => setOrgData({...orgData, website: text})} value={orgData.website}/>
+                  </View>
                </View>
                <TouchableOpacity style={styles.button}
                   onPress={async () => {
@@ -75,40 +53,31 @@ export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
                         if (user) {
                           email = user.email;
                           id = user.uid;
+                          console.log("email"+email);
                         }
                         else{
                             console.log("No user logged in");
                         }
                       });
-
-                    //if(userData.name && userData.age && userData.phone && userData.city && userData.state && userData.pincode && userData.country && userData.profession && userData.address && userData.aboutMe){{
-
+                      console.log("email"+email);
+                    if(orgData.aboutUs && orgData.address && orgData.name && orgData.phone && orgData.website ){{
                        
     
                         const db_doc = {
-                            "Name": userData.name,
-                            "Phone": userData.phone,
-                            "Location": {
-                                 "City": userData.city,
-                                 "State": userData.state,
-                                 "Pincode": userData.pincode,
-                                 "Country": userData.country
-                              },
-                            
+                            "Name": orgData.name,
+                            "Phone": orgData.phone,
+                            "Address": orgData.address,
                             "Email": email,
-                            
-                            "About Me": userData.aboutMe,
-                            "Completed_Jobs": [],
-                            "Ongoing_Jobs": [],
-                            "UserID": id,
-                            "Age": userData.age,
-                            "Average_Rating":null,
-                            "Completed_Jobs":0,
-                            "Level":0,
-                           "Profession":userData.profession,
-                           "Interests":["Education","Healthcare","Environment","Social Welfare","Animal Welfare"]                        
+                            "Website": orgData.website,
+                            "About Us": orgData.aboutUs,
+                            "Completed Projects": [],
+                            "Ongoing Projects": [],
+                            "OrgID": id,
+
+
+                        
                         };
-                        const db_collection = users_collection;
+                        const db_collection = organisations_collection;
                         await addNewDoc(db_collection,db_doc);
                         /*
     
@@ -123,13 +92,15 @@ export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
                             "TaskID":taskID,
                             "Country":country,
                         */
-                        console.log(userData);
-                        console.log("User Added to Database");
+                        console.log(orgData);
+                        console.log("Org Added to Database");
                         setIsSigned(true);
                         setIsLogged(true);
-                        navigation.navigate('Feed');
+                        navigation.navigate('OrganizationFeed');
                         // Send data to backend
-                    
+                    }}else{
+                        Alert.alert("Please fill all the fields");
+                    }
     
                 }}>
                     
