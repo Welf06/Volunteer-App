@@ -47,7 +47,7 @@ export const FeedCard = (props) => {
         </View>
         <View style={styles.dateContainer}>
         <Text style={styles.date}>
-                06 September, 2019 - 31 March, 2023
+                {props.date}
                 </Text>
         </View>
         </View>   
