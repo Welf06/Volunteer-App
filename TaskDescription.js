@@ -11,10 +11,11 @@ import { db} from "./config.js";
 
 export const TaskDescription = ({ route }) => {
 
-   let isUser = false;
+  
    const [org_data, setOrgData] = useState([]);
    const [isVolunteered, setIsVolunteered] = useState(false);
    const [user, setUser] = useState(null);
+   const [isUser, setIsUser] = useState(false);
    
    const data = route.params;
    //const [task_data, setTaskData] = useState(data.data);
@@ -37,12 +38,14 @@ export const TaskDescription = ({ route }) => {
          // currentUser should be available now
          const user_query =  await query_db("Email", "==", user.email,users_collection);
          if(user_query.empty){
-            isUser = false;
+           // isUser = false;
+           setIsUser(false);
             
 
          }
          else{
-            isUser = true;
+            //isUser = true;
+            setIsUser(true);
          }
             const user_info = {
                "Name": user.displayName,
