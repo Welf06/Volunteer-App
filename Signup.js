@@ -1,85 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Pressable, useState,Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
-import { firebase,db,storage} from "./config.js";
-import { setState } from "react";
-import { getDocs,collection,doc,setDoc } from "firebase/firestore";
-//import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
-
+import { addNewDoc,users_collection,organisations_collection,auth } from "./methods.js";
 import { useNavigation } from '@react-navigation/native';
 
-import { useTogglePasswordVisibility } from './useTogglePasswordVisibility';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-// async function addNewUserInfo(email,password,confirmpassword){
-
-//    try{
-
-//       if(password != confirmpassword){
-//          alert("Passwords do not match");
-//          return;
-//       }
-
-//       if(email==null || password==null){
-//          alert("Please enter all fields");
-//          return;
-//       }
-
-      
-
-     
-//      const user_query =  await query_db("Email", "==", email,users_collection);
-//      const org_query =  await query_db("Email", "==", email,organisations_collection);
-//      if (!(user_query.empty && org_query.empty)){
-
-//          alert("Email already exists. Please use a different email");
-//          return;
-//      }
 
 
-//      const db_doc = {
-//          "Name": name,
-//          "Age": age,
-//          "UserID" : UserID,
-//          "About Me": aboutme,
-//          "Profession":profession,
-//          "Email": email,
-//          "Phone": phone,
-//          "Location": {
-//              "City": city,
-//              "State": state,
-//              "Pincode": pincode
-//          },
-//          "Level":1,
-//          "Interests":array,
-//          "Completed_Jobs":0,
-//          "Ongoing_Jobs":0,
-//          "Average_Rating":null,
-
-
-     
-     
-//      };
-//      const redirectpageHTML = loading_html;    
-//      document.body.innerHTML = redirectpageHTML;
-//      await addNewDoc(db_collection,db_doc);
-     
-
-     
-//      console.log("New User Details Added");
-//      const newredirectpageHTML = user_profile_html;
-//      window.location = top_level_url + newredirectpageHTML;
-
-//  }
-//  catch(error){
-//      console.log(error);
-//      alert("Error Occured. Please try again");
- 
-//  }
-
-// }
 
 export const Signup = ({ setIsSigned, setIsLogged }) => {
    let state = {
@@ -87,8 +14,6 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
       password: 'demo'
    };
   const navigation = useNavigation();
-   // const { passwordVisibility, rightIcon, handlePasswordVisibility } =
-   //    useTogglePasswordVisibility();
   let passwordVisibility = true;
   let rightIcon = 'eye';
  
@@ -139,16 +64,6 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                   onPress={async() => {
                      try{
 
-                        // if(password != confirmpassword){
-                        //    Alert.alert("Passwords do not match");
-                        //    return;
-                        // }
-                  
-                        // if(email==null || password==null || confirmpassword==null){
-                        //    Alert.alert("Please enter all fields");
-                        //    return;
-                        // }
-                        
                         let email = "";
                         let image = "";
                         let name = "";
@@ -161,9 +76,6 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                         let pincode = 400001;
                         let array = ["Education","Environment","Healthcare","Animal Welfare"];
                         let age = 20;
-
-
-                        
                         auth.onAuthStateChanged(async function(user) { //If User logged in on startup
     
                            if (user) {
@@ -182,8 +94,6 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                               alert("Email already exists. Please use a different email");
                               return;
                         }
-                  
-                  
                         const db_doc = {
                               "Name": name,
                               "Age": age,
@@ -202,32 +112,17 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                               "Completed_Jobs":0,
                               "Ongoing_Jobs":0,
                               "Average_Rating":null,
-                     
-                     
-                        
-                        
                         };
                         const db_collection = users_collection;
                         await addNewDoc(db_collection,db_doc);
-                        
-                     
-                        
-                        console.log("New User Details Added");
-                        
-                     
                         }
                         catch(error){
                            console.log(error);
-                           alert("Error Occured. Please try again");
-                        
                         }
                      
                      
                      setIsSigned(true);
                      setIsLogged(true);
-
-//                     navigation.navigate("ProfileCreation")
-
                   }}
                >
                   <Text style={styles.text}>Sign Up</Text>

@@ -3,9 +3,9 @@ import { StatusBar } from 'expo-status-bar';
 import { useState,useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native-web';
-import { getDocs,collection,doc,setDoc,updateDoc } from "firebase/firestore";
-import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
-import { firebase,db,storage} from "./config.js";
+import { doc,updateDoc } from "firebase/firestore";
+import { addNewDoc,query_db,users_collection,organisations_collection,auth,tasks_collection,volunteers_collection } from "./methods.js";
+import { db} from "./config.js";
 
 
 
@@ -33,66 +33,59 @@ export const TaskDescription = ({ route }) => {
 
    useEffect(() => {auth.onAuthStateChanged(async function(user) {
       if (user) {
-          // currentUser should be available now
-          const user_query =  await query_db("Email", "==", user.email,users_collection);
-          if(user_query.empty){
-              //alert("You are not a user. Please login with a user account");
-              //window.location = top_level_url + index_html;
-              isUser = false;
-          }
 
+         // currentUser should be available now
+         const user_query =  await query_db("Email", "==", user.email,users_collection);
+         if(user_query.empty){
+            isUser = false;
+            
 
-          else{
-              const user_info = {
-                  "Name": user.displayName,
-                  "Email": user.email,
-                  "Photo": user.photoURL,
-              }
-               setUser(user_info);
-              isUser = true;
-              console.log(data.data.organisation);
-              let org_data = {};
-              const org_info = await query_db("Name", "==", data.data.organisation,organisations_collection);
-               org_info.forEach((doc) => {
-                  console.log(doc.data());
-                  org_data = {
-                     "Name": doc.data().Name,
-                     "Address": doc.data().Address,
-                     "Phone": doc.data().Phone,
-                     "Email": doc.data().Email,
-                     "Website": doc.data().Website,
-                     "Description": doc.data()["About Us"],
-                     "OrgID": doc.data().OrgID,
+         }
+         else{
+            isUser = true;
+         }
+            const user_info = {
+               "Name": user.displayName,
+               "Email": user.email,
+               "Photo": user.photoURL,
+            }
+            setUser(user_info);
+           // isUser = true;
+            console.log(data.data.organisation);
+            let org_dat = {};
+            const org_info = await query_db("Name", "==", data.data.organisation,organisations_collection);
+            org_info.forEach((doc) => {
+               console.log(doc.data());
+               org_dat = {
+                  "Name": doc.data().Name,
+                  "Address": doc.data().Address,
+                  "Phone": doc.data().Phone,
+                  "Email": doc.data().Email,
+                  "Website": doc.data().Website,
+                  "Description": doc.data()["About Us"],
+                  "OrgID": doc.data().OrgID,
 
-                  }
-                  setOrgData(org_data);
-               
-                  // org_address = doc.data().Address;
-                  // org_website = doc.data().Website;
-                  // org_phone = doc.data().Phone;
-                  // org_description = doc.data()["About Us"];
-                  // org_email = doc.data().Email;
+               }
+               setOrgData(org_dat);
+            });
 
-               });
-
-              const volunteers_query = await query_db("Email", "==", user.email,volunteers_collection);
-              for(const doc of volunteers_query.docs){
-                  if(doc.data().TaskID == data.data.taskID){ //check if user has already submitted for volunteering
-                      setIsVolunteered(true);
-                  }
-              }
-
-          }
+            const volunteers_query = await query_db("Email", "==", user.email,volunteers_collection);
+            for(const doc of volunteers_query.docs){
+               if(doc.data().TaskID == data.data.taskID){ //check if user has already submitted for volunteering
+                     setIsVolunteered(true);
+               }
+            }
+         
 
       }
       else{
-          console.log("could not load user info from google");
-          // No user logged in.
+            console.log("could not load user info from google");
+            // No user logged in.
       }
-  });}, []);
+   });}, []);
 
    console.log(data);
-   if (org_data.length == 0) {
+   if(org_data.length == 0) {
       return(
         <View style={styles.loadingContainer}>
           <Text style={styles.title}>Loading...</Text>
@@ -160,14 +153,13 @@ export const TaskDescription = ({ route }) => {
             </View>
 
             <TouchableOpacity style={styles.volunteerButton} onPress={async () => {
-               
+                if(isUser){
                   let task_data = {};
                   console.log("A");
                   const task_query = await query_db("Task ID", "==", data.data.taskID,tasks_collection);
                   if(task_query.empty){
                      console.log(data.data.taskID);
                      Alert.alert("No task found with that id");
-      
                   }
                   else{
                      task_query.forEach((doc) => {
@@ -181,39 +173,12 @@ export const TaskDescription = ({ route }) => {
                         }
                      });
                   }
-                  console.log("check0");
-                  // let task_data = {};
-                  // task_query.forEach((doc) => {
-                  //    // doc.data() is never undefined for query doc snapshots
-      
-                  //    task_data[doc.id] = doc.data();
-                  //    // for(const key in doc.data()){
-      
-                  //    //     task_data[key] = doc.data()[key]; 
-      
-                  //    //     //console.log(`${key}: ${doc.data()[key]}`);
-                  //    // }
-                  // //console.log(doc.data());
-                  // });
-                  console.log("check1");
                   const db_collection = volunteers_collection;
-                  //const email = user_data["Email"];
                   const user_query =  await query_db("Email", "==", user.Email,users_collection);
                   if(user_query.empty){
-                     Alert.alert("You are not a user. Please login with a user account");
+                     //Alert.alert("You are not a user. Please login with a user account");
       
                   }
-                  // let user_data = {};
-                  // user_query.forEach((doc) => {
-                  //    // doc.data() is never undefined for query doc snapshots
-                  //    for(const key in doc.data()){
-                  //       user_data[key] = doc.data()[key];
-                  //    }
-                  // });
-      
-                  //const task_name = task_data["Name"];
-                  console.log("check1");
-                  //key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City.value + ', ' + task.State.value} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]}
                   const task_name = task_data["Name"];
                   const task_id = task_data["taskID"]; 
                   const org_id = org_data["OrgID"];
@@ -222,10 +187,8 @@ export const TaskDescription = ({ route }) => {
 
                   console.log("check2");
                   if(volunteersCount >= volunteersReq){
-                     Alert.alert("Sorry, this task is full");
-
+                     //Alert.alert("Sorry, this task is full");
                   }
-                
                   else{
                      console.log(user);
                      const db_doc = {
@@ -242,33 +205,22 @@ export const TaskDescription = ({ route }) => {
                         await updateDoc(doc_ref,{
                            "Volunteers Registered": volunteersCount + 1
                         });
-                        // db.collection(tasks_collection).doc(task_data.id).ref.update({
-                        //    "Volunteers Registered": task_volunteers
-                        // });
                         await addNewDoc(db_collection,db_doc);
                         Linking.openURL(data.data.formLink);
                         console.log("New Volunteer Details Added");
-                        // add volunteer to volunteer count in task
                         const task_volunteers = volunteersCount + 1;
-                        
                         Alert.alert("You have been added to the volunteer list");
                         setIsVolunteered(true);
-
                      }
-                     
                      else{
                         Alert.alert("You have already volunteered for this task");
                      }
-                     console.log("check3");
-         
+                  }    
                   }
-               
-                  // catch(err){
-                  //    console.log(err);
-                  // }
-               
-                  
-                  }}>
+                  else{
+                     Alert.alert("Please login with a user account");
+                  }
+            }}>
                   <Text style={styles.volunteerText}>Volunteer</Text>
                </TouchableOpacity>
             <StatusBar style="auto" />

@@ -3,8 +3,8 @@ import CheckBox from 'expo-checkbox';
 import { DropdownComponent } from './DropdownComponent';
 import { StatusBar } from 'expo-status-bar';
 import {TextInputMask} from 'react-native-masked-text';
-import { getDocs,collection,doc,setDoc } from "firebase/firestore";
-import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
+
+import { addNewDoc,query_db,organisations_collection,auth,tasks_collection } from "./methods.js";
 import { firebase,db,storage} from "./config.js";
 
 import { useState,useEffect } from 'react';

@@ -20,7 +20,7 @@ export const VolunteerOption = ({ setIsOrganisation }) => {
             <Text style={styles.or} >OR</Text>
             <TouchableOpacity style={styles.button}
                onPress={() => {setIsOrganisation(true);
-                  navigation.navigate('Signup')}}
+                  navigation.navigate('ProfileCreation')}}
             >
                <Text style={styles.text}>Organization</Text>
             </TouchableOpacity>

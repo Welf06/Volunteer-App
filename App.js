@@ -15,11 +15,11 @@ import { VolunteerOption } from './VolunteerOption';
 import { ProfileCreation } from './ProfileCreation';
 
 import { TaskDescription } from './TaskDescription';
-import { FeedCard } from './FeedCard';
+//import { FeedCard } from './FeedCard';
 import { CreateTaskForm } from './CreateTaskForm';
-import { getDocs, collection, doc, setDoc } from "firebase/firestore";
-import { addNewDoc, getPage, sign_out, query_db, new_task_details_html, org_profile_html, user_profile_html, users_collection, organisations_collection, auth, provider, top_level_url, index_html, loading_html, temp_html, new_user_details_html, new_organisation_details_html, environment, isNewUser, userType_html, createFile, uploadFile, downloadFile, tasks_collection, user_feed_html, task_images_storage_path, view_task_html, get_param_value, loadTasks, goToTask, volunteers_collection } from "./methods.js";
-import { firebase, db, storage } from "./config.js";
+//import { getDocs, collection, doc, setDoc } from "firebase/firestore";
+import {  auth } from "./methods.js";
+//import { firebase, db, storage } from "./config.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,26 +42,7 @@ export default function App() {
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
-  const getTasksInfo = async () => {
-
-  }
-
-  const setData = (taskData) => {
-    console.log(taskData);
-  }
-  //     querySnapshot.forEach(async (doc) => {
-  //       // doc.data() is never undefined for query doc snapshots
-  //       task_data.push(doc.data());
-  //     });
-  //     setTaskData(task_data);
-  //     console.log(task_data);
-  //     return task_data;
-
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // }
-
+  
   return (
     <View style={{ flex: 1 }}>
       <NavigationContainer ref={navigationRef}>
@@ -93,7 +74,7 @@ export default function App() {
             <Stack.Group>
 
               <Stack.Screen name="SignInEmailOption" >
-                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation} />)}
+                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation}  setIsLogged={setIsLogged}/>)}
               </Stack.Screen>
               <Stack.Screen name="VolunteerOptions">
                 {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation} />}
@@ -105,7 +86,7 @@ export default function App() {
                 {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} />)}
               </Stack.Screen>
               <Stack.Screen name="Login">
-                {props => (<Login {...props} setIsLogged={setIsLogged} />)}
+                {props => (<Login {...props} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} />)}
               </Stack.Screen>
               <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
 

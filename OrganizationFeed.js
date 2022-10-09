@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import {TaskCard} from './TaskCard';
-import { getDocs,collection,doc,setDoc } from "firebase/firestore";
-import { addNewDoc,getPage,sign_out,query_db,new_task_details_html,org_profile_html,user_profile_html,users_collection,organisations_collection,auth,provider,top_level_url,index_html,loading_html,temp_html,new_user_details_html,new_organisation_details_html,environment,isNewUser,userType_html,createFile,uploadFile,downloadFile,tasks_collection,user_feed_html,task_images_storage_path,view_task_html,get_param_value,loadTasks,goToTask,volunteers_collection } from "./methods.js";
-import { firebase,db,storage} from "./config.js";
+import { getDocs,collection } from "firebase/firestore";
+import { db} from "./config.js";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useState, useEffect } from 'react';
 
+/*
 let tasks = [
     {
         name: "Plant Trees",
@@ -32,6 +33,8 @@ let tasks = [
         location: "New York, NY",
     },
 ]
+*/ 
+
 
 async function getTasksInfo(){
   
@@ -42,16 +45,16 @@ async function getTasksInfo(){
       // doc.data() is never undefined for query doc snapshots
           task_data.push(doc.data());
       });
-      
-      //console.log(task_data);
       return task_data;
   
     }catch(e){
       console.log(e);
     }
 }
-
+let tasks = [];
 export const OrganizationFeed = ({navigation}) => {
+
+
 
 /*
     const task_data = getTasksInfo();
@@ -98,49 +101,54 @@ export const OrganizationFeed = ({navigation}) => {
 
 */
 
-//SAME CODE IN ASYNC AWAIT FORMAT
 
-//   task_data.forEach(async (task) => {
-   
-//     const querySnapshot = await query_db("OrgID","==",task.OrgID,organisations_collection);
-//     let org_name = "";
-//     querySnapshot.forEach((doc) => {
-          
-//           org_name = doc.data().Name;
-//     });
-//     task_data[task_data.indexOf(task)].OrgName = org_name;
-//     task_data[task_data.indexOf(task)] = {
-//       name: task.Name,
-//       organisation: org_name,
-//       type: task.Tag,
-//       location: task.Location,
-//       picture: "./assets/images/education.png",
-//       description: task["Job Description"],
-
-
-//     }
-   
-
-//   });
-
-//   tasks = task_data; // tasks will be set to data from firebase
+const [taskData, setTaskData] = useState([]);
+useEffect(() => {(async() =>{
+    try {
+        // console.log("entered useEffect")
+        let task_data = [];
+        const querySnapshot = getDocs(collection(db, "tasks"))
+            .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                task_data.push(doc.data());
+            });
+            // console.log(task_data);
+            let data = task_data;
+            setTaskData(data);
+            console.log(data);
+            });
+        } catch (error) {
+        console.log(error);
+        }
+    })();
+    }, []);
 
 
-  console.log(tasks);
-    return (
-      <View style={styles.screen}>
-        <ScrollView style={styles.container}>
-          {tasks.map((task, index) => {
-              return (
-                  <TaskCard key={index} name={task.name} type={task.type} location={task.location}/>
-              )
-          })}
-        </ScrollView>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateTaskForm')}>
-            <Icon name="plus" style={styles.icon}/>
-        </TouchableOpacity>
-      </View>
-    );
+
+        if (taskData.length == 0) {
+            return(
+            <View style={styles.loadingContainer}>
+                <Text style={styles.title}>Loading...</Text>
+            </View>
+            )
+        }
+        else {
+            return (
+            <View style={styles.screen}>
+                <ScrollView style={styles.container}>
+                {taskData.map((task, index) => {
+                    return (
+                        <TaskCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City.value + ', ' + task.State.value} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]} />
+                        
+                    )
+                })}
+                </ScrollView>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateTaskForm')}>
+                    <Icon name="plus" style={styles.icon}/>
+                </TouchableOpacity>
+            </View>
+            );
+        }
 }
   
 
