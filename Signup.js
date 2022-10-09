@@ -139,19 +139,30 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                   onPress={async() => {
                      try{
 
-                        if(password != confirmpassword){
-                           Alert.alert("Passwords do not match");
-                           return;
-                        }
+                        // if(password != confirmpassword){
+                        //    Alert.alert("Passwords do not match");
+                        //    return;
+                        // }
                   
-                        if(email==null || password==null || confirmpassword==null){
-                           Alert.alert("Please enter all fields");
-                           return;
-                        }
+                        // if(email==null || password==null || confirmpassword==null){
+                        //    Alert.alert("Please enter all fields");
+                        //    return;
+                        // }
                         
                         let email = "";
                         let image = "";
                         let name = "";
+                        let aboutme = "I'm passionate about helping people and making a difference in the world";
+                        let UserID = "";
+                        let profession = "Student";
+                        let phone = "9074567890";
+                        let city = "Mumbai";
+                        let state = "Maharashtra";
+                        let pincode = 400001;
+                        let array = ["Education","Environment","Healthcare","Animal Welfare"];
+                        let age = 20;
+
+
                         
                         auth.onAuthStateChanged(async function(user) { //If User logged in on startup
     
@@ -160,6 +171,7 @@ export const Signup = ({ setIsSigned, setIsLogged }) => {
                               email = user.email;
                               image = user.photoURL;
                               name = user.displayName;
+                              UserID = user.uid;
                            }
                         });
                        
