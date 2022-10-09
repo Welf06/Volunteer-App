@@ -1,128 +1,82 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View,Alert } from 'react-native';
+
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-export const FeedCard = (props) => {
-    // console.log(props);
-    const imgsrc = {
-        "Environment": require("./assets/images/environment.png"),
-        "Community": require("./assets/images/community.png"),
-        "Animal": require("./assets/images/animal.png"),
-        "Education": require("./assets/images/education.png"),
-        "Health": require("./assets/images/health.png"),
-    }
+export const VolunteerOption = ({ setIsOrganisation }) => {
+   
+   const navigation = useNavigation();
 
-    const navigation = useNavigation();
-    
-    return (
-      <View style={styles.feed}>
-      <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => navigation.navigate("TaskDescription", {data:props})}>
-      <View style={styles.card}>
-        <Image source={imgsrc[props.type]} style={styles.image}/>
-        <View style={styles.textContainer}>
-        {/* Name */}
-        <Text style={styles.name}>
-            {props.name}
-        </Text>
-        {/* Organisation Name */}
-         <Text style={styles.organisation}>
-            {props.organisation}
-         </Text>
-        {/* Type and Location */}
-        <View>
-            <Text style={styles.text}>
-                    {`${props.type} `}
-                    
-                    {props.type === "Environment" && <Icon name="tree" size={13} color="#1A535C"/>}
-                    {props.type === "Community" && <Icon name="user" size={13} color="#1A535C"/>}
-                    {props.type === "Animal" && <Icon name="paw" size={13} color="#1A535C"/>}
-                    {props.type === "Education" && <Icon name="book" size={13} color="#1A535C"/>}
-                    {props.type === "Health" && <Icon name="medkit" size={13} color="#1A535C"/>}
-                </Text>
-                <Text style={styles.text}>
-                    {`${props.location} `}
-                    <Icon name="map-marker" size={13} color="#1A535C"/>
-                </Text>
-        </View>
-        <View style={styles.dateContainer}>
-        <Text style={styles.date}>
-                {`${props.startDate}`}
-                </Text>
-        </View>
-        </View>   
-        </View>
-      </TouchableOpacity>
-
+   return (
+      <View style={styles.container}>
+         <View style={styles.buttonContainer}>
+         <TouchableOpacity style={styles.button}
+               onPress={() => {
+                  setIsOrganisation(false),
+                  navigation.navigate('ProfileCreation')}}
+            >
+               <Text style={styles.text}>Volunteer</Text>
+            </TouchableOpacity>
+            <Text style={styles.or} >OR</Text>
+            <TouchableOpacity style={styles.button}
+               onPress={() => {setIsOrganisation(true);
+                  navigation.navigate('OrgProfileCreation')}}
+            >
+               <Text style={styles.text}>Organization</Text>
+            </TouchableOpacity>
+            <Text style={styles.signintext} >Already Registered? <Text onPress={() => {
+                  navigation.navigate("Login")
+               }} style={styles.signin}>Sign in</Text> Instead</Text>
+         </View>
       </View>
-    );
+   )
 }
 
 const styles = StyleSheet.create({
-      feed: {
-      },
-    container: {
-    },
-    card: {
-         flexDirection: 'row',
-         width: '100%',
-         height: 90,
-         borderRadius: 10,
-         backgroundColor: "#F7FFF7",
-         elevation: 5,
-         overflow: 'hidden',
-         marginBottom: 10,
-      },
-    textContainer: {
-        flex: 2.5,
-        color: "1A535C",
-        // paddingLeft: 10,
-        // paddingRight: 10,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
-        backgroundColor: "#F7FFF7",
-    },
-    image: {
-        flex: 1,
-        height: 100,
-        width: 50,
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,
-    },
-    name: {
-        fontSize: 15,
-        color: "#1A535C",
-        fontWeight: "500",
-        paddingLeft: 10,
-    },
-   organisation: {
-         fontSize: 11,
-         color: "#1A535C",
-         paddingBottom: 2,
-         fontWeight: "500",
-         paddingLeft: 10,
+   container: {
+      flex: 1,
+      backgroundColor: "#F7FFF7",
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignContent: 'center',
    },
-    text: {
-        fontSize: 11,
-        color: "#1A535C",
-        paddingLeft: 10,
-    },
-    dateContainer: {
-        // position: 'absolute',
-        // bottom: 0,
-        // left: 0,
-        // width: '100%',
-        // height: 15,
-        flex: 1,
-        backgroundColor: "#FF6B6B",
-        justifyContent: 'center',
-        borderBottomRightRadius: 10,
-        paddingLeft: 10,
-    },
-    date: {
-        fontSize: 10,
-        fontWeight: "300",
-        color: "#F7FFF7",
-    },
+   buttonContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignContent: 'center',
+   },
+   button: {
+      marginTop: 20,
+      backgroundColor: "#1A535C",
+      width: 300,
+      height: 50,
+      padding: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+   },
+   text: {
+      color: "#F7FFF7",
+      fontSize: 20,
+      fontFamily: 'Poppins',
+   },
+   or: {
+      color: "#1A535C",
+      fontSize: 20,
+      fontFamily: 'Poppins',
+      marginTop: 20,
+   },
+   signintext: {
+      color: "#1A535C",
+      fontSize: 16,
+      fontFamily: 'Poppins',
+      marginTop: 20,
+   },
+   signin: {
+      color: "#1A535C",
+      fontSize: 16,
+      fontFamily: 'Poppins',
+      fontWeight: 'bold',
+   },
 
 });
