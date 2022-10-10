@@ -1,56 +1,66 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { signInWithPopup,GoogleAuthProvider } from "firebase/auth"
+import { signInWithPopup,GoogleAuthProvider,signInWithCredential } from "firebase/auth"
 import { users_collection,organisations_collection,auth,provider,query_db, isNewUser } from "./methods.js";
+import * as Google from 'expo-auth-session/providers/google';
+import { useEffect,useState } from 'react';
 
-
-
-async function signInWithGoogleAsync() {
-   try{
-      const auth_result   = await signInWithPopup(auth, provider)
-      const credential = GoogleAuthProvider.credentialFromResult(auth_result);
-      const token = credential.accessToken;
-      const user = auth_result.user;
-      const displayName = user.displayName;
-      const email = user.email;
-      const photoURL = user.photoURL;
-      const emailVerified = user.emailVerified;
-      console.log(email);
-      // Create a query against the collection.
-      
-      const user_query = await query_db("Email", "==", email,users_collection);
-      const org_query = await query_db("Email", "==", email,organisations_collection);
-      console.log("user_query",user_query.empty);
-      console.log("org_query",org_query.empty);
-      let isNewUser = "";
-      if(user_query.empty && org_query.empty){
-         isNewUser = true;
-      }
-      else{
-         isNewUser = false;
-      }
-      if(isNewUser){
-         console.log("new user");
-         return ["new","Signup"]//navigation.navigate("Signup");
-      }
-      else{
-         if(!org_query.empty){
-            return [true,"OrganizationFeed"]
-         }
-         else{
-            return [false,"Feed"]
-         }
-      }      
-  }             
-  catch(error){
-      console.error(`Could not complete Authentication: ${error}`);
-  }
-}
 
 export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
 
-  //[isNewUser, setNewUser] = useState(true);
+   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+      clientId: '51363481835-ofuhhpcteqcm2rod61bs6rf3rhfjkbrf.apps.googleusercontent.com',
+   });
+
+   const [arr,setArr] = useState([]);
+
+   useEffect(() => {
+      if (response?.type === 'success') {
+         const {id_token} = response.params;
+         const credential = GoogleAuthProvider.credential(id_token);
+         signInWithCredential(auth,credential).then((auth_result)=>{
+         const user = auth_result.user;
+         const email = user.email;
+         const displayName = user.displayName;
+         // Create a query against the collection and wait for the query to complete.
+         const user_query = query_db("Email", "==", email,users_collection);
+         const org_query = query_db("Email", "==", email,organisations_collection);
+         return Promise.all([user_query,org_query]).then((values)=>{
+            const user_query = values[0];
+            const org_query = values[1];
+            if(user_query.empty && org_query.empty){
+               setArr(["new","Signup"]);
+            }
+            else{
+               if(!org_query.empty){
+                  setArr([true,"OrganizationFeed"]);
+               }
+               else{
+                  setArr([false,"Feed"]);
+               }
+            }
+         }
+         )
+         })
+      }
+   }, [response]);
+
+   useEffect(() => {
+      if(arr.length>0){
+         console.log(true);
+         setIsSigned(true);
+         if(arr[0]!="new"){
+            setIsOrganisation(arr[0]);
+            navigation.navigate(arr[1]);
+         }
+         else{
+            console.log("Yessss");
+            navigation.navigate("VolunteerOptions");
+         }
+      }
+   }, [arr]);
+  
    const navigation = useNavigation();
    return (
       
@@ -63,30 +73,14 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
                </TouchableOpacity>
                <TouchableOpacity style={styles.googleButton}
                  
-                  onPress={async ()=>{
-
-                     const arr = await signInWithGoogleAsync();
-                     setIsSigned(true);
-
-                     if(arr[0]!="new"){
-                        setIsOrganisation(arr[0]);
-                        navigation.navigate(arr[1]);
-                     }
-                     else{
-                        console.log("Yessss");
-                        navigation.navigate("VolunteerOptions");
-                     }
+                  onPress={()=>{
+                     promptAsync();
                      
-
-
-                  }}   //() => navigation.navigate("Signup")}
+                  }}   
                >
-                  <Image source={require('./assets/images/google logo.png')} style={styles.googleImage} />
+                  <Image source={require('./assets/images/google_logo.png')} style={styles.googleImage} />
                   <Text style={styles.googleText}>Continue with Google</Text>
                </TouchableOpacity>
-               <Text style={styles.signintext} >Already Registered? <Text onPress={() => {
-                  navigation.navigate("Login")
-               }} style={styles.signin}>Sign in</Text> Instead</Text>
             <StatusBar style="auto" />
          </ScrollView>
       </View>
@@ -146,18 +140,5 @@ const styles = StyleSheet.create({
       marginRight: 30,
       marginLeft: 10,
    },
-   signintext: {
-      fontSize: 14,
-      fontFamily: 'Poppins',
-      color: "#1A535C",
-      textAlign: 'center',
-      marginTop: 20,
-      marginBottom: 20,
-   },
-   signin: {
-      color: "#1A535C",
-      fontSize: 14,
-      fontFamily: 'Poppins',
-      fontWeight: 'bold',
-   },
+
 }); 

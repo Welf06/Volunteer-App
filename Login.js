@@ -1,51 +1,8 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
-import { query_db,users_collection,organisations_collection,auth,provider } from "./methods.js";
-import { signInWithPopup,GoogleAuthProvider } from "firebase/auth"
 
 
-async function signInWithGoogleAsync() {
-    try{
-       const auth_result   = await signInWithPopup(auth, provider)
-       const credential = GoogleAuthProvider.credentialFromResult(auth_result);
-       const token = credential.accessToken;
-       const user = auth_result.user;
-       const displayName = user.displayName;
-       const email = user.email;
-       const photoURL = user.photoURL;
-       const emailVerified = user.emailVerified;
-       console.log(email);
-       // Create a query against the collection.
-       
-       const user_query = await query_db("Email", "==", email,users_collection);
-       const org_query = await query_db("Email", "==", email,organisations_collection);
-       console.log("user_query",user_query.empty);
-       console.log("org_query",org_query.empty);
-       let isNewUser = "";
-       if(user_query.empty && org_query.empty){
-          isNewUser = true;
-       }
-       else{
-          isNewUser = false;
-       }
-       if(isNewUser){
-          console.log("new user");
-          return ["new","Signup"]//navigation.navigate("Signup");
-       }
-       else{
-          if(!org_query.empty){
-             return [true,"OrganizationFeed"]
-          }
-          else{
-             return [false,"Feed"]
-          }
-       }      
-   }             
-   catch(error){
-       console.error(`Could not complete Authentication: ${error}`);
-   }
- }
 
 export const Login = ({ setIsOrganisation, setIsLogged }) => {
     const navigation = useNavigation();
@@ -68,30 +25,7 @@ export const Login = ({ setIsOrganisation, setIsLogged }) => {
                         onPress={() => setIsLogged(true)}
                     >
                         <Text style={styles.text}>Login</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.or} >OR</Text>
-                    <TouchableOpacity style={styles.googleButton}
-                        onPress={async ()=>{
-
-                            const arr = await signInWithGoogleAsync();
-                            setIsLogged(true);
-                            setIsLogged(true);
-                            if(arr[0]!="new"){
-                               setIsOrganisation(arr[0]);
-                               navigation.navigate(arr[1]);
-                               
-                            }
-                            else{
-                               navigation.navigate("VolunteerOptions");
-                            }
-                            
-       
-       
-                         }}
-                    >
-                        <Text style={styles.googleText}>Login with Google</Text>
-                    </TouchableOpacity>
-                    
+                    </TouchableOpacity>         
                 </View>
                 <StatusBar style="auto" />
             </ScrollView>

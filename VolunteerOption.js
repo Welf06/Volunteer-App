@@ -24,9 +24,9 @@ export const VolunteerOption = ({ setIsOrganisation }) => {
             >
                <Text style={styles.text}>Organization</Text>
             </TouchableOpacity>
-            <Text style={styles.signintext} >Already Registered? <Text onPress={() => {
+            {/* <Text style={styles.signintext} >Already Registered? <Text onPress={() => {
                   navigation.navigate("Login")
-               }} style={styles.signin}>Sign in</Text> Instead</Text>
+               }} style={styles.signin}>Sign in</Text> Instead</Text> */}
          </View>
       </View>
    )

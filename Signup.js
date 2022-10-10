@@ -128,6 +128,9 @@ export const Signup = ({ setIsSigned, setIsLogged,isOrganization }) => {
                   <Text style={styles.text}>Sign Up</Text>
                </TouchableOpacity>
             </View>
+            <Text style={styles.signintext} >Already Registered? <Text onPress={() => {
+                  navigation.navigate("Login")
+               }} style={styles.signin}>Sign in</Text> Instead</Text>
             <StatusBar style="auto" />
          </ScrollView>
       </View>
@@ -195,4 +198,19 @@ const styles = StyleSheet.create({
       fontSize: 18,
       fontFamily: 'Poppins',
    },
+   signintext: {
+    fontSize: 14,
+    fontFamily: 'Poppins',
+    color: "#1A535C",
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+ },
+ signin: {
+    color: "#1A535C",
+    fontSize: 14,
+    fontFamily: 'Poppins',
+    fontWeight: 'bold',
+ },
+
 }); 
