@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 
+
 import { VolunteerFeed } from './VolunteerFeed';
 import { OrganizationTabs } from './OrganizationTabs';
 import { Profile } from './Profile';
@@ -57,10 +58,16 @@ export default function App() {
             fontSize: 25,
             fontFamily: 'Poppins',
           },
+          // Enable back button
+
           headerRight: () => (
 
             // Profile pic goes here
-            <TouchableOpacity style={styles.button} onPress={() => navigationRef.navigate('Profile')}>
+            <TouchableOpacity style={styles.button} onPress=
+              {() => {
+                navigationRef.navigate('Profile');
+              }}>
+
 
 
               <Image style={styles.profilePic} source={{ uri: user_image }} />
