@@ -1,18 +1,22 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
 export const TaskCard = (props) => {
+    const navigation = useNavigation();
+
     const imgsrc = {
-        "Environmental": require("./assets/images/environment.png"),
+        "Environment": require("./assets/images/environment.png"),
         "Community": require("./assets/images/community.png"),
         "Animal": require("./assets/images/animal.png"),
         "Education": require("./assets/images/education.png"),
         "Health": require("./assets/images/health.png"),
     }
     return (
-      <TouchableOpacity style={styles.container} activeOpacity={0.7}>
+      <TouchableOpacity style={styles.container} activeOpacity={0.7}
+        onPress={() => {navigation.navigate("OrgTaskDescription", {data:props})}}>
         <Image source={imgsrc[props.type]} style={styles.image}/>
         <View style={styles.textContainer}>
         {/* Name */}
@@ -24,7 +28,7 @@ export const TaskCard = (props) => {
             <Text style={styles.text}>
                     {`${props.type} `}
                     
-                    {props.type === "Environmental" && <Icon name="tree" size={20} color="#F7FFF7"/>}
+                    {props.type === "Environment" && <Icon name="tree" size={20} color="#F7FFF7"/>}
                     {props.type === "Community" && <Icon name="user" size={20} color="#F7FFF7"/>}
                     {props.type === "Animal" && <Icon name="paw" size={20} color="#F7FFF7"/>}
                     {props.type === "Education" && <Icon name="book" size={20} color="#F7FFF7"/>}

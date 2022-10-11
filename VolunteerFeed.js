@@ -159,8 +159,10 @@ export const VolunteerFeed = () => {
       console.log(error);
     }
   }, []);
+console.log("check0");
   
   if (taskData.length == 0) {
+    console.log("check1");
     return(
       <View style={styles.loadingContainer}>
         <Text style={styles.title}>Loading...</Text>
@@ -168,14 +170,17 @@ export const VolunteerFeed = () => {
     )
   }
   else{
+    console.log("check2");
+
   return (
     <View style={styles.screen}>
       <ScrollView style={styles.container}>
 
         {
           taskData.map((task, index) => {
+            console.log("check3");
             return (
-              <FeedCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City.value + ', ' + task.State.value} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]} />
+              <FeedCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City + ', ' + task.State} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]} />
             )
             })
         }

@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 
 import { VolunteerFeed } from './VolunteerFeed';
 import { OrganizationTabs } from './OrganizationTabs';
+import { OrganizationFeed } from './OrganizationFeed';
 import { Profile } from './Profile';
 import { Login } from './Login';
 import { Signup } from './Signup';
@@ -16,6 +17,7 @@ import { VolunteerOption } from './VolunteerOption';
 import { ProfileCreation } from './ProfileCreation';
 import { OrgProfileCreation } from './OrgProfileCreation';
 import { TaskDescription } from './TaskDescription';
+import { OrgTaskDescription } from './OrgTaskDescription';
 //import { FeedCard } from './FeedCard';
 import { CreateTaskForm } from './CreateTaskForm';
 //import { getDocs, collection, doc, setDoc } from "firebase/firestore";
@@ -28,18 +30,20 @@ let user_image = "./assets/images/user.png";
 auth.onAuthStateChanged(async function (user) { //If User logged in on startup
 
   if (user) {
-    user_image = user.photoURL;
+    //user_image = user.photoURL;
   }
 });
 
 export default function App() {
 
+  
+
   const [fontsLoaded] = useFonts({
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
-  const [isOrganization, setIsOrganisation] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
-  const [isSigned, setIsSigned] = useState(false);
+  const [isOrganization, setIsOrganisation] = useState(true);
+  const [isLogged, setIsLogged] = useState(true);
+  const [isSigned, setIsSigned] = useState(true);
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
@@ -89,23 +93,12 @@ export default function App() {
               <Stack.Screen name="Signup">
                 {props => (<Signup {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} />)}
               </Stack.Screen>
-              <Stack.Screen name="ProfileCreation">
-                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
-              </Stack.Screen>
-              <Stack.Screen name="OrgProfileCreation">
-                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
-              </Stack.Screen>
+             
               <Stack.Screen name="Login">
-                {props => (<Login {...props} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} />)}
+                {props => (<Login {...props} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} setIsSigned={setIsSigned}/>)}
               </Stack.Screen>
-              <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
-
-              <Stack.Screen name="Feed">
-                {props => (<VolunteerFeed {...props} taskData={taskData} />)}
-              </Stack.Screen>
-              <Stack.Group screenOptions={{ presentation: 'modal' }}>
-                <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
-              </Stack.Group>
+              
+            
             </Stack.Group>
           ) : (
             !isLogged & isSigned ? (
@@ -122,21 +115,14 @@ export default function App() {
               <Stack.Screen name="OrgProfileCreation">
                 {props => (<OrgProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
               </Stack.Screen>
-                <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
-
-                <Stack.Screen name="Feed" component={VolunteerFeed} />
-                <Stack.Group screenOptions={{ presentation: 'modal' }}>
-                  <Stack.Screen name="CreateTaskForm" component={CreateTaskForm} />
-                </Stack.Group>
+                
+               
               </Stack.Group>
             ) : (isOrganization ? (
               <Stack.Group >
                 
-                <Stack.Group>
-                <Stack.Screen name="OrgProfileCreation">
-                  {props => (<OrgProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
-                </Stack.Screen>
-                  <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
+                <Stack.Group>             
+                  <Stack.Screen name="OrganizationFeed" component={OrganizationFeed} />
                 </Stack.Group>
 
                 <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -146,14 +132,12 @@ export default function App() {
               </Stack.Group>
             ) : (
               <Stack.Group>
-                 <Stack.Screen name="ProfileCreation">
-                {props => (<ProfileCreation {...props} setIsSigned={setIsSigned} setIsLogged={setIsLogged}  />)}
-              </Stack.Screen>
               <Stack.Screen name="Feed" component={VolunteerFeed} />
               </Stack.Group>
             )))}
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
+          <Stack.Screen name="OrgTaskDescription" component={OrgTaskDescription} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar />
