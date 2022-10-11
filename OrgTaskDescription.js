@@ -125,7 +125,7 @@ export const OrgTaskDescription = ({ route }) => {
                <Text style={styles.description}>{data.data.description}</Text>
             </View>
             <View style={styles.descriptionContainer}>
-               <Text style={styles.subtitle}>Organisation Description</Text>
+               <Text style={styles.subtitle}>{org_data.Name}</Text>
                {/* placeholder */}
                <Text style={styles.description}>{`${org_data.Description}`} </Text>
             </View>
@@ -265,7 +265,6 @@ const styles = StyleSheet.create({
       alignItems: "center",
       width: "max-content",
       justifyContent: "center",
-
    },
    logoText: {
       color: "#FF6B6B",
@@ -320,7 +319,12 @@ const styles = StyleSheet.create({
       color: "#FF6B6B",
       fontSize: 30,
       fontWeight: "700",
-   }
+   },
+   loadingContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+   },
 });
 
 

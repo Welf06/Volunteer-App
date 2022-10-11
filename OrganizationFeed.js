@@ -148,5 +148,15 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center',
         height: 60,
-    }
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+
 });
