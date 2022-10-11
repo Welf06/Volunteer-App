@@ -10,7 +10,7 @@ import { useEffect,useState } from 'react';
 
 
 
-export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned }) => {
+export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned,setIsGoogleAuth }) => {
 
    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
       clientId: '51363481835-ofuhhpcteqcm2rod61bs6rf3rhfjkbrf.apps.googleusercontent.com',
@@ -55,6 +55,7 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned })
          console.log(true);
          setIsSigned(true);
          setIsLogged(true);
+         setIsGoogleAuth(true);
          if(arr[0]!="new"){
             setIsOrganisation(arr[0]);
             navigation.navigate(arr[1]);

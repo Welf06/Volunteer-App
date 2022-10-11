@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-nati
 import {TaskCard} from './TaskCard';
 import { getDocs,collection } from "firebase/firestore";
 import { db} from "./config.js";
+import {auth} from './methods'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useState, useEffect } from 'react';
 
@@ -10,6 +11,7 @@ async function getTasksInfo(){
   
     try{
       let task_data = [];
+      
       const querySnapshot = await getDocs(collection(db, "tasks"));
       querySnapshot.forEach(async (doc) => {
       // doc.data() is never undefined for query doc snapshots
@@ -77,6 +79,7 @@ useEffect(() => {(async() =>{
     try {
         // console.log("entered useEffect")
         let task_data = [];
+        console.log("AHHH",auth.OrgName);
         const querySnapshot = getDocs(collection(db, "tasks"))
             .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -85,7 +88,6 @@ useEffect(() => {(async() =>{
             // console.log(task_data);
             let data = task_data;
             setTaskData(data);
-            console.log(data);
             });
         } catch (error) {
         console.log(error);

@@ -26,13 +26,7 @@ import {  auth } from "./methods.js";
 
 const Stack = createNativeStackNavigator();
 
-let user_image = "./assets/images/user.png";
-auth.onAuthStateChanged(async function (user) { //If User logged in on startup
 
-  if (user) {
-    //user_image = user.photoURL;
-  }
-});
 
 export default function App() {
 
@@ -44,9 +38,25 @@ export default function App() {
   const [isOrganization, setIsOrganisation] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
+  const [isGoogleAuth,setIsGoogleAuth] = useState(false);
+  const [user_image,setUserImage] = useState(null);
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
+  useEffect(() => {
+    console.log(isLogged) 
+    if(isGoogleAuth){
+      auth.onAuthStateChanged(async function (user) { 
+        if (user) {
+          setUserImage(user.photoURL);
+        }
+      })
+    }else{
+      setUserImage('./assets/images/user.png');
+    }
+  }, [isLogged])
+  
+
   
   return (
     <View style={{ flex: 1 }}>
@@ -55,7 +65,7 @@ export default function App() {
           headerStyle: {
             backgroundColor: '#1A535C',
           },
-          title: 'kindersource',
+          title: 'Kindersource',
           headerTintColor: '#F7FFF7',
           headerTitleAlign: 'center',
           headerTitleStyle: {
@@ -67,14 +77,19 @@ export default function App() {
           headerRight: () => (
 
             // Profile pic goes here
+            
             <TouchableOpacity style={styles.button} onPress=
               {() => {
                 navigationRef.navigate('Profile');
               }}>
 
 
-
+              {isGoogleAuth?
               <Image style={styles.profilePic} source={{ uri: user_image }} />
+              :
+              <Image style={styles.profilePic} source={require('./assets/images/user.png')} />
+              }
+              
 
             </TouchableOpacity>
           ),
@@ -85,7 +100,7 @@ export default function App() {
             <Stack.Group>
 
               <Stack.Screen name="SignInEmailOption" >
-                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation}  setIsLogged={setIsLogged} setIsSigned={setIsSigned}/>)}
+                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation}  setIsLogged={setIsLogged} setIsSigned={setIsSigned} setIsGoogleAuth={setIsGoogleAuth}/>)}
               </Stack.Screen>
               <Stack.Screen name="VolunteerOptions">
                 {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation}/>}
@@ -122,7 +137,7 @@ export default function App() {
               <Stack.Group >
                 
                 <Stack.Group>             
-                  <Stack.Screen name="OrganizationFeed" component={OrganizationFeed} />
+                  <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
                 </Stack.Group>
 
                 <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -135,7 +150,7 @@ export default function App() {
               <Stack.Screen name="Feed" component={VolunteerFeed} />
               </Stack.Group>
             )))}
-          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="Profile" component={Profile} isGoogleAuth={isGoogleAuth} />
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
           <Stack.Screen name="OrgTaskDescription" component={OrgTaskDescription} />
         </Stack.Navigator>

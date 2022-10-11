@@ -56,7 +56,7 @@ export const Login = ({ setIsOrganisation, setIsLogged ,setIsSigned }) => {
 
                                 
                             } catch (error) {
-                                Alert(error);
+                                Alert.alert("Incorrect Email or Password");
                             }
 
                         }}

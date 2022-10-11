@@ -153,7 +153,7 @@ export const VolunteerFeed = () => {
           // console.log(task_data);
           let data = task_data;
           setTaskData(data);
-          console.log(data);
+          // console.log(data);
         });
     } catch (error) {
       console.log(error);
@@ -162,7 +162,7 @@ export const VolunteerFeed = () => {
 console.log("check0");
   
   if (taskData.length == 0) {
-    console.log("check1");
+    // console.log("check1");
     return(
       <View style={styles.loadingContainer}>
         <Text style={styles.title}>Loading...</Text>
@@ -170,7 +170,7 @@ console.log("check0");
     )
   }
   else{
-    console.log("check2");
+    // console.log("check2");
 
   return (
     <View style={styles.screen}>
@@ -178,7 +178,7 @@ console.log("check0");
 
         {
           taskData.map((task, index) => {
-            console.log("check3");
+            // console.log("check3");
             return (
               <FeedCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City + ', ' + task.State} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]} />
             )

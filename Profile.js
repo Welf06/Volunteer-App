@@ -46,11 +46,15 @@ auth.onAuthStateChanged(async function(user) { //If User logged in on startup
   }
 });
 
-export const Profile = () => {
+export const Profile = ({isGoogleAuth}) => {
   return (
     <View style={styles.container}>
     
-        <Image style={styles.profilePic} source={{uri: user_image}}/>
+        {isGoogleAuth?
+              <Image style={styles.profilePic} source={{ uri: user_image }} />
+              :
+              <Image style={styles.profilePic} source={require('./assets/images/user.png')} />
+        }
         <Text style={styles.name}>{user_name}</Text>
         <View style={styles.about}>
         <Text style={styles.aboutText}>{user_bio}</Text>
