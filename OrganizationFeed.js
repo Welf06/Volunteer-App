@@ -55,20 +55,15 @@ export const OrganizationFeed = ({navigation,userEmail}) => {
     const [taskData, setTaskData] = useState([]);
     useEffect(() => {(async() =>{
         try {
-            // console.log("entered useEffect")
             let task_data = [];
             let orgID = await getOrgIDfromEmail(userEmail);
             const querySnapshot = getDocs(collection(db, "tasks"))
                 .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    // Get 'OrgId' from 'organisations' collection from 'Email' of the user
-                    
-                    
+                querySnapshot.forEach((doc) => {                 
                     if(doc.data().OrgID == orgID){
                         task_data.push(doc.data());
                     }
                 });
-                // console.log(task_data);
                 let data = task_data;
                 setTaskData(data);
                 });
@@ -93,7 +88,7 @@ export const OrganizationFeed = ({navigation,userEmail}) => {
                     )
                 })}
                 </ScrollView>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateTaskForm')}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateTaskForm',{setRefreshing:{setRefreshing}})}>
                     <Icon name="plus" style={styles.icon}/>
                 </TouchableOpacity>
             </View>
@@ -109,7 +104,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#F7FFF7",
-        // alignItems: 'center',
         padding: 10,
     },
     button: {

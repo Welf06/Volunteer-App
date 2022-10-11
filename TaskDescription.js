@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, Linking,Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useState,useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity } from 'react-native-web';
+import { TouchableOpacity } from 'react-native';
 import { doc,updateDoc } from "firebase/firestore";
 import { addNewDoc,query_db,users_collection,organisations_collection,auth,tasks_collection,volunteers_collection } from "./methods.js";
 import { db} from "./config.js";
@@ -21,7 +21,7 @@ export const TaskDescription = ({ route }) => {
    //const [task_data, setTaskData] = useState(data.data);
    //setTaskData(data.data);
    const imgsrc = {
-      "Environment": require("./assets/images/environment.png"),
+      "Environmental": require("./assets/images/environment.png"),
       "Community": require("./assets/images/community.png"),
       "Animal": require("./assets/images/user.png"),
       "Education": require("./assets/images/education.png"),
@@ -97,7 +97,7 @@ export const TaskDescription = ({ route }) => {
    }
    else{ 
       return (
-
+         
          <View style={styles.container}>
             <Image source={imgsrc[data.data.type]} style={styles.image} />
             <View style={styles.titleContainer}>
@@ -116,7 +116,9 @@ export const TaskDescription = ({ route }) => {
                </View>
                <View style={styles.logoContainer}>
                   <Icon name="map-marker" size={17} color="#FF6B6B" />
-                  <Text style={styles.logoText}>{`${data.data.location} `}</Text>
+                  <Text style={styles.logoText}>
+                  {data.data.remote ? "Remote" : data.data.location}
+                  </Text>
                </View>
             </View>
             <View style={styles.descriptionContainer}>
@@ -255,23 +257,23 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       marginBottom: 5,
       justifyContent: "center",
-      gap: 20,
    },
    logoContainer: {
+      flex:1,
       flexDirection: "row",
       color: "#FF6B6B",
-      alignContent: "center",
       alignItems: "center",
-      width: "max-content",
       justifyContent: "center",
+      padding: 2,
    },
    logoText: {
       color: "#FF6B6B",
       fontSize: 14,
       fontWeight: "500",
-      paddingLeft: 2
+      padding: 2
    },
    descriptionContainer: {
+      flex: 1,
       padding: 10,
    },
    subtitle: {
@@ -298,6 +300,7 @@ const styles = StyleSheet.create({
       fontSize: 24,
    },
    dataContainer: {
+      flex: 1,
       flexDirection: "row",
       justifyContent: "space-evenly",
       padding: 10,

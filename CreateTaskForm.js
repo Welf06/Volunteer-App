@@ -33,7 +33,7 @@ var requestOptions = {
 
 
 
-export const CreateTaskForm = ({navigation}) => {
+export const CreateTaskForm = ({route,navigation}) => {
 
 
     const [org_details, setOrgDetails] = useState([]);
@@ -249,6 +249,8 @@ export const CreateTaskForm = ({navigation}) => {
                         "TaskID":taskID,
                         "Country":country,
                     */
+                    route.params.setRefreshing.setRefreshing(true);
+                    route.params.setRefreshing.setRefreshing(false);
                     console.log(taskData);
                     console.log("Task Added to Database");
                     // console.log("Please add something to tell the user that the task has been added");
