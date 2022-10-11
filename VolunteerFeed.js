@@ -1,145 +1,28 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity,RefreshControl } from 'react-native';
 import { FeedCard } from './FeedCard';
 import { getDocs, collection, doc, setDoc } from "firebase/firestore";
 
 import { db} from "./config.js";
-import { useState, useEffect } from 'react';
-/*
-let tasks = [
-  {
-    name: "Planting Volunteer",
-    organisation: "Greenpeace",
-    type: "Environmental",
-    location: "Onsite - Delhi",
-    picture: "./assets/images/environment.jpg",
-    date: "2021-05-01",
-    currVolunteers: 2,
-    taskID: "1",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
-  },
-  {
-    name: "Math Teacher Volunteer",
-    organisation: "Greenpeace",
-    type: "Education",
-    location: "Remote",
-    picture: "./assets/images/education.png",
-    date: "2021-05-01",
-    currVolunteers: 2,
-    taskID: "2",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
-  },
-  {
-    name: "Road Cleaning Volunteer",
-    organisation: "Greenpeace",
-    type: "Community",
-    location: "Onsite - Delhi",
-    picture: "./assets/images/community.png",
-    date: "2021-05-01",
-    currVolunteers: 2,
-    taskID: "3",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
-  },
-  {
-    name: "Planting Volunteer",
-    organisation: "Greenpeace",
-    type: "Environmental",
-    location: "Onsite - Delhi",
-    picture: "./assets/images/environmental.png",
-    date: "2021-05-01",
-    currVolunteers: 2,
-    taskID: "4",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
-  },
-  {
-    name: "Math Teacher Volunteer",
-    organisation: "Greenpeace",
-    type: "Education",
-    location: "Remote",
-    picture: "./assets/images/education.png",
-    date: "2021-05-01",
-    currVolunteers: 2,
-
-    taskID: "5",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
-  },
-  {
-    name: "Animal Feeding Volunteer",
-    organisation: "Paw Patrol",
-    type: "Animal",
-    location: "Onsite - Delhi",
-    picture: "./assets/images/animal.png",
-    date: "2021-05-01",
-    currVolunteers: 2,
-    taskID: "6",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed elementum velit, eu lobortis eros. Suspendisse vehicula imperdiet nunc, sed tincidunt mi venenatis vel. Suspendisse at lectus vel ligula lobortis porttitor."
-  }
-]
-*/
+import { useState, useEffect,useCallback } from 'react';
 let tasks =[];
+
+
+const wait = (timeout) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+}
 
 export const VolunteerFeed = () => {
   const [taskData, setTaskData] = useState([]);
-  //   [{
-  //   City
-  //     :
-  //     "",
-  //   Country
-  //     :
-  //     "",
-  //   Email
-  //     :
-  //     "",
-  //   "End Date"
-  //     :
-  //     "",
-  //   "End Time"
-  //     :
-  //     "",
-  //   FormLink
-  //     :
-  //     "",
-  //   ImageURL
-  //     :
-  //     "",
-  //   "Job Description"
-  //     :
-  //     "",
-  //   Name
-  //     :
-  //     "",
-  //   OrgID
-  //     :
-  //     "",
-  //   Phone
-  //     :
-  //     "",
-  //   "Start Date"
-  //     :
-  //     "",
-  //   "Start Time"
-  //     :
-  //     "",
-  //   State
-  //     :
-  //     "",
-  //   Tag
-  //     :
-  //     "",
-  //   TaskID
-  //     :
-  //     "",
-  //   VolunteerHours
-  //     :
-  //     "0",
-  //   VolunteersCount
-  //     :
-  //     0,
-  //   VolunteersReq
-  //     :
-  //     0,
-  // }]
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     try {
@@ -158,36 +41,32 @@ export const VolunteerFeed = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [refreshing]);
 console.log("check0");
   
-  if (taskData.length == 0) {
-    // console.log("check1");
-    return(
-      <View style={styles.loadingContainer}>
-        <Text style={styles.title}>Loading...</Text>
-      </View>
-    )
-  }
-  else{
-    // console.log("check2");
+ 
 
   return (
     <View style={styles.screen}>
-      <ScrollView style={styles.container}>
+      <ScrollView 
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      >
 
         {
           taskData.map((task, index) => {
             // console.log("check3");
             return (
-              <FeedCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City + ', ' + task.State} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]} />
+              <FeedCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} remote={task.Remote} location={task.City.label + ', ' + task.State.label} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]} />
             )
             })
         }
       </ScrollView>
     </View>
   )
-      }
+
 }
 
 

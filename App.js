@@ -39,12 +39,12 @@ export default function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
   const [isGoogleAuth,setIsGoogleAuth] = useState(false);
+  const [userEmail,setUserEmail] = useState("");
   const [user_image,setUserImage] = useState(null);
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
   useEffect(() => {
-    console.log(isLogged) 
     if(isGoogleAuth){
       auth.onAuthStateChanged(async function (user) { 
         if (user) {
@@ -56,7 +56,6 @@ export default function App() {
     }
   }, [isLogged])
   
-
   
   return (
     <View style={{ flex: 1 }}>
@@ -100,7 +99,7 @@ export default function App() {
             <Stack.Group>
 
               <Stack.Screen name="SignInEmailOption" >
-                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation}  setIsLogged={setIsLogged} setIsSigned={setIsSigned} setIsGoogleAuth={setIsGoogleAuth}/>)}
+                {props => (<SignInEmailOption {...props} setIsOrganisation={setIsOrganisation}  setIsLogged={setIsLogged} setIsSigned={setIsSigned} setIsGoogleAuth={setIsGoogleAuth} setUserEmail={setUserEmail}/>)}
               </Stack.Screen>
               <Stack.Screen name="VolunteerOptions">
                 {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation}/>}
@@ -110,7 +109,7 @@ export default function App() {
               </Stack.Screen>
              
               <Stack.Screen name="Login">
-                {props => (<Login {...props} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} setIsSigned={setIsSigned}/>)}
+                {props => (<Login {...props} setIsLogged={setIsLogged} setIsOrganisation={setIsOrganisation} setIsSigned={setIsSigned} setUserEmail={setUserEmail}/>)}
               </Stack.Screen>
               
             
@@ -119,7 +118,7 @@ export default function App() {
             !isLogged & isSigned ? (
               <Stack.Group>
                 <Stack.Screen name="Login">
-                  {props => (<Login {...props} setIsLogged={setIsLogged} />)}
+                  {props => (<Login {...props} setIsLogged={setIsLogged} setUserEmail={setUserEmail}/>)}
                 </Stack.Screen>
                 <Stack.Screen name="VolunteerOptions">
                 {props => <VolunteerOption {...props} setIsOrganisation={setIsOrganisation}/>}
@@ -137,7 +136,9 @@ export default function App() {
               <Stack.Group >
                 
                 <Stack.Group>             
-                  <Stack.Screen name="OrganizationFeed" component={OrganizationTabs} />
+                  <Stack.Screen name="OrganizationFeed">
+                    {props => (<OrganizationTabs {...props} userEmail={userEmail} />)}
+                  </Stack.Screen>
                 </Stack.Group>
 
                 <Stack.Group screenOptions={{ presentation: 'modal' }}>

@@ -10,7 +10,7 @@ import { useEffect,useState } from 'react';
 
 
 
-export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned,setIsGoogleAuth }) => {
+export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned,setIsGoogleAuth,setUserEmail }) => {
 
    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
       clientId: '51363481835-ofuhhpcteqcm2rod61bs6rf3rhfjkbrf.apps.googleusercontent.com',
@@ -30,6 +30,7 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned,se
          // Create a query against the collection and wait for the query to complete.
          const user_query = query_db("Email", "==", email,users_collection);
          const org_query = query_db("Email", "==", email,organisations_collection);
+         setUserEmail(email);
          return Promise.all([user_query,org_query]).then((values)=>{
             const user_query = values[0];
             const org_query = values[1];

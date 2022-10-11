@@ -33,7 +33,7 @@ var requestOptions = {
 
 
 
-export const CreateTaskForm = () => {
+export const CreateTaskForm = ({navigation}) => {
 
 
     const [org_details, setOrgDetails] = useState([]);
@@ -220,6 +220,7 @@ export const CreateTaskForm = () => {
                         // "Task ID": org_details.orgname+"_"+faker_name+"_"+faker_date
                         "Name": taskData.name,
                         "Tag": taskData.type,
+                        "Remote": taskData.remote,
                         "Country": taskData.location.country,
                         "State": taskData.location.state,
                         "City": taskData.location.city,
@@ -250,8 +251,8 @@ export const CreateTaskForm = () => {
                     */
                     console.log(taskData);
                     console.log("Task Added to Database");
-                    console.log("Please add something to tell the user that the task has been added");
-                    //navigation.navigate('OrganisationFeed');
+                    // console.log("Please add something to tell the user that the task has been added");
+                    navigation.navigate('OrganizationFeed');
                     // Send data to backend
                 }}else{
                     Alert.alert("Please fill all the fields");
