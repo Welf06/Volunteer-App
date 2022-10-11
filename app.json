@@ -5,12 +5,19 @@
     "owner": "akshaywarrier",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+    "build": {
+      "preview":{
+        "android":{
+          "buildType":"apk"
+        }
+      }
     },
     "updates": {
       "fallbackToCacheTimeout": 0

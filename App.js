@@ -51,7 +51,7 @@ export default function App() {
           headerStyle: {
             backgroundColor: '#1A535C',
           },
-          title: 'App Name',
+          title: 'kindersource',
           headerTintColor: '#F7FFF7',
           headerTitleAlign: 'center',
           headerTitleStyle: {

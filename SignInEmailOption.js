@@ -11,6 +11,7 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
 
    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
       clientId: '51363481835-ofuhhpcteqcm2rod61bs6rf3rhfjkbrf.apps.googleusercontent.com',
+      androidClientId: '133007557332-eqn7ohskg2u004ceknkdtn5pk7kvava4.apps.googleusercontent.com'  
    });
 
    const [arr,setArr] = useState([]);
