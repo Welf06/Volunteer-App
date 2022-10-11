@@ -41,9 +41,9 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     'Poppins': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
   });
-  const [isOrganization, setIsOrganisation] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
-  const [isSigned, setIsSigned] = useState(false);
+  const [isOrganization, setIsOrganisation] = useState(true);
+  const [isLogged, setIsLogged] = useState(true);
+  const [isSigned, setIsSigned] = useState(true);
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
