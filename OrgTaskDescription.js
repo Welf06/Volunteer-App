@@ -255,13 +255,15 @@ const styles = StyleSheet.create({
    tagContainer: {
       flexDirection: "row",
       marginBottom: 5,
+      justifyContent: "center",
+      gap: 20,
    },
    logoContainer: {
       flexDirection: "row",
       color: "#FF6B6B",
       alignContent: "center",
       alignItems: "center",
-      width: "50%",
+      width: "max-content",
       justifyContent: "center",
 
    },
