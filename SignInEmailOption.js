@@ -10,7 +10,7 @@ import { useEffect,useState } from 'react';
 
 
 
-export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
+export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned }) => {
 
    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
       clientId: '51363481835-ofuhhpcteqcm2rod61bs6rf3rhfjkbrf.apps.googleusercontent.com',
@@ -54,6 +54,7 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
       if(arr.length>0){
          console.log(true);
          setIsSigned(true);
+         setIsLogged(true);
          if(arr[0]!="new"){
             setIsOrganisation(arr[0]);
             navigation.navigate(arr[1]);
@@ -83,7 +84,6 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
                  
                   onPress={()=>{
                      promptAsync();
-                     setIsSigned(true);
                      
                      
                   }}   

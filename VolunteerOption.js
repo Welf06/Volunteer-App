@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View,Alert } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const VolunteerOption = ({ setIsOrganisation }) => {
    
@@ -15,6 +15,7 @@ export const VolunteerOption = ({ setIsOrganisation }) => {
                   setIsOrganisation(false),
                   navigation.navigate('ProfileCreation')}}
             >
+               <Icon name="user" style={styles.icon}/>
                <Text style={styles.text}>Volunteer</Text>
             </TouchableOpacity>
             <Text style={styles.or} >OR</Text>
@@ -22,6 +23,7 @@ export const VolunteerOption = ({ setIsOrganisation }) => {
                onPress={() => {setIsOrganisation(true);
                   navigation.navigate('OrgProfileCreation')}}
             >
+               <Icon name="building" style={styles.icon}/>
                <Text style={styles.text}>Organization</Text>
             </TouchableOpacity>
             {/* <Text style={styles.signintext} >Already Registered? <Text onPress={() => {
@@ -47,17 +49,20 @@ const styles = StyleSheet.create({
       alignContent: 'center',
    },
    button: {
+      flexDirection:'row',
       marginTop: 20,
       backgroundColor: "#1A535C",
       width: 300,
-      height: 50,
+      height: 100,
       padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
+      borderRadius:5,
    },
    text: {
+      paddingLeft:10,
       color: "#F7FFF7",
-      fontSize: 20,
+      fontSize: 25,
       fontFamily: 'Poppins',
    },
    or: {
@@ -78,5 +83,9 @@ const styles = StyleSheet.create({
       fontFamily: 'Poppins',
       fontWeight: 'bold',
    },
+   icon:{
+      fontSize:50,
+      color:"#F7FFF7",
+   }
 
 });

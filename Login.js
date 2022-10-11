@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView,Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -56,7 +56,7 @@ export const Login = ({ setIsOrganisation, setIsLogged ,setIsSigned }) => {
 
                                 
                             } catch (error) {
-                                console.log(error);
+                                Alert(error);
                             }
 
                         }}

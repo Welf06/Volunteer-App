@@ -44,13 +44,14 @@ export const Signup = ({ setIsSigned, setIsLogged,isOrganization }) => {
             console.log("success!");
          }
          else{
-            
+            Alert.alert("Passwords do not match")
             throw new Error("Passwords do not match");
+
          }
 
       } catch (error) {
          //setSignupError(error.message);
-         console.log(error);
+         Alert.alert(error);
          throw error;
       }
       };
@@ -99,7 +100,9 @@ export const Signup = ({ setIsSigned, setIsLogged,isOrganization }) => {
                      navigation.navigate("VolunteerOptions");
                   }catch(error){
       
-                     console.log(error);
+                     if (error.code == 'auth/weak-password'){
+                        Alert.alert("Password should be atleast 6 characters.")
+                     }
                   }
                      
                      
