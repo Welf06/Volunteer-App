@@ -158,6 +158,18 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: 'Poppins',
     },
-
-
+    signintext: {
+        fontSize: 14,
+        fontFamily: 'Poppins',
+        color: "#1A535C",
+        textAlign: 'center',
+        marginTop: 20,
+        marginBottom: 20,
+     },
+     signin: {
+        color: "#1A535C",
+        fontSize: 14,
+        fontFamily: 'Poppins',
+        fontWeight: 'bold',
+     },
 }); 

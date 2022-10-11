@@ -8,7 +8,7 @@ import { addNewDoc,query_db,organisations_collection,auth,tasks_collection } fro
 import { firebase,db,storage} from "./config.js";
 
 import { useState,useEffect } from 'react';
-import { faker } from '@faker-js/faker';
+// import { faker } from '@faker-js/faker';
 
 const data = [
     {label: 'Environmental', value: 'Environmental'},
@@ -195,11 +195,11 @@ export const CreateTaskForm = () => {
                         taskData.location.state = '';
                         taskData.location.city = '';
                     }
-                    let faker_country = faker.address.country();
-                    let faker_state = faker.address.state(faker_country);
-                    let faker_city = faker.address.city(faker_state);
-                    let faker_name = faker.name.jobType();
-                    let faker_date = faker.date.future();
+                    // let faker_country = faker.address.country();
+                    // let faker_state = faker.address.state(faker_country);
+                    // let faker_city = faker.address.city(faker_state);
+                    // let faker_name = faker.name.jobType();
+                    // let faker_date = faker.date.future();
 
 
                     const db_doc = {
