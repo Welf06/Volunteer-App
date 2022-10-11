@@ -17,6 +17,7 @@ import { VolunteerOption } from './VolunteerOption';
 import { ProfileCreation } from './ProfileCreation';
 import { OrgProfileCreation } from './OrgProfileCreation';
 import { TaskDescription } from './TaskDescription';
+import { OrgTaskDescription } from './OrgTaskDescription';
 //import { FeedCard } from './FeedCard';
 import { CreateTaskForm } from './CreateTaskForm';
 //import { getDocs, collection, doc, setDoc } from "firebase/firestore";
@@ -120,8 +121,7 @@ export default function App() {
             ) : (isOrganization ? (
               <Stack.Group >
                 
-                <Stack.Group>
-                
+                <Stack.Group>             
                   <Stack.Screen name="OrganizationFeed" component={OrganizationFeed} />
                 </Stack.Group>
 
@@ -132,12 +132,12 @@ export default function App() {
               </Stack.Group>
             ) : (
               <Stack.Group>
-                
               <Stack.Screen name="Feed" component={VolunteerFeed} />
               </Stack.Group>
             )))}
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
+          <Stack.Screen name="OrgTaskDescription" component={OrgTaskDescription} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar />

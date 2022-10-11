@@ -29,41 +29,39 @@ export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
                <View style={styles.formContainer}>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>User Name</Text>
-                     <TextInput style={styles.input} />
                      <TextInput style={styles.input} onChangeText={(text) => setUserData({...userData, name: text})} value={userData.name}/>
                   </View>
                   <View>
-                  <Text style={styles.formLabel} >Age</Text>
+                  <Text style={styles.inputTitle} >Age</Text>
         <TextInput style={styles.input} keyboardType="numeric" onChangeText={(text) => setUserData({...userData, age: text})} value={userData.age}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Contact Number</Text>
-                     <TextInput style={styles.input} />
                      <TextInput style={styles.input} keyboardType="phone-pad" onChangeText={(text) => setUserData({...userData, phone: text})} value={userData.phone}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>City</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, city: text})} value={userData.city}/>
+                     <TextInput style={styles.input} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, city: text})} value={userData.city}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>State</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, state: text})} value={userData.state}/>
+                     <TextInput style={styles.input} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, state: text})} value={userData.state}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Pincode</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, pincode: text})} value={userData.pincode}/>
+                     <TextInput style={styles.input}  onChangeText={(text) => setUserData({...userData, pincode: text})} value={userData.pincode}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Country</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, country: text})} value={userData.country}/>
+                     <TextInput style={styles.input} onChangeText={(text) => setUserData({...userData, country: text})} value={userData.country}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Profession</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, profession: text})} value={userData.profession}/>
+                     <TextInput style={styles.input}  onChangeText={(text) => setUserData({...userData, profession: text})} value={userData.profession}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Tell Us About Yourself</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, aboutMe: text})} value={userData.aboutMe}/>
+                     <TextInput style={styles.input} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, aboutMe: text})} value={userData.aboutMe}/>
                   </View>
                   
                </View>
