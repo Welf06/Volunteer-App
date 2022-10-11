@@ -7,6 +7,9 @@ import * as Google from 'expo-auth-session/providers/google';
 import { useEffect,useState } from 'react';
 
 
+
+
+
 export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
 
    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
@@ -62,13 +65,17 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
       }
    }, [arr]);
   
+
+
+   
+
    const navigation = useNavigation();
    return (
       
       <View style={styles.container}>
          <ScrollView style={styles.scroll}>
                <TouchableOpacity style={styles.button}
-                  onPress={() => navigation.navigate("Signup")}
+                  onPress={() => navigation.navigate("Login")}
                >
                   <Text style={styles.text}>Continue with Email</Text>
                </TouchableOpacity>
@@ -76,6 +83,8 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
                  
                   onPress={()=>{
                      promptAsync();
+                     setIsSigned(true);
+                     
                      
                   }}   
                >

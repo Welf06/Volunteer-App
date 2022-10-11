@@ -5,36 +5,6 @@ import { db} from "./config.js";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useState, useEffect } from 'react';
 
-/*
-let tasks = [
-    {
-        name: "Plant Trees",
-        type: "Environmental",
-        location: "New York, NY",
-    },
-    {
-        name: "Clean Up",
-        type: "Community",
-        location: "New York, NY",
-    },
-    {
-        name: "Feed the Animals",
-        type: "Animal",
-        location: "New York, NY",
-    },
-    {
-        name: "Teach Kids",
-        type: "Education",
-        location: "New York, NY",
-    },
-    {
-        name: "Give Blood",
-        type: "Health",
-        location: "New York, NY",
-    },
-]
-*/ 
-
 
 async function getTasksInfo(){
   
@@ -138,7 +108,7 @@ useEffect(() => {(async() =>{
                 <ScrollView style={styles.container}>
                 {taskData.map((task, index) => {
                     return (
-                        <TaskCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City.value + ', ' + task.State.value} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]} />
+                        <TaskCard key={index} name={task.Name} organisation={task.OrgName} type={task.Tag} location={task.City + ', ' + task.State} description={task["Job Description"]} startDate={task["Start Date"]} formLink={task["FormLink"]} volunteersCount={task["Volunteers Registered"]} volunteersReq={task.volunteersReq}   taskID={task["Task ID"]} />
                         
                     )
                 })}
@@ -178,5 +148,15 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center',
         height: 60,
-    }
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+
 });

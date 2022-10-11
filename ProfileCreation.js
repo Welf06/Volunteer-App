@@ -49,15 +49,15 @@ export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Pincode</Text>
-                     <TextInput style={styles.input} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, pincode: text})} value={userData.pincode}/>
+                     <TextInput style={styles.input}  onChangeText={(text) => setUserData({...userData, pincode: text})} value={userData.pincode}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Country</Text>
-                     <TextInput style={styles.input} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, country: text})} value={userData.country}/>
+                     <TextInput style={styles.input} onChangeText={(text) => setUserData({...userData, country: text})} value={userData.country}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Profession</Text>
-                     <TextInput style={styles.input} multiline={true} numberOfLines={4} onChangeText={(text) => setUserData({...userData, profession: text})} value={userData.profession}/>
+                     <TextInput style={styles.input}  onChangeText={(text) => setUserData({...userData, profession: text})} value={userData.profession}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Tell Us About Yourself</Text>
@@ -69,7 +69,7 @@ export const ProfileCreation = ({ setIsSigned, setIsLogged }) => {
                   onPress={async () => {
                     let email = "";
                     let id = "";
-                    await auth.onAuthStateChanged(async function (user) { //If User logged in on startup
+                    await auth.onAuthStateChanged(function (user) { //If User logged in on startup
                         if (user) {
                           email = user.email;
                           id = user.uid;

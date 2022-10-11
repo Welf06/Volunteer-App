@@ -1,11 +1,16 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
+import { auth, users_collection,query_db,organisations_collection} from './methods';
 
 
 
-export const Login = ({ setIsOrganisation, setIsLogged }) => {
+export const Login = ({ setIsOrganisation, setIsLogged ,setIsSigned }) => {
     const navigation = useNavigation();
+    const [LoginEmail, setLoginEmail] = useState('');
+    const [LoginPassword, setLoginPassword] = useState('');
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scroll}>
@@ -14,19 +19,55 @@ export const Login = ({ setIsOrganisation, setIsLogged }) => {
                     <View style={styles.formContainer}>
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputTitle}>Email</Text>
-                            <TextInput style={styles.input} />
+                            <TextInput style={styles.input} onChangeText={(text) => setLoginEmail(text)}/>
                         </View>
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputTitle}>Password</Text>
-                            <TextInput secureTextEntry={true} style={styles.input} />
+                            <TextInput secureTextEntry={true} style={styles.input} onChangeText={(text) => setLoginPassword(text)} />
                         </View>
                     </View>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => setIsLogged(true)}
+                        onPress={async () => {
+                            
+                            try {
+                                await signInWithEmailAndPassword(auth, LoginEmail, LoginPassword);
+                                const user_query = await query_db("Email","==",LoginEmail,users_collection);
+                                const org_query = await query_db("Email","==",LoginEmail,organisations_collection);
+                                if(user_query.empty && org_query.empty){
+                                    console.log("No user found");
+                                    setIsSigned(true);
+                                    navigation.navigate("VolunteerOptions");
+                                }
+                                else if(!user_query.empty){
+                                    console.log("User found");
+                                    setIsSigned(true);
+                                    setIsLogged(true);
+                                    setIsOrganisation(false);
+                                    navigation.navigate("Feed");
+                                }
+                                else{
+                                    console.log("Organisation found");
+                                    setIsSigned(true);
+                                    setIsLogged(true);
+                                    setIsOrganisation(true);
+                                    navigation.navigate("OrganizationFeed");
+                                }
+
+
+                                
+                            } catch (error) {
+                                console.log(error);
+                            }
+
+                        }}
                     >
                         <Text style={styles.text}>Login</Text>
                     </TouchableOpacity>         
                 </View>
+
+                <Text style={styles.signintext} >First Time User? <Text onPress={() => {
+                  navigation.navigate("Signup")
+               }} style={styles.signin}>Signup</Text> Instead</Text>
                 <StatusBar style="auto" />
             </ScrollView>
         </View>
@@ -117,6 +158,18 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: 'Poppins',
     },
-
-
+    signintext: {
+        fontSize: 14,
+        fontFamily: 'Poppins',
+        color: "#1A535C",
+        textAlign: 'center',
+        marginTop: 20,
+        marginBottom: 20,
+     },
+     signin: {
+        color: "#1A535C",
+        fontSize: 14,
+        fontFamily: 'Poppins',
+        fontWeight: 'bold',
+     },
 }); 
