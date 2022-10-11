@@ -23,22 +23,20 @@ export const OrgProfileCreation = ({ setIsSigned, setIsLogged }) => {
                <View style={styles.formContainer}>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Organisation Name</Text>
-                     <TextInput style={styles.input} />
                      <TextInput style={styles.input} onChangeText={(text) => setOrgData({...orgData, name: text})} value={orgData.name}/>
                   </View>
                   
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Contact Number</Text>
-                     <TextInput style={styles.input} />
                      <TextInput style={styles.input} keyboardType="phone-pad" onChangeText={(text) => setOrgData({...orgData, phone: text})} value={orgData.phone}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Address</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setOrgData({...orgData, address: text})} value={orgData.address}/>
+                     <TextInput style={styles.input} multiline={true} numberOfLines={2} onChangeText={(text) => setOrgData({...orgData, address: text})} value={orgData.address}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Tell Us About Yourself</Text>
-                     <TextInput style={styles.multilineInput} multiline={true} numberOfLines={4} onChangeText={(text) => setOrgData({...orgData, aboutUs: text})} value={orgData.aboutUs}/>
+                     <TextInput style={styles.input} multiline={true} numberOfLines={2} onChangeText={(text) => setOrgData({...orgData, aboutUs: text})} value={orgData.aboutUs}/>
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Website</Text>

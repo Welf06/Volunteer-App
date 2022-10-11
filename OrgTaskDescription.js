@@ -9,7 +9,7 @@ import { db} from "./config.js";
 
 
 
-export const TaskDescription = ({ route }) => {
+export const OrgTaskDescription = ({ route }) => {
 
   
    const [org_data, setOrgData] = useState([]);
@@ -18,6 +18,7 @@ export const TaskDescription = ({ route }) => {
    const [isUser, setIsUser] = useState(false);
    
    const data = route.params;
+   console.log(data)
    //const [task_data, setTaskData] = useState(data.data);
    //setTaskData(data.data);
    const imgsrc = {

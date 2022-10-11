@@ -1,7 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Pressable, useState,Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Pressable,Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { addNewDoc,users_collection,organisations_collection,auth } from "./methods.js";
 import { useNavigation } from '@react-navigation/native';
+import { useEffect,useState } from 'react';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { firebase, storage } from "./config.js";
+import { ref,getDownloadURL  } from "firebase/storage";
 
 
 
@@ -9,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export const Signup = ({ setIsSigned, setIsLogged,isOrganization }) => {
+
    let state = {
       mail: 'demo',
       password: 'demo'
@@ -27,6 +32,29 @@ export const Signup = ({ setIsSigned, setIsLogged,isOrganization }) => {
       passwordVisibility = !passwordVisibility;
     }
   };
+   const [email, setEmail] = useState('');
+   const [password, setPassword] = useState('');
+   const [confirmPassword, setConfirmPassword] = useState('');
+  
+   const onHandleSignupEmail = async () => {
+      try {
+         if (email !== '' && password !== '' && confirmPassword === password) {
+           
+            await createUserWithEmailAndPassword(auth,email, password);
+            console.log("success!");
+         }
+         else{
+            
+            throw new Error("Passwords do not match");
+         }
+
+      } catch (error) {
+         //setSignupError(error.message);
+         console.log(error);
+         throw error;
+      }
+      };
+
 
    return (
       
@@ -38,7 +66,7 @@ export const Signup = ({ setIsSigned, setIsLogged,isOrganization }) => {
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Email</Text>
                      <TextInput style={styles.input} 
-                    
+                     onChangeText={text => setEmail(text)}
                      />
                   </View>
                   <View style={styles.inputContainer}>
@@ -49,6 +77,7 @@ export const Signup = ({ setIsSigned, setIsLogged,isOrganization }) => {
                         autoCapitalize="none"
                         autoCorrect={false}
                         textContentType="newPassword"
+                        onChangeText={text => setPassword(text)}
                      />
                      {/* <Pressable onPress={handlePasswordVisibility}>
                         <Icon name={rightIcon} size={22} color="#232323" />
@@ -57,72 +86,24 @@ export const Signup = ({ setIsSigned, setIsLogged,isOrganization }) => {
                   </View>
                   <View style={styles.inputContainer}>
                      <Text style={styles.inputTitle}>Confirm Password</Text>
-                     <TextInput secureTextEntry={true} style={styles.input} />
+                     <TextInput secureTextEntry={true} style={styles.input} 
+                     onChangeText={text => setConfirmPassword(text)}
+                     />
                   </View>
                </View>
                <TouchableOpacity style={styles.button}
                   onPress={async() => {
-                     try{
-
-                        let email = "";
-                        let image = "";
-                        let name = "";
-                        let aboutme = "I'm passionate about helping people and making a difference in the world";
-                        let UserID = "";
-                        let profession = "Student";
-                        let phone = "9074567890";
-                        let city = "Mumbai";
-                        let state = "Maharashtra";
-                        let pincode = 400001;
-                        let array = ["Education","Environment","Healthcare","Animal Welfare"];
-                        let age = 20;
-                        auth.onAuthStateChanged(async function(user) { //If User logged in on startup
-    
-                           if (user) {
-                         
-                              email = user.email;
-                              image = user.photoURL;
-                              name = user.displayName;
-                              UserID = user.uid;
-                           }
-                        });
-                       
-                        const user_query =  await query_db("Email", "==", email,users_collection);
-                        const org_query =  await query_db("Email", "==", email,organisations_collection);
-                        if (!(user_query.empty && org_query.empty)){
-                     
-                              alert("Email already exists. Please use a different email");
-                              return;
-                        }
-                        const db_doc = {
-                              "Name": name,
-                              "Age": age,
-                              "UserID" : UserID,
-                              "About Me": aboutme,
-                              "Profession":profession,
-                              "Email": email,
-                              "Phone": phone,
-                              "Location": {
-                                 "City": city,
-                                 "State": state,
-                                 "Pincode": pincode
-                              },
-                              "Level":1,
-                              "Interests":array,
-                              "Completed_Jobs":0,
-                              "Ongoing_Jobs":0,
-                              "Average_Rating":null,
-                        };
-                        const db_collection = users_collection;
-                        await addNewDoc(db_collection,db_doc);
-                        }
-                        catch(error){
-                           console.log(error);
-                        }
-                     
-                     
+                  try{
+                     await onHandleSignupEmail();                   
                      setIsSigned(true);
-                     setIsLogged(true);
+                     navigation.navigate("VolunteerOptions");
+                  }catch(error){
+      
+                     console.log(error);
+                  }
+                     
+                     
+                   
                   }}
                >
                   <Text style={styles.text}>Sign Up</Text>
