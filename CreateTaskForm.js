@@ -251,7 +251,6 @@ export const CreateTaskForm = ({route,navigation}) => {
                     */
                     route.params.setRefreshing.setRefreshing(true);
                     route.params.setRefreshing.setRefreshing(false);
-                    console.log(taskData);
                     console.log("Task Added to Database");
                     // console.log("Please add something to tell the user that the task has been added");
                     navigation.navigate('OrganizationFeed');

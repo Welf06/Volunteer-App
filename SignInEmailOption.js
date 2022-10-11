@@ -53,7 +53,6 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned,se
 
    useEffect(() => {
       if(arr.length>0){
-         console.log(true);
          setIsSigned(true);
          setIsLogged(true);
          setIsGoogleAuth(true);
@@ -62,7 +61,6 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned,se
             navigation.navigate(arr[1]);
          }
          else{
-            console.log("Yessss");
             navigation.navigate("VolunteerOptions");
          }
       }

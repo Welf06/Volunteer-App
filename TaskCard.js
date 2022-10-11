@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const TaskCard = (props) => {
     const navigation = useNavigation();
-    console.log(props.remote);
     const imgsrc = {
         "Environmental": require("./assets/images/environment.png"),
         "Community": require("./assets/images/community.png"),
