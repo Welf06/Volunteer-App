@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, Linking,Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useState,useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity } from 'react-native-web';
+import { TouchableOpacity } from 'react-native';
 import { doc,updateDoc } from "firebase/firestore";
 import { addNewDoc,query_db,users_collection,organisations_collection,auth,tasks_collection,volunteers_collection } from "./methods.js";
 import { db} from "./config.js";
@@ -18,14 +18,14 @@ export const OrgTaskDescription = ({ route }) => {
    const [isUser, setIsUser] = useState(false);
    
    const data = route.params;
-   console.log(data)
    //const [task_data, setTaskData] = useState(data.data);
    //setTaskData(data.data);
    const imgsrc = {
-      "Environment": require("./assets/images/environment.png"),
+      "Environmental": require("./assets/images/environment.png"),
       "Community": require("./assets/images/community.png"),
       "Animal": require("./assets/images/user.png"),
       "Education": require("./assets/images/education.png"),
+      "Health":require("./assets/images/education.png"),
    }
    // let org_address = "";
    // let org_website = "";
@@ -55,11 +55,9 @@ export const OrgTaskDescription = ({ route }) => {
             }
             setUser(user_info);
            // isUser = true;
-            console.log(data.data.organisation);
             let org_dat = {};
             const org_info = await query_db("Name", "==", data.data.organisation,organisations_collection);
             org_info.forEach((doc) => {
-               console.log(doc.data());
                org_dat = {
                   "Name": doc.data().Name,
                   "Address": doc.data().Address,
@@ -88,7 +86,6 @@ export const OrgTaskDescription = ({ route }) => {
       }
    });}, []);
 
-   console.log(data);
    if(org_data.length == 0) {
       return(
         <View style={styles.loadingContainer}>
@@ -117,7 +114,9 @@ export const OrgTaskDescription = ({ route }) => {
                </View>
                <View style={styles.logoContainer}>
                   <Icon name="map-marker" size={17} color="#FF6B6B" />
-                  <Text style={styles.logoText}>{`${data.data.location} `}</Text>
+                  <Text style={styles.logoText}>
+                     {data.data.remote ? "Remote" : data.data.location}
+                  </Text>
                </View>
             </View>
             <View style={styles.descriptionContainer}>
@@ -155,78 +154,9 @@ export const OrgTaskDescription = ({ route }) => {
                   <Text style={styles.data}>Volunteers</Text>
                </View>
             </View>
-
-            <TouchableOpacity style={styles.volunteerButton} onPress={async () => {
-                if(isUser){
-                  let task_data = {};
-                  console.log("A");
-                  const task_query = await query_db("Task ID", "==", data.data.taskID,tasks_collection);
-                  if(task_query.empty){
-                     console.log(data.data.taskID);
-                     Alert.alert("No task found with that id");
-                  }
-                  else{
-                     task_query.forEach((doc) => {
-                        task_data = {
-                           "taskID": doc.data()["Task ID"],
-                           "Name": doc.data().Name,
-                           "Description": doc.data()["Job Description"],
-                           "volunteersCount": doc.data()["Volunteers Registered"],
-                           "voluntersReq": doc.data()["VolunteersReq"],
-                           "id": doc.id,
-                        }
-                     });
-                  }
-                  const db_collection = volunteers_collection;
-                  const user_query =  await query_db("Email", "==", user.Email,users_collection);
-                  if(user_query.empty){
-                     //Alert.alert("You are not a user. Please login with a user account");
-      
-                  }
-                  const task_name = task_data["Name"];
-                  const task_id = task_data["taskID"]; 
-                  const org_id = org_data["OrgID"];
-                  const volunteersReq = task_data["volunteersReq"];
-                  const volunteersCount = task_data["volunteersCount"];
-
-                  console.log("check2");
-                  if(volunteersCount >= volunteersReq){
-                     //Alert.alert("Sorry, this task is full");
-                  }
-                  else{
-                     console.log(user);
-                     const db_doc = {
-                        "Email" : user.Email,
-                        "Task Name": task_data["Name"],
-                        "TaskID": task_data["taskID"],
-                        "OrgID": org_id,
-                        "Status": "Pending"
-                     }
-                     console.log("check2");
-                     if(!isVolunteered){
-                        console.log(db);
-                        const doc_ref = doc(db,tasks_collection,task_data["id"]);
-                        await updateDoc(doc_ref,{
-                           "Volunteers Registered": volunteersCount + 1
-                        });
-                        await addNewDoc(db_collection,db_doc);
-                        Linking.openURL(data.data.formLink);
-                        console.log("New Volunteer Details Added");
-                        const task_volunteers = volunteersCount + 1;
-                        Alert.alert("You have been added to the volunteer list");
-                        setIsVolunteered(true);
-                     }
-                     else{
-                        Alert.alert("You have already volunteered for this task");
-                     }
-                  }    
-                  }
-                  else{
-                     Alert.alert("Please login with a user account");
-                  }
-            }}>
-                  <Text style={styles.volunteerText}>Volunteer</Text>
-               </TouchableOpacity>
+            <TouchableOpacity style={styles.editButton}>
+               <Text style={styles.editText}>Edit Task</Text>
+            </TouchableOpacity>
             <StatusBar style="auto" />
          </View>
       )
@@ -255,15 +185,13 @@ const styles = StyleSheet.create({
    tagContainer: {
       flexDirection: "row",
       marginBottom: 5,
-      justifyContent: "center",
-      gap: 20,
+      // justifyContent: "center",
    },
    logoContainer: {
+      flex: 1,
       flexDirection: "row",
       color: "#FF6B6B",
-      alignContent: "center",
       alignItems: "center",
-      width: "max-content",
       justifyContent: "center",
    },
    logoText: {
@@ -273,6 +201,7 @@ const styles = StyleSheet.create({
       paddingLeft: 2
    },
    descriptionContainer: {
+      flex:1,
       padding: 10,
    },
    subtitle: {
@@ -300,11 +229,12 @@ const styles = StyleSheet.create({
    },
    dataContainer: {
       flexDirection: "row",
-      justifyContent: "space-evenly",
       padding: 10,
       marginTop: 10,
+      flex: 1,
    },
    dataTile: {
+      flex: 1,
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
@@ -324,6 +254,18 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
+   },
+   editButton: {
+      backgroundColor: "#1A535C",
+      width: "100%",
+      height: 60,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 10,
+   }, 
+   editText: {
+      color: "#F7FFF7",
+      fontSize: 24,
    },
 });
 

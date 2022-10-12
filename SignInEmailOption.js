@@ -10,10 +10,11 @@ import { useEffect,useState } from 'react';
 
 
 
-export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
+export const SignInEmailOption = ({ navigation,setIsOrganisation,setIsLogged,setIsSigned,setIsGoogleAuth,setUserEmail }) => {
 
    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
       clientId: '51363481835-ofuhhpcteqcm2rod61bs6rf3rhfjkbrf.apps.googleusercontent.com',
+      androidClientId: '133007557332-eqn7ohskg2u004ceknkdtn5pk7kvava4.apps.googleusercontent.com'  
    });
 
    const [arr,setArr] = useState([]);
@@ -29,10 +30,12 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
          // Create a query against the collection and wait for the query to complete.
          const user_query = query_db("Email", "==", email,users_collection);
          const org_query = query_db("Email", "==", email,organisations_collection);
+         setUserEmail(email);
          return Promise.all([user_query,org_query]).then((values)=>{
             const user_query = values[0];
             const org_query = values[1];
             if(user_query.empty && org_query.empty){
+               
                setArr(["new","Signup"]);
             }
             else{
@@ -51,14 +54,21 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
 
    useEffect(() => {
       if(arr.length>0){
-         console.log(true);
          setIsSigned(true);
+         setIsGoogleAuth(true);
          if(arr[0]!="new"){
             setIsOrganisation(arr[0]);
-            navigation.navigate(arr[1]);
+            if (arr[1] == "OrganizationFeed"){
+               setIsLogged(true);
+               navigation.navigate("OrganizationFeed");
+            }else{
+               setIsLogged(true);
+               navigation.navigate("Feed")
+            }
+            
          }
          else{
-            console.log("Yessss");
+            console.log("No user found");
             navigation.navigate("VolunteerOptions");
          }
       }
@@ -68,7 +78,7 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
 
    
 
-   const navigation = useNavigation();
+   // const navigation = useNavigation();
    return (
       
       <View style={styles.container}>
@@ -82,7 +92,6 @@ export const SignInEmailOption = ({ setIsOrganisation,setIsSigned }) => {
                  
                   onPress={()=>{
                      promptAsync();
-                     setIsSigned(true);
                      
                      
                   }}   
