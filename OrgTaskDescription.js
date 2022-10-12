@@ -21,10 +21,11 @@ export const OrgTaskDescription = ({ route }) => {
    //const [task_data, setTaskData] = useState(data.data);
    //setTaskData(data.data);
    const imgsrc = {
-      "Environment": require("./assets/images/environment.png"),
+      "Environmental": require("./assets/images/environment.png"),
       "Community": require("./assets/images/community.png"),
       "Animal": require("./assets/images/user.png"),
       "Education": require("./assets/images/education.png"),
+      "Health":require("./assets/images/education.png"),
    }
    // let org_address = "";
    // let org_website = "";
@@ -153,6 +154,9 @@ export const OrgTaskDescription = ({ route }) => {
                   <Text style={styles.data}>Volunteers</Text>
                </View>
             </View>
+            <TouchableOpacity style={styles.editButton}>
+               <Text style={styles.editText}>Edit Task</Text>
+            </TouchableOpacity>
             <StatusBar style="auto" />
          </View>
       )
@@ -181,7 +185,7 @@ const styles = StyleSheet.create({
    tagContainer: {
       flexDirection: "row",
       marginBottom: 5,
-      justifyContent: "center",
+      // justifyContent: "center",
    },
    logoContainer: {
       flex: 1,
@@ -225,7 +229,6 @@ const styles = StyleSheet.create({
    },
    dataContainer: {
       flexDirection: "row",
-      justifyContent: "space-evenly",
       padding: 10,
       marginTop: 10,
       flex: 1,
@@ -251,6 +254,18 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
+   },
+   editButton: {
+      backgroundColor: "#1A535C",
+      width: "100%",
+      height: 60,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 10,
+   }, 
+   editText: {
+      color: "#F7FFF7",
+      fontSize: 24,
    },
 });
 

@@ -25,7 +25,9 @@ export const TaskDescription = ({ route }) => {
       "Community": require("./assets/images/community.png"),
       "Animal": require("./assets/images/user.png"),
       "Education": require("./assets/images/education.png"),
+      "Health":require("./assets/images/health.png"),
    }
+   console.log(data.data.type);
    // let org_address = "";
    // let org_website = "";
    // let org_phone = "";
@@ -54,11 +56,9 @@ export const TaskDescription = ({ route }) => {
             }
             setUser(user_info);
            // isUser = true;
-            console.log(data.data.organisation);
             let org_dat = {};
             const org_info = await query_db("Name", "==", data.data.organisation,organisations_collection);
             org_info.forEach((doc) => {
-               console.log(doc.data());
                org_dat = {
                   "Name": doc.data().Name,
                   "Address": doc.data().Address,
@@ -87,7 +87,6 @@ export const TaskDescription = ({ route }) => {
       }
    });}, []);
 
-   console.log(data);
    if(org_data.length == 0) {
       return(
         <View style={styles.loadingContainer}>
@@ -95,6 +94,7 @@ export const TaskDescription = ({ route }) => {
         </View>
       )
    }
+   
    else{ 
       return (
          
@@ -160,10 +160,9 @@ export const TaskDescription = ({ route }) => {
             <TouchableOpacity style={styles.volunteerButton} onPress={async () => {
                 if(isUser){
                   let task_data = {};
-                  console.log("A");
                   const task_query = await query_db("Task ID", "==", data.data.taskID,tasks_collection);
                   if(task_query.empty){
-                     console.log(data.data.taskID);
+
                      Alert.alert("No task found with that id");
                   }
                   else{
@@ -190,12 +189,10 @@ export const TaskDescription = ({ route }) => {
                   const volunteersReq = task_data["volunteersReq"];
                   const volunteersCount = task_data["volunteersCount"];
 
-                  console.log("check2");
                   if(volunteersCount >= volunteersReq){
                      //Alert.alert("Sorry, this task is full");
                   }
                   else{
-                     console.log(user);
                      const db_doc = {
                         "Email" : user.Email,
                         "Task Name": task_data["Name"],
@@ -203,9 +200,7 @@ export const TaskDescription = ({ route }) => {
                         "OrgID": org_id,
                         "Status": "Pending"
                      }
-                     console.log("check2");
                      if(!isVolunteered){
-                        console.log(db);
                         const doc_ref = doc(db,tasks_collection,task_data["id"]);
                         await updateDoc(doc_ref,{
                            "Volunteers Registered": volunteersCount + 1
@@ -228,7 +223,7 @@ export const TaskDescription = ({ route }) => {
             }}>
                   <Text style={styles.volunteerText}>Volunteer</Text>
                </TouchableOpacity>
-            <StatusBar style="auto" />
+            <StatusBar style="auto" /> 
          </View>
       )
    }

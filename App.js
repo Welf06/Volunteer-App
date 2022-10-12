@@ -56,7 +56,6 @@ export default function App() {
     }
   }, [isLogged])
   
-  
   return (
     <View style={{ flex: 1 }}>
       <NavigationContainer ref={navigationRef}>
