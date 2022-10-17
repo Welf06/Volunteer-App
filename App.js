@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Image,Text } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
@@ -8,7 +8,6 @@ import { StatusBar } from 'expo-status-bar';
 
 import { VolunteerFeed } from './VolunteerFeed';
 import { OrganizationTabs } from './OrganizationTabs';
-import { OrganizationFeed } from './OrganizationFeed';
 import { Profile } from './Profile';
 import { Login } from './Login';
 import { Signup } from './Signup';
@@ -21,7 +20,7 @@ import { OrgTaskDescription } from './OrgTaskDescription';
 //import { FeedCard } from './FeedCard';
 import { CreateTaskForm } from './CreateTaskForm';
 //import { getDocs, collection, doc, setDoc } from "firebase/firestore";
-import {  auth } from "./methods.js";
+import {  auth,query_db,users_collection,organisations_collection } from "./methods.js";
 //import { firebase, db, storage } from "./config.js";
 
 const Stack = createNativeStackNavigator();
@@ -40,23 +39,25 @@ export default function App() {
   const [isSigned, setIsSigned] = useState(false);
   const [isGoogleAuth,setIsGoogleAuth] = useState(false);
   const [userEmail,setUserEmail] = useState("");
-  const [user_image,setUserImage] = useState(null);
+  const [user_name,setUserName] = useState(null);
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
   useEffect(() => {
-    if(isGoogleAuth){
-      auth.onAuthStateChanged(async function (user) { 
-        if (user) {
-          setUserImage(user.photoURL);
+    auth.onAuthStateChanged(async function (user) { 
+      if (user) {
+        const user_query =  await query_db("Email", "==", user.email,users_collection);
+        const org_query = await query_db("Email", "==", user.email,organisations_collection);
+        if(!org_query.empty){ //If user is an organisation
+          setUserName(org_query.docs[0].data().Name);
         }
-      })
-    }else{
-      setUserImage('./assets/images/user.png');
-    }
-  }, [isLogged])
-  
-  return (
+        else{
+          setUserName(user_query.docs[0].data().Name);
+        }
+      }
+    });
+  }, [isSigned]);
+return (
     <View style={{ flex: 1 }}>
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator screenOptions={{
@@ -73,23 +74,22 @@ export default function App() {
           // Enable back button
 
           headerRight: () => (
-
             // Profile pic goes here
-            
-            <TouchableOpacity style={styles.button} onPress=
-              {() => {
-                navigationRef.navigate('Profile');
-              }}>
-
-
-              {isGoogleAuth?
-              <Image style={styles.profilePic} source={{ uri: user_image }} />
+            <View>
+              {(isSigned && isGoogleAuth) || (isSigned && isLogged) ?
+              <TouchableOpacity style={styles.button} onPress=
+                {() => {
+                  navigationRef.navigate('Profile');
+                  
+                }}>
+                <View style={styles.profilePic}>
+                    <Text style={styles.profileText}>{user_name.slice(0,1)}</Text>
+                  </View>
+              </TouchableOpacity>
               :
-              <Image style={styles.profilePic} source={require('./assets/images/user.png')} />
+              null
               }
-              
-
-            </TouchableOpacity>
+            </View>
           ),
           animation: 'slide_from_right',
 
@@ -155,14 +155,13 @@ export default function App() {
           <Stack.Screen name="OrgTaskDescription" component={OrgTaskDescription} />
         </Stack.Navigator>
       </NavigationContainer>
-      <StatusBar />
+      <StatusBar style="auto" />
     </View >
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    // backgroundColor: "#F7FFF7",
     width: 42,
     height: 42,
     borderRadius: 50,
@@ -171,7 +170,12 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 50,
-    backgroundColor: "#1A535C",
-    
+    backgroundColor: "#FF6B6B",
+  },
+  profileText: {
+    color: "#F7FFF7",
+    fontSize: 20,
+    textAlign: "center",
+    marginTop: 5,
   }
 });

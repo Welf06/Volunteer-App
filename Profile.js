@@ -14,28 +14,22 @@ let user_image = "";
 auth.onAuthStateChanged(async function(user) { //If User logged in on startup
     
   if (user) {
-
-      user_name = user.displayName;
       user_email = user.email;
       user_image = user.photoURL;
-
       const org_query =  await query_db("Email", "==", user.email,organisations_collection);
       if(!org_query.empty){ //If user is an organisation
-
-        org_query.forEach((doc) => {
-          contact_number = doc.data().Phone;
-          user_address = doc.data().Address;
-          user_bio = doc.data()["About Us"];
-        });
+          user_name = org_query.docs[0].data().Name; 
+          contact_number = org_query.docs[0].data().Phone;
+          user_address = org_query.docs[0].data().Address;
+          user_bio = org_query.docs[0].data()["About Us"];
       }
       else{
           const user_query =  await query_db("Email", "==", user.email,users_collection);
           if(!user_query.empty){
-            user_query.forEach((doc) => {
-              contact_number = doc.data().Phone;
-              user_address = doc.data().Location["City"] + ", " + doc.data().Location["Pincode"] + ", " + doc.data().Location["State"];
-              user_bio = doc.data()["About Me"];
-            });
+              user_name = org_query.docs[0].data().Name; 
+              contact_number = user_query.docs[0].data().Phone;
+              user_address = user_query.docs[0].data().Location["City"] + ", " + doc.data().Location["Pincode"] + ", " + doc.data().Location["State"];
+              user_bio = user_query.docs[0].data()["About Me"];
           }
       console.log("user signed in");
       }
@@ -49,12 +43,10 @@ auth.onAuthStateChanged(async function(user) { //If User logged in on startup
 export const Profile = ({isGoogleAuth}) => {
   return (
     <View style={styles.container}>
-    
-        {isGoogleAuth?
-              <Image style={styles.profilePic} source={{ uri: user_image }} />
-              :
-              <Image style={styles.profilePic} source={require('./assets/images/user.png')} />
-        }
+
+        <View style={styles.profilePic}>
+          <Text style={styles.profileText}>{user_name.slice(0,1)}</Text>
+        </View>  
         <Text style={styles.name}>{user_name}</Text>
         <View style={styles.about}>
         <Text style={styles.aboutText}>{user_bio}</Text>
@@ -62,11 +54,11 @@ export const Profile = ({isGoogleAuth}) => {
       </View>
       <View style={styles.contact}>
       
-          <Text style={styles.contactHeading}>Email: </Text>
+          <Text style={styles.contactHeading}>Email </Text>
           <Text style={styles.contactText}>{user_email}</Text>
-          <Text style={styles.contactHeading}>Contact Number: </Text>
+          <Text style={styles.contactHeading}>Contact Number </Text>
           <Text style={styles.contactText}>{contact_number}</Text>
-          <Text style={styles.contactHeading}>Address: </Text>
+          <Text style={styles.contactHeading}>Address </Text>
           <Text style={styles.contactText}>{user_address}</Text>
 
 
@@ -88,12 +80,16 @@ const styles = StyleSheet.create({
       width: 200,
       height: 200,
       borderRadius: 100,
-      borderWidth: 10,
-      borderColor: "#4ECDC4",
+      backgroundColor: "#FF6B6B",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    profileText:{       
+      fontSize: 100,
+      color: "#F7FFF7",
     },
     name: {
       fontSize: 30,
-      fontWeight: 'bold',
       fontFamily: 'Poppins',
       color: "#1A535C",
       textAlign: 'center',

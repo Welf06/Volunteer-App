@@ -82,7 +82,7 @@ export const SignInEmailOption = ({ navigation,setIsOrganisation,setIsLogged,set
    return (
       
       <View style={styles.container}>
-         <ScrollView style={styles.scroll}>
+         <View>
                <TouchableOpacity style={styles.button}
                   onPress={() => navigation.navigate("Login")}
                >
@@ -100,7 +100,7 @@ export const SignInEmailOption = ({ navigation,setIsOrganisation,setIsLogged,set
                   <Text style={styles.googleText}>Continue with Google</Text>
                </TouchableOpacity>
             <StatusBar style="auto" />
-         </ScrollView>
+         </View>
       </View>
    )
 }
@@ -113,14 +113,8 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center',
    },
-   scroll: {
-      flex: 1,
-      margin: 20,
-      marginLeft: 0,
-      marginRight: 0,
-   },
    button: {
-      marginTop: 160,
+      // marginTop: 160,
       backgroundColor: "#1A535C",
       width: 300,
       height: 50,
@@ -141,6 +135,7 @@ const styles = StyleSheet.create({
       height: 50,
       padding: 10,
       marginTop: 50,
+      marginBottom: 50,
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 2,
