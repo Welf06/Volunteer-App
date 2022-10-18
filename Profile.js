@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View,Image } from 'react-native';
 import {useState,useEffect} from 'react';
 
+import { Loading } from './Loading.js';
 import { query_db,users_collection,organisations_collection,auth} from "./methods.js";
 
 
@@ -27,7 +28,9 @@ export const Profile = ({profileData,setProfileData}) =>{
       }
     });
   }, []);  
-    if(profileData["Name"] != undefined){   
+    if(profileData["Name"] == undefined){
+        return <Loading />
+    }   
       return (
       <View style={styles.container}>
 
@@ -53,7 +56,7 @@ export const Profile = ({profileData,setProfileData}) =>{
         </View>
       </View>
     );
-    }
+    
 }
 
 

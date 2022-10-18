@@ -21,6 +21,7 @@ import { OrgTaskDescription } from './OrgTaskDescription';
 import { CreateTaskForm } from './CreateTaskForm';
 //import { getDocs, collection, doc, setDoc } from "firebase/firestore";
 import {  auth,query_db,users_collection,organisations_collection } from "./methods.js";
+import { Loading } from './Loading';
 //import { firebase, db, storage } from "./config.js";
 
 const Stack = createNativeStackNavigator();
@@ -41,12 +42,13 @@ export default function App() {
   const [profileData,setProfileData] = useState({});
   const [userEmail,setUserEmail] = useState("");
   const [user_name,setUserName] = useState(null);
+  const [autoLogin,setAutoLogin] = useState(true);
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
 
   auth.onAuthStateChanged(async function (user) {
-    if (user.displayName == undefined) {
+    if (user != false && user.displayName == undefined) {
       setIsGoogleAuth(false);
     }  
     if (user) {
@@ -61,9 +63,16 @@ export default function App() {
       }
       setIsLogged(true);
       setIsSigned(true);
-    }
+    } 
+      setAutoLogin(false);
   });
-return (
+
+  if(autoLogin){
+    return (
+      <Loading />
+    );
+  }
+  return (
     <View style={{ flex: 1 }}>
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator screenOptions={{
