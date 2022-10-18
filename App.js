@@ -38,25 +38,31 @@ export default function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
   const [isGoogleAuth,setIsGoogleAuth] = useState(false);
+  const [profileData,setProfileData] = useState({});
   const [userEmail,setUserEmail] = useState("");
   const [user_name,setUserName] = useState(null);
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
-  useEffect(() => {
-    auth.onAuthStateChanged(async function (user) { 
-      if (user) {
-        const user_query =  await query_db("Email", "==", user.email,users_collection);
-        const org_query = await query_db("Email", "==", user.email,organisations_collection);
-        if(!org_query.empty){ //If user is an organisation
-          setUserName(org_query.docs[0].data().Name);
-        }
-        else{
-          setUserName(user_query.docs[0].data().Name);
-        }
+
+  auth.onAuthStateChanged(async function (user) {
+    if (user.displayName == undefined) {
+      setIsGoogleAuth(false);
+    }  
+    if (user) {
+      const user_query =  await query_db("Email", "==", user.email,users_collection);
+      const org_query = await query_db("Email", "==", user.email,organisations_collection);
+      if(!org_query.empty){ //If user is an organisation
+        setUserName(org_query.docs[0].data().Name);
+        setIsOrganisation(true);
       }
-    });
-  }, [isSigned]);
+      else{
+        setUserName(user_query.docs[0].data().Name);
+      }
+      setIsLogged(true);
+      setIsSigned(true);
+    }
+  });
 return (
     <View style={{ flex: 1 }}>
       <NavigationContainer ref={navigationRef}>
@@ -150,7 +156,9 @@ return (
               <Stack.Screen name="Feed" component={VolunteerFeed} />
               </Stack.Group>
             )))}
-          <Stack.Screen name="Profile" component={Profile} isGoogleAuth={isGoogleAuth} />
+          <Stack.Screen name="Profile">
+            {props => (<Profile {...props} profileData={profileData} setProfileData={setProfileData} />)}
+          </Stack.Screen>
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
           <Stack.Screen name="OrgTaskDescription" component={OrgTaskDescription} />
         </Stack.Navigator>
