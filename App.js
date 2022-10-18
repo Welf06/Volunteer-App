@@ -17,15 +17,11 @@ import { ProfileCreation } from './ProfileCreation';
 import { OrgProfileCreation } from './OrgProfileCreation';
 import { TaskDescription } from './TaskDescription';
 import { OrgTaskDescription } from './OrgTaskDescription';
-//import { FeedCard } from './FeedCard';
 import { CreateTaskForm } from './CreateTaskForm';
-//import { getDocs, collection, doc, setDoc } from "firebase/firestore";
 import {  auth,query_db,users_collection,organisations_collection } from "./methods.js";
 import { Loading } from './Loading';
-//import { firebase, db, storage } from "./config.js";
 
 const Stack = createNativeStackNavigator();
-
 
 
 export default function App() {
@@ -38,34 +34,74 @@ export default function App() {
   const [isOrganization, setIsOrganisation] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
+  const [logOut, setLogOut] = useState(false);
   const [isGoogleAuth,setIsGoogleAuth] = useState(false);
   const [profileData,setProfileData] = useState({});
   const [userEmail,setUserEmail] = useState("");
-  const [user_name,setUserName] = useState(null);
   const [autoLogin,setAutoLogin] = useState(true);
 
   const navigationRef = useNavigationContainerRef();
   const [taskData, setTaskData] = useState([]);
+ 
+  const renderProfile = ({profileData}) => {
+  try{
+    return (
+            <View>
+              <TouchableOpacity style={styles.button} onPress=
+                {() => {
+                  navigationRef.navigate('Profile');
+                  
+                }}>
+                <View style={styles.profilePic}>
+                    <Text style={styles.profileText}>{profileData.Name.slice(0,1)}</Text>
+                  </View>
+              </TouchableOpacity>
+            </View>
+          );
+    }catch(err){
+      return null;
+    }
+}
 
-  auth.onAuthStateChanged(async function (user) {
-    if (user != false && user.displayName == undefined) {
+
+  useEffect(() => {
+    if (logOut) {
+      // console.log(logOut);
+      auth.signOut()
+      setIsLogged(false);
+      setIsSigned(false);
       setIsGoogleAuth(false);
-    }  
+      setLogOut(false);
+      setProfileData({});
+      setUserEmail("");
+      setIsOrganisation(false);
+      setAutoLogin(false);
+    }
+  }, [logOut])
+
+  useEffect(() => {
+  auth.onAuthStateChanged(async function (user) {
+    // console.log(autoLogin
+    // console.log(profileData);
     if (user) {
       const user_query =  await query_db("Email", "==", user.email,users_collection);
       const org_query = await query_db("Email", "==", user.email,organisations_collection);
       if(!org_query.empty){ //If user is an organisation
-        setUserName(org_query.docs[0].data().Name);
+        setUserEmail(user.email);
+        setProfileData({Email:user.email,Name:org_query.docs[0].data().Name,Description:org_query.docs[0].data()["About Us"],Location:org_query.docs[0].data().Location,Phone:org_query.docs[0].data().Phone});
         setIsOrganisation(true);
+
       }
       else{
-        setUserName(user_query.docs[0].data().Name);
+        setUserEmail(user.email);
+        setProfileData({Email:user.email,Name:user_query.docs[0].data().Name,Description:user_query.docs[0].data().Description,Location:user_query.docs[0].data().Location,Phone:user_query.docs[0].data().Phone});
       }
       setIsLogged(true);
       setIsSigned(true);
-    } 
-      setAutoLogin(false);
+    }
+    setAutoLogin(false);
   });
+  }, []);
 
   if(autoLogin){
     return (
@@ -87,25 +123,8 @@ export default function App() {
             fontFamily: 'Poppins',
           },
           // Enable back button
-
-          headerRight: () => (
-            // Profile pic goes here
-            <View>
-              {(isSigned && isGoogleAuth) || (isSigned && isLogged) ?
-              <TouchableOpacity style={styles.button} onPress=
-                {() => {
-                  navigationRef.navigate('Profile');
-                  
-                }}>
-                <View style={styles.profilePic}>
-                    <Text style={styles.profileText}>{user_name.slice(0,1)}</Text>
-                  </View>
-              </TouchableOpacity>
-              :
-              null
-              }
-            </View>
-          ),
+          headerBackTitleVisible: true,
+          headerRight: () => renderProfile({profileData}),
           animation: 'slide_from_right',
 
         }}>
@@ -166,7 +185,7 @@ export default function App() {
               </Stack.Group>
             )))}
           <Stack.Screen name="Profile">
-            {props => (<Profile {...props} profileData={profileData} setProfileData={setProfileData} />)}
+            {props => (<Profile {...props} profileData={profileData} setLogOut={setLogOut}/>)}
           </Stack.Screen>
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
           <Stack.Screen name="OrgTaskDescription" component={OrgTaskDescription} />

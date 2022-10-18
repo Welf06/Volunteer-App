@@ -3,31 +3,11 @@ import {useState,useEffect} from 'react';
 
 import { Loading } from './Loading.js';
 import { query_db,users_collection,organisations_collection,auth} from "./methods.js";
+import { TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
+export const Profile = ({navigation,profileData,setLogOut}) =>{
 
-
-export const Profile = ({profileData,setProfileData}) =>{
-  useEffect(() => {
-      auth.onAuthStateChanged(async function(user) { //If User logged in on startup
-          
-      if (user) {
-          setProfileData({"Email":user.email});
-          const org_query =  await query_db("Email", "==", user.email,organisations_collection);
-          if(!org_query.empty){ //If user is an organisation
-              setProfileData({"Email":user.email,"Name":org_query.docs[0].data().Name,"Description":org_query.docs[0].data()["About Us"],"Location":org_query.docs[0].data().Location});
-          }
-
-          else{
-              const user_query =  await query_db("Email", "==", user.email,users_collection);
-              if(!user_query.empty){
-                  setProfileData({"Email":user.email,"Name":user_query.docs[0].data().Name,"Description":user_query.docs[0].data()["About Me"],"Location":user_query.docs[0].data().Location});
-              }
-          }
-          
-        // User is signed in.
-      }
-    });
-  }, []);  
     if(profileData["Name"] == undefined){
         return <Loading />
     }   
@@ -54,6 +34,14 @@ export const Profile = ({profileData,setProfileData}) =>{
 
         
         </View>
+        <TouchableOpacity style={styles.button} onPress={async () => {
+            await setLogOut(true);
+            navigation.navigate('SignInEmailOption');
+        }}>
+          <Icon name="sign-out" size={30} color="#F7FFF7" /> 
+          <Text style={styles.buttonText}>Log Out</Text>
+        </TouchableOpacity>
+
       </View>
     );
     
@@ -66,6 +54,7 @@ const styles = StyleSheet.create({
       padding: 20,
       backgroundColor: "#F7FFF7",
       alignItems: 'center',
+      justifyContent: 'space-evenly',
     },
     profilePic: {
       width: 200,
@@ -113,6 +102,24 @@ const styles = StyleSheet.create({
       fontSize: 15,
       fontFamily: 'Poppins',
       color: "#1A535C",
+    }
+    ,
+    button: {
+      // marginTop: 20,
+      width: 350,
+      backgroundColor: "#1A535C",
+      height: 60,
+      padding: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
+      borderRadius: 15,
+    },
+    buttonText: {
+      fontSize: 20,
+      paddingLeft: 10,
+      fontFamily: 'Poppins',
+      color: "#F7FFF7",
     }
 
   });
