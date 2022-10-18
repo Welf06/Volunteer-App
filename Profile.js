@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
       justifyContent: 'space-evenly',
     },
     profilePic: {
-      marginTop: 350,
       width: 200,
       height: 200,
       borderRadius: 100,
@@ -129,7 +128,6 @@ const styles = StyleSheet.create({
       color: "#F7FFF7",
     },
     stats: {
-      padding: 10,
     },
 
   });

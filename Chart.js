@@ -1,56 +1,68 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import Victory from "./victory"
-import CalendarHeatmap from 'react-calendar-heatmap';
 
 const VictoryBar = Victory.VictoryBar;
 const VictoryChart = Victory.VictoryChart;
 const VictoryTheme = Victory.VictoryTheme;
 const VictoryLine = Victory.VictoryLine;
+const VictoryArea = Victory.VictoryArea;
+const VictoryAxis = Victory.VictoryAxis;
 
 const data = [
-   { x: 1, y: 2 },
-   { x: 2, y: 3 },
-   { x: 3, y: 5 },
-   { x: 4, y: 4 },
-   { x: 5, y: 7 }
+   { x: "19/10/22", y: '1', y0: 0 },
+   { x: "20/10/22", y: '1', y0: 0 },
+   { x: "21/10/22", y: '3', y0: 0 },
+   { x: "22/10/22", y: '3', y0: 0 },
+   { x: "23/10/22", y: '4', y0: 0 }
 ]
 
+const dates = []
+
 export default function Chart() {
+   VictoryTheme.material.axis.style.grid.strokeWidth = 0;
    return (
       <View style={styles.container}>
-         {/* <VictoryChart
+         <Text style={styles.heading}>Your Progress</Text>
+         <VictoryChart
             theme={VictoryTheme.material}
+            padding={25}
+            height={250}
          >
-            <VictoryLine
+            <VictoryArea
                style={{
-                  data: { stroke: "#ff6b6b", strokeWidth: 5,},
+                  data: { stroke: "#ff6b6b", strokeWidth: 5, fill: "#ff6b6b" },
                   parent: { backgroundColor: "#F7FFF7" },
+                  grid: { stroke: "none" }
                }}
+               chartConfig={{ decimalPlaces: 0 }}
                data={data}
+               categories={{
+                  x: dates
+               }}
                animate={{
                   duration: 2000,
                   onLoad: { duration: 1000 }
                }}
-               interpolation="natural"
+            // interpolation="natural"
             />
-         </VictoryChart> */}
-         <CalendarHeatmap
-  startDate={new Date('2016-01-01')}
-  endDate={new Date('2016-04-01')}
-  values={[
-    { date: '2016-01-01', count: 12 },
-    { date: '2016-01-22', count: 122 },
-    { date: '2016-01-30', count: 38 },
-    // ...and so on
-  ]}
-/>
+         </VictoryChart>
       </View>
    );
 }
 
 const styles = StyleSheet.create({
    container: {
-      backgroundColor: "#F7FFF7"
-   }
+      backgroundColor: "#F7FFF7",
+      width: "100%",
+   },
+   heading: {
+      fontSize: 20,
+      fontWeight: "bold",
+      fontFamily: "Poppins",
+      color: "#FF6B6B",
+      textAlign: "center",
+      marginTop: 20,
+   },
+
 });
