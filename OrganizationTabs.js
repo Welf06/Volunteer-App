@@ -6,7 +6,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 const Tab = createMaterialTopTabNavigator();
 
 
-export const OrganizationTabs = ({navigation}) => {
+export const OrganizationTabs = ({navigation,userEmail}) => {
     return (
         <Tab.Navigator screenOptions={
             {
@@ -25,7 +25,10 @@ export const OrganizationTabs = ({navigation}) => {
                 }
             }
         }>
-            <Tab.Screen name="Create" component={OrganizationFeed} />
+            <Tab.Screen name="Create">
+                {props => (<OrganizationFeed {...props} userEmail={userEmail}/>)}
+            </Tab.Screen>
+            
             <Tab.Screen name="Browse" component={VolunteerFeed} />
         </Tab.Navigator>
     )

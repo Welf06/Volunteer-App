@@ -6,9 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const TaskCard = (props) => {
     const navigation = useNavigation();
-
     const imgsrc = {
-        "Environment": require("./assets/images/environment.png"),
+        "Environmental": require("./assets/images/environment.png"),
         "Community": require("./assets/images/community.png"),
         "Animal": require("./assets/images/animal.png"),
         "Education": require("./assets/images/education.png"),
@@ -27,15 +26,16 @@ export const TaskCard = (props) => {
         <View>
             <Text style={styles.text}>
                     {`${props.type} `}
-                    
-                    {props.type === "Environment" && <Icon name="tree" size={20} color="#F7FFF7"/>}
+                    {props.type === "Environmental" && <Icon name="tree" size={20} color="#F7FFF7"/>}
                     {props.type === "Community" && <Icon name="user" size={20} color="#F7FFF7"/>}
                     {props.type === "Animal" && <Icon name="paw" size={20} color="#F7FFF7"/>}
                     {props.type === "Education" && <Icon name="book" size={20} color="#F7FFF7"/>}
                     {props.type === "Health" && <Icon name="medkit" size={20} color="#F7FFF7"/>}
                 </Text>
                 <Text style={styles.text}>
-                    {`${props.location} `}
+                    {
+                        props.remote ? "Remote " : props.location
+                    }
                     <Icon name="map-marker" size={20} color="#F7FFF7"/>
                 </Text>
         </View>

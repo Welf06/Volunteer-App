@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView,Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword,inMemoryPersistence } from 'firebase/auth';
 import { useState } from 'react';
 import { auth, users_collection,query_db,organisations_collection} from './methods';
 
 
 
-export const Login = ({ setIsOrganisation, setIsLogged ,setIsSigned }) => {
+export const Login = ({ setIsOrganisation, setIsLogged ,setIsSigned,setUserEmail }) => {
     const navigation = useNavigation();
     const [LoginEmail, setLoginEmail] = useState('');
     const [LoginPassword, setLoginPassword] = useState('');
@@ -27,8 +27,7 @@ export const Login = ({ setIsOrganisation, setIsLogged ,setIsSigned }) => {
                         </View>
                     </View>
                     <TouchableOpacity style={styles.button}
-                        onPress={async () => {
-                            
+                        onPress={async () => {  
                             try {
                                 await signInWithEmailAndPassword(auth, LoginEmail, LoginPassword);
                                 const user_query = await query_db("Email","==",LoginEmail,users_collection);
@@ -40,6 +39,7 @@ export const Login = ({ setIsOrganisation, setIsLogged ,setIsSigned }) => {
                                 }
                                 else if(!user_query.empty){
                                     console.log("User found");
+                                    setUserEmail(LoginEmail);
                                     setIsSigned(true);
                                     setIsLogged(true);
                                     setIsOrganisation(false);
@@ -47,6 +47,7 @@ export const Login = ({ setIsOrganisation, setIsLogged ,setIsSigned }) => {
                                 }
                                 else{
                                     console.log("Organisation found");
+                                    setUserEmail(LoginEmail);
                                     setIsSigned(true);
                                     setIsLogged(true);
                                     setIsOrganisation(true);
@@ -57,6 +58,9 @@ export const Login = ({ setIsOrganisation, setIsLogged ,setIsSigned }) => {
                                 
                             } catch (error) {
                                 console.log(error);
+                                if(error = 'auth/wrong-password'){
+                                    Alert.alert("Wrong password");
+                                }
                             }
 
                         }}
