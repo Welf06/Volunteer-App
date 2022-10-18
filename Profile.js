@@ -36,7 +36,7 @@ export const Profile = ({navigation,profileData,setLogOut}) =>{
         </View>
         <TouchableOpacity style={styles.button} onPress={async () => {
             await setLogOut(true);
-            navigation.navigate('SignInEmailOption');
+            // navigation.navigate('SignInEmailOption');
         }}>
           <Icon name="sign-out" size={30} color="#F7FFF7" /> 
           <Text style={styles.buttonText}>Log Out</Text>

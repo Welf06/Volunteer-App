@@ -67,7 +67,7 @@ export default function App() {
   useEffect(() => {
     if (logOut) {
       // console.log(logOut);
-      auth.signOut()
+      auth.signOut().then(() => {
       setIsLogged(false);
       setIsSigned(false);
       setIsGoogleAuth(false);
@@ -76,6 +76,8 @@ export default function App() {
       setUserEmail("");
       setIsOrganisation(false);
       setAutoLogin(false);
+      navigationRef.navigate('SignInEmailOption');
+      });
     }
   }, [logOut])
 
@@ -83,6 +85,7 @@ export default function App() {
   auth.onAuthStateChanged(async function (user) {
     // console.log(autoLogin
     // console.log(profileData);
+
     if (user) {
       const user_query =  await query_db("Email", "==", user.email,users_collection);
       const org_query = await query_db("Email", "==", user.email,organisations_collection);
@@ -92,7 +95,7 @@ export default function App() {
         setIsOrganisation(true);
 
       }
-      else{
+      else if(!user_query.empty){
         setUserEmail(user.email);
         setProfileData({Email:user.email,Name:user_query.docs[0].data().Name,Description:user_query.docs[0].data().Description,Location:user_query.docs[0].data().Location,Phone:user_query.docs[0].data().Phone});
       }
