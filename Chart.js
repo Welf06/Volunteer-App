@@ -23,7 +23,7 @@ export default function Chart() {
          >
             <VictoryLine
                style={{
-                  data: { stroke: "#ff6b6b",strokeWidth: 15,},
+                  data: { stroke: "#ff6b6b", strokeWidth: 5,},
                   parent: { backgroundColor: "#F7FFF7" },
                }}
                data={data}
@@ -31,6 +31,7 @@ export default function Chart() {
                   duration: 2000,
                   onLoad: { duration: 1000 }
                }}
+               interpolation="natural"
             />
          </VictoryChart>
       </View>
