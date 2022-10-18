@@ -1,29 +1,44 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
+import Victory from "./victory"
+
+const VictoryBar = Victory.VictoryBar;
+const VictoryChart = Victory.VictoryChart;
+const VictoryTheme = Victory.VictoryTheme;
+const VictoryLine = Victory.VictoryLine;
 
 const data = [
-  { quarter: 1, earnings: 13000 },
-  { quarter: 2, earnings: 16500 },
-  { quarter: 3, earnings: 14250 },
-  { quarter: 4, earnings: 19000 }
-];
+   { x: 1, y: 2 },
+   { x: 2, y: 3 },
+   { x: 3, y: 5 },
+   { x: 4, y: 4 },
+   { x: 5, y: 7 }
+]
 
 export default function Chart() {
-    return (
+   return (
       <View style={styles.container}>
-        <VictoryChart width={350} theme={VictoryTheme.material}>
-          <VictoryBar data={data} x="quarter" y="earnings" />
-        </VictoryChart>
+         <VictoryChart
+            theme={VictoryTheme.material}
+         >
+            <VictoryLine
+               style={{
+                  data: { stroke: "#ff6b6b",strokeWidth: 15,},
+                  parent: { backgroundColor: "#F7FFF7" },
+               }}
+               data={data}
+               animate={{
+                  duration: 2000,
+                  onLoad: { duration: 1000 }
+               }}
+            />
+         </VictoryChart>
       </View>
-    );
+   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f5fcff"
-  }
+   container: {
+      backgroundColor: "#F7FFF7"
+   }
 });

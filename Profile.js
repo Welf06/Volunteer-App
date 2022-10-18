@@ -23,9 +23,11 @@ export const Profile = ({navigation,profileData,setLogOut}) =>{
           <View style={styles.about}>
           <Text style={styles.aboutText}>{profileData.Description}</Text>
         </View>
+
         <View style={styles.stats}>
           <Chart />
         </View>
+
         <View style={styles.contact}>
         
             <Text style={styles.contactHeading}>Email </Text>
@@ -61,6 +63,7 @@ const styles = StyleSheet.create({
       justifyContent: 'space-evenly',
     },
     profilePic: {
+      marginTop: 350,
       width: 200,
       height: 200,
       borderRadius: 100,
@@ -124,6 +127,9 @@ const styles = StyleSheet.create({
       paddingLeft: 10,
       fontFamily: 'Poppins',
       color: "#F7FFF7",
-    }
+    },
+    stats: {
+      padding: 10,
+    },
 
   });

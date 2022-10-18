@@ -131,6 +131,9 @@ export default function App() {
           animation: 'slide_from_right',
 
         }}>
+          <Stack.Screen name="Profile">
+            {props => (<Profile {...props} profileData={profileData} setLogOut={setLogOut}/>)}
+          </Stack.Screen>
           {!isLogged & !isSigned ? (
             <Stack.Group>
 
@@ -187,9 +190,6 @@ export default function App() {
               <Stack.Screen name="Feed" component={VolunteerFeed} />
               </Stack.Group>
             )))}
-          <Stack.Screen name="Profile">
-            {props => (<Profile {...props} profileData={profileData} setLogOut={setLogOut}/>)}
-          </Stack.Screen>
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
           <Stack.Screen name="OrgTaskDescription" component={OrgTaskDescription} />
         </Stack.Navigator>
