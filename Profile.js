@@ -6,6 +6,8 @@ import { query_db,users_collection,organisations_collection,auth} from "./method
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import Chart from './Chart.js';
+
 export const Profile = ({navigation,profileData,setLogOut}) =>{
 
     if(profileData["Name"] == undefined){
@@ -20,7 +22,9 @@ export const Profile = ({navigation,profileData,setLogOut}) =>{
           <Text style={styles.name}>{profileData.Name}</Text>
           <View style={styles.about}>
           <Text style={styles.aboutText}>{profileData.Description}</Text>
-        
+        </View>
+        <View style={styles.stats}>
+          <Chart />
         </View>
         <View style={styles.contact}>
         

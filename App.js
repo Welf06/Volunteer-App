@@ -36,7 +36,7 @@ export default function App() {
   const [isSigned, setIsSigned] = useState(false);
   const [logOut, setLogOut] = useState(false);
   const [isGoogleAuth,setIsGoogleAuth] = useState(false);
-  const [profileData,setProfileData] = useState({});
+  const [profileData,setProfileData] = useState({Name : "Ganesh Nathan", Email: "abc@gmail.com"});
   const [userEmail,setUserEmail] = useState("");
   const [autoLogin,setAutoLogin] = useState(true);
 
