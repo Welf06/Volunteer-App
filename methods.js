@@ -154,4 +154,4 @@ async function getJobsDoneEachMonth(){
 
 
 
-export {addNewDoc,query_db,users_collection,organisations_collection,auth,provider,environment,isNewUser,tasks_collection,task_images_storage_path,volunteers_collection};
+export {addNewDoc,query_db,users_collection,organisations_collection,auth,provider,environment,isNewUser,tasks_collection,task_images_storage_path,volunteers_collection,getJobsDoneEachMonth};
