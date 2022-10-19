@@ -51,4 +51,107 @@ async function query_db(query_field,query_operator,query_value,db_collection){
         throw error;
     }
 }
-export {addNewDoc,query_db,users_collection,organisations_collection,auth,provider,environment,isNewUser,tasks_collection,task_images_storage_path,volunteers_collection};
+
+
+async function getCompletedJobs(){
+    try{
+        
+        await auth.onAuthStateChanged(async function (user) { 
+            if (user) {
+                const user_query = await query_db("Email","==",user.email,users_collection);
+                const user_query_res = user_query.docs[0].data();
+                const user_completed_jobs = user_query_res.Completed_Jobs;
+                return user_completed_jobs;
+            }
+            else{
+                throw "No user logged in";
+            }
+        });
+    }
+    catch(error){
+        console.error("Error querying document: ", error);
+        throw error;
+    }
+}
+
+
+//Formt of completed task information stored inside Completed_Jobs array in user document
+/* 
+{
+        "Start Date":"01/01/2021",
+        "End Date":"01/02/2021",
+        "Task": "Task 1",
+        "OrgID": "Org1",
+        "TaskID": "Task1",
+
+
+}
+*/
+
+//Returns Jobs Done Each Month in the following format
+// {
+//     "2021":{
+//         "01": 1,
+//         "02": 2,
+//         "03": 3,
+//         "04": 4,
+//          .
+//          .
+//         "12": 2
+//      },
+//     "2022":{
+//         "01": 1,
+//         "02": 2,
+//           .
+//           .
+//         "12": 2
+//      }
+//       .
+//       .
+// }
+async function getJobsDoneEachMonth(){ 
+    try{
+        const user_completed_jobs = await getCompletedJobs();
+        user_completed_jobs.forEach((job) => {
+            const job_start_date = job["Start Date"];
+            const job_end_date = job["End Date"];
+            const jobs_each_month = {};
+            const job_start_month = job_start_date.split("/")[1];
+            const job_end_month = job_end_date.split("/")[1];
+            const job_start_year = job_start_date.split("/")[2];
+            const job_end_year = job_end_date.split("/")[2];
+            if(jobs_each_month.job_start_year == undefined){
+                jobs_each_month.job_start_year = {};
+            }
+            if(jobs_each_month.job_start_year.job_start_month == undefined){
+                jobs_each_month.job_start_year.job_start_month = 0;
+            }
+            if(jobs_each_month.job_end_year == undefined){
+                jobs_each_month.job_end_year = {};
+            }
+            if(jobs_each_month.job_end_year.job_end_month == undefined){
+                jobs_each_month.job_end_year.job_end_month = 0;
+            }
+            // if job doesn't start and end in the same month and year
+            if(!job_start_month == job_end_month || !job_start_year == job_end_year){
+                jobs_each_month.job_end_year.job_end_month += 1;
+            }
+            jobs_each_month.job_start_year.job_start_month += 1;
+        });
+        return jobs_each_month;
+    }
+    catch(error){
+        console.error("Error querying document: ", error);
+        throw error;
+    }
+}
+            
+
+
+
+
+
+
+
+
+export {addNewDoc,query_db,users_collection,organisations_collection,auth,provider,environment,isNewUser,tasks_collection,task_images_storage_path,volunteers_collection,getJobsDoneEachMonth};
