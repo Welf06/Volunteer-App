@@ -14,6 +14,7 @@ export const Profile = ({navigation,profileData,setLogOut}) =>{
         return <Loading />
     }   
       return (
+        <View style={styles.containers}>
       <View style={styles.container}>
 
           <View style={styles.profilePic}>
@@ -49,6 +50,7 @@ export const Profile = ({navigation,profileData,setLogOut}) =>{
         </TouchableOpacity>
 
       </View>
+      </View>
     );
     
 }
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
       padding: 20,
       backgroundColor: "#F7FFF7",
       alignItems: 'center',
-      justifyContent: 'space-evenly',
+      // justifyContent: 'space-evenly',
     },
     profilePic: {
       width: 200,
