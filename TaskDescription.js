@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native';
 import { doc,updateDoc } from "firebase/firestore";
 import { addNewDoc,query_db,users_collection,organisations_collection,auth,tasks_collection,volunteers_collection } from "./methods.js";
 import { db} from "./config.js";
-
+import { Loading } from './Loading.js';
 
 
 export const TaskDescription = ({ route }) => {
@@ -27,7 +27,6 @@ export const TaskDescription = ({ route }) => {
       "Education": require("./assets/images/education.png"),
       "Health":require("./assets/images/health.png"),
    }
-   console.log(data.data.type);
    // let org_address = "";
    // let org_website = "";
    // let org_phone = "";
@@ -89,9 +88,7 @@ export const TaskDescription = ({ route }) => {
 
    if(org_data.length == 0) {
       return(
-        <View style={styles.loadingContainer}>
-          <Text style={styles.title}>Loading...</Text>
-        </View>
+         <Loading/>
       )
    }
    

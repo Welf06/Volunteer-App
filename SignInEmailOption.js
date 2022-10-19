@@ -10,8 +10,8 @@ import { useEffect,useState } from 'react';
 
 
 
-export const SignInEmailOption = ({ navigation,setIsOrganisation,setIsLogged,setIsSigned,setIsGoogleAuth,setUserEmail }) => {
-
+export const SignInEmailOption = ({ setIsOrganisation,setIsLogged,setIsSigned,setIsGoogleAuth,setUserEmail }) => {
+   const navigation = useNavigation();
    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
       clientId: '51363481835-ofuhhpcteqcm2rod61bs6rf3rhfjkbrf.apps.googleusercontent.com',
       androidClientId: '133007557332-eqn7ohskg2u004ceknkdtn5pk7kvava4.apps.googleusercontent.com'  
@@ -58,14 +58,8 @@ export const SignInEmailOption = ({ navigation,setIsOrganisation,setIsLogged,set
          setIsGoogleAuth(true);
          if(arr[0]!="new"){
             setIsOrganisation(arr[0]);
-            if (arr[1] == "OrganizationFeed"){
-               setIsLogged(true);
-               navigation.navigate("OrganizationFeed");
-            }else{
-               setIsLogged(true);
-               navigation.navigate("Feed")
-            }
-            
+            setIsLogged(true);
+            navigation.navigate(arr[1]);
          }
          else{
             console.log("No user found");
@@ -82,7 +76,7 @@ export const SignInEmailOption = ({ navigation,setIsOrganisation,setIsLogged,set
    return (
       
       <View style={styles.container}>
-         <ScrollView style={styles.scroll}>
+         <View>
                <TouchableOpacity style={styles.button}
                   onPress={() => navigation.navigate("Login")}
                >
@@ -100,7 +94,7 @@ export const SignInEmailOption = ({ navigation,setIsOrganisation,setIsLogged,set
                   <Text style={styles.googleText}>Continue with Google</Text>
                </TouchableOpacity>
             <StatusBar style="auto" />
-         </ScrollView>
+         </View>
       </View>
    )
 }
@@ -113,14 +107,8 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center',
    },
-   scroll: {
-      flex: 1,
-      margin: 20,
-      marginLeft: 0,
-      marginRight: 0,
-   },
    button: {
-      marginTop: 160,
+      // marginTop: 160,
       backgroundColor: "#1A535C",
       width: 300,
       height: 50,
@@ -141,6 +129,7 @@ const styles = StyleSheet.create({
       height: 50,
       padding: 10,
       marginTop: 50,
+      marginBottom: 50,
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 2,
