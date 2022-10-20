@@ -36,7 +36,7 @@ export default function App() {
   const [isSigned, setIsSigned] = useState(false);
   const [logOut, setLogOut] = useState(false);
   const [isGoogleAuth,setIsGoogleAuth] = useState(false);
-  const [profileData,setProfileData] = useState({});
+  const [profileData,setProfileData] = useState({Name : "Ganesh Nathan", Email: "abc@gmail.com"});
   const [userEmail,setUserEmail] = useState("");
   const [autoLogin,setAutoLogin] = useState(true);
 
@@ -131,6 +131,9 @@ export default function App() {
           animation: 'slide_from_right',
 
         }}>
+          <Stack.Screen name="Profile">
+            {props => (<Profile {...props} profileData={profileData} setLogOut={setLogOut}/>)}
+          </Stack.Screen>
           {!isLogged & !isSigned ? (
             <Stack.Group>
 
@@ -187,9 +190,6 @@ export default function App() {
               <Stack.Screen name="Feed" component={VolunteerFeed} />
               </Stack.Group>
             )))}
-          <Stack.Screen name="Profile">
-            {props => (<Profile {...props} profileData={profileData} setLogOut={setLogOut}/>)}
-          </Stack.Screen>
           <Stack.Screen name="TaskDescription" component={TaskDescription} />
           <Stack.Screen name="OrgTaskDescription" component={OrgTaskDescription} />
         </Stack.Navigator>

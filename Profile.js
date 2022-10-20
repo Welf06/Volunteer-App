@@ -6,12 +6,15 @@ import { query_db,users_collection,organisations_collection,auth} from "./method
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import Chart from './Chart.js';
+
 export const Profile = ({navigation,profileData,setLogOut}) =>{
 
     if(profileData["Name"] == undefined){
         return <Loading />
     }   
       return (
+        <View style={styles.containers}>
       <View style={styles.container}>
 
           <View style={styles.profilePic}>
@@ -20,8 +23,12 @@ export const Profile = ({navigation,profileData,setLogOut}) =>{
           <Text style={styles.name}>{profileData.Name}</Text>
           <View style={styles.about}>
           <Text style={styles.aboutText}>{profileData.Description}</Text>
-        
         </View>
+
+        <View style={styles.stats}>
+          <Chart />
+        </View>
+
         <View style={styles.contact}>
         
             <Text style={styles.contactHeading}>Email </Text>
@@ -43,6 +50,7 @@ export const Profile = ({navigation,profileData,setLogOut}) =>{
         </TouchableOpacity>
 
       </View>
+      </View>
     );
     
 }
@@ -54,7 +62,7 @@ const styles = StyleSheet.create({
       padding: 20,
       backgroundColor: "#F7FFF7",
       alignItems: 'center',
-      justifyContent: 'space-evenly',
+      // justifyContent: 'space-evenly',
     },
     profilePic: {
       width: 200,
@@ -120,6 +128,8 @@ const styles = StyleSheet.create({
       paddingLeft: 10,
       fontFamily: 'Poppins',
       color: "#F7FFF7",
-    }
+    },
+    stats: {
+    },
 
   });
